@@ -11,7 +11,7 @@
     {
       "type": "spacer",
       "id": "1_sp",
-      "height": 2
+      "height": 4
     },
     {
       "type": "text",
@@ -45,7 +45,7 @@
         {
           "type": "spacer",
           "id": "5_sp",
-          "height": 2
+          "height": 4
         },
         {
           "type": "text",
@@ -82,7 +82,7 @@
         {
           "type": "spacer",
           "id": "9_sp",
-          "height": 2
+          "height": 4
         },
         {
           "type": "text",

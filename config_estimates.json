@@ -57,7 +57,7 @@
             {
               "type": "spacer",
               "id": "50_sp",
-              "height": 2
+              "height": 4
             },
             {
               "type": "text",
@@ -69,7 +69,7 @@
             {
               "type": "spacer",
               "id": "51_sp",
-              "height": 2
+              "height": 4
             },
             {
               "type": "text",
@@ -93,7 +93,7 @@
             {
               "type": "spacer",
               "id": "54_sp",
-              "height": 2
+              "height": 4
             },
             {
               "type": "text",
