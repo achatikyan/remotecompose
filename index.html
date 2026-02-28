@@ -240,8 +240,8 @@ function render(){
         let editor=buildEditor(el,i);
         return `<div class="el-card" draggable="true" ondragstart="onDragStart(event,${i})" ondragend="onDragEnd()" ondragover="onDragOver(event,${i})" ondrop="onDrop(event,${i})">
             <div class="el-handle"><span class="material-icons-round">drag_indicator</span></div>
-            <div class="el-body" onclick="toggleExpand(${i})">
-                <div class="el-top">${badge}<span class="el-summary">${esc(summary)}</span></div>
+            <div class="el-body">
+                <div class="el-top" onclick="toggleExpand(${i})" style="cursor:pointer">${badge}<span class="el-summary">${esc(summary)}</span></div>
                 <div class="el-editor">${editor}</div>
             </div>
             <div class="el-actions"><button class="del" onclick="event.stopPropagation();removeElement(${i})" title="Delete"><span class="material-icons-round">close</span></button></div>
