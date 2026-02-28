@@ -225,25 +225,44 @@ const defaultsHome=[
     {type:'button',text:'Go to Detail Screen \u2192',color:'#4A148C',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'navigate:detail',borderColor:'#7E57C2',borderWidth:2}
 ];
 const defaultsDetail=[
-    {type:'text',text:'Detail Screen',color:'#1B5E20',fontSize:30},
-    {type:'text',text:'Navigated here via remote config action.',color:'#4CAF50',fontSize:14},
-    {type:'spacer',height:24},
-    {type:'card',color:'#FFFFFF',cornerRadius:20,borderColor:'#C8E6C9',borderWidth:1,paddingH:20,paddingV:16,children:[
-        {type:'text',text:'Server-Driven Navigation',color:'#1B5E20',fontSize:18},
-        {type:'text',text:'The button on the previous screen triggered navigate:detail. The host app intercepted it and pushed this route.',color:'#666666',fontSize:13}
-    ]},
+    {type:'spacer',height:8},
+    {type:'text',text:'Feature Showcase',color:'#E0E0E0',fontSize:26},
+    {type:'text',text:'Everything below is server-driven',color:'#7C7C9A',fontSize:13},
     {type:'spacer',height:16},
-    {type:'button',text:'Tap Me!',color:'#2E7D32',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'detail_action'}
+    {type:'card',color:'#262640',cornerRadius:16,borderColor:'#3A3A5C',borderWidth:1,paddingH:18,paddingV:14,children:[
+        {type:'text',text:'Remote Layouts',color:'#BB86FC',fontSize:16},
+        {type:'text',text:'Text, buttons, cards, rows, spacers, dividers \u2014 all rendered natively via Remote Compose.',color:'#9E9EBF',fontSize:12}
+    ]},
+    {type:'spacer',height:8},
+    {type:'card',color:'#262640',cornerRadius:16,borderColor:'#3A3A5C',borderWidth:1,paddingH:18,paddingV:14,children:[
+        {type:'text',text:'Click Actions',color:'#03DAC6',fontSize:16},
+        {type:'text',text:'Buttons fire HostAction events. The app handles them \u2014 toasts, navigation, or custom logic.',color:'#9E9EBF',fontSize:12}
+    ]},
+    {type:'spacer',height:8},
+    {type:'card',color:'#262640',cornerRadius:16,borderColor:'#3A3A5C',borderWidth:1,paddingH:18,paddingV:14,actionName:'card_clicked',children:[
+        {type:'text',text:'Clickable Cards',color:'#CF6679',fontSize:16},
+        {type:'text',text:'Tap this card. The entire surface is a click target, not just a button.',color:'#9E9EBF',fontSize:12}
+    ]},
+    {type:'spacer',height:12},
+    {type:'divider',color:'#3A3A5C',height:1},
+    {type:'spacer',height:12},
+    {type:'row',children:[
+        {type:'button',text:'Toast',color:'#BB86FC',textColor:'#1A1A2E',fontSize:13,cornerRadius:20,actionName:'show_toast'},
+        {type:'button',text:'Navigate',color:'#03DAC6',textColor:'#1A1A2E',fontSize:13,cornerRadius:20,actionName:'navigate:home'},
+        {type:'button',text:'Alert',color:'#CF6679',textColor:'#1A1A2E',fontSize:13,cornerRadius:20,actionName:'show_alert'}
+    ]},
+    {type:'spacer',height:12},
+    {type:'text',text:'No app update required.',color:'#5C5C7A',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail')}
-const BUILD_VERSION=19;
+const BUILD_VERSION=20;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='v'+getVersion()}
 async function fetchScreen(key){
     const s=screens[key];
     try{const r=await fetch(s.file+'?'+Date.now());if(r.ok){const c=await r.json();s.bg=c.backgroundColor||s.bg;s.elements=(c.elements||[]).map(e=>assignIds(e));nextId=Math.max(nextId,maxId(s.elements)+1)}else{loadScreenDefs(key)}}catch{loadScreenDefs(key)}
     if(key===activeScreen)activateScreen()}
-function loadScreenDefs(key){const defs=key==='home'?defaultsHome:defaultsDetail;screens[key].elements=defs.map(e=>assignIds(JSON.parse(JSON.stringify(e))));screens[key].bg=key==='home'?'#F5F0FF':'#E8F5E9'}
+function loadScreenDefs(key){const defs=key==='home'?defaultsHome:defaultsDetail;screens[key].elements=defs.map(e=>assignIds(JSON.parse(JSON.stringify(e))));screens[key].bg=key==='home'?'#F5F0FF':'#1A1A2E'}
 function activateScreen(){const s=screens[activeScreen];elements=s.elements;document.getElementById('bgColor').value=s.bg;document.getElementById('bgColorCode').textContent=s.bg.toUpperCase();document.getElementById('fetchUrl').textContent='https://achatikyan.github.io/remotecompose/'+s.file;expandedIdx=-1;render()}
 function switchScreen(key){if(key===activeScreen)return;screens[activeScreen].elements=elements;screens[activeScreen].bg=document.getElementById('bgColor').value;activeScreen=key;document.querySelectorAll('.screen-tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+key).classList.add('active');activateScreen()}
 function assignIds(e){e={...e,id:e.id||uid()};if(e.children)e.children=e.children.map(c=>assignIds({...c}));return e}

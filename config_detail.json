@@ -1,19 +1,33 @@
 {
-  "backgroundColor": "#E8F5E9",
+  "backgroundColor": "#1A1A2E",
   "elements": [
-    { "type": "text", "id": "1", "text": "Detail Screen", "color": "#1B5E20", "fontSize": 30 },
-    { "type": "text", "id": "2", "text": "This screen was navigated to from a remote config action.", "color": "#4CAF50", "fontSize": 14 },
-    { "type": "spacer", "id": "3", "height": 24 },
-    { "type": "card", "id": "4", "color": "#FFFFFF", "cornerRadius": 20, "borderColor": "#C8E6C9", "borderWidth": 1, "paddingH": 20, "paddingV": 16, "children": [
-      { "type": "text", "id": "4a", "text": "Server-Driven Navigation", "color": "#1B5E20", "fontSize": 18 },
-      { "type": "text", "id": "4b", "text": "The button on the previous screen triggered a navigate:detail action. The host app intercepted it and pushed this route via Compose Navigation.", "color": "#666666", "fontSize": 13 }
+    { "type": "spacer", "id": "1", "height": 8 },
+    { "type": "text", "id": "2", "text": "Feature Showcase", "color": "#E0E0E0", "fontSize": 26 },
+    { "type": "text", "id": "3", "text": "Everything below is server-driven", "color": "#7C7C9A", "fontSize": 13 },
+    { "type": "spacer", "id": "4", "height": 16 },
+    { "type": "card", "id": "5", "color": "#262640", "cornerRadius": 16, "borderColor": "#3A3A5C", "borderWidth": 1, "paddingH": 18, "paddingV": 14, "children": [
+      { "type": "text", "id": "5a", "text": "Remote Layouts", "color": "#BB86FC", "fontSize": 16 },
+      { "type": "text", "id": "5b", "text": "Text, buttons, cards, rows, spacers, dividers — all rendered natively via Remote Compose.", "color": "#9E9EBF", "fontSize": 12 }
     ]},
-    { "type": "spacer", "id": "5", "height": 16 },
-    { "type": "card", "id": "6", "color": "#FFFFFF", "cornerRadius": 20, "borderColor": "#C8E6C9", "borderWidth": 1, "paddingH": 20, "paddingV": 16, "children": [
-      { "type": "text", "id": "6a", "text": "Fully Remote", "color": "#1B5E20", "fontSize": 18 },
-      { "type": "text", "id": "6b", "text": "This screen's layout, colors, and content are all defined in config_detail.json — editable from the web without an app update.", "color": "#666666", "fontSize": 13 }
+    { "type": "spacer", "id": "6", "height": 8 },
+    { "type": "card", "id": "7", "color": "#262640", "cornerRadius": 16, "borderColor": "#3A3A5C", "borderWidth": 1, "paddingH": 18, "paddingV": 14, "children": [
+      { "type": "text", "id": "7a", "text": "Click Actions", "color": "#03DAC6", "fontSize": 16 },
+      { "type": "text", "id": "7b", "text": "Buttons fire HostAction events. The app handles them — toasts, navigation, or custom logic.", "color": "#9E9EBF", "fontSize": 12 }
     ]},
-    { "type": "spacer", "id": "7", "height": 20 },
-    { "type": "button", "id": "8", "text": "Tap Me!", "color": "#2E7D32", "textColor": "#FFFFFF", "fontSize": 16, "cornerRadius": 28, "actionName": "detail_action" }
+    { "type": "spacer", "id": "8", "height": 8 },
+    { "type": "card", "id": "9", "color": "#262640", "cornerRadius": 16, "borderColor": "#3A3A5C", "borderWidth": 1, "paddingH": 18, "paddingV": 14, "actionName": "card_clicked", "children": [
+      { "type": "text", "id": "9a", "text": "Clickable Cards", "color": "#CF6679", "fontSize": 16 },
+      { "type": "text", "id": "9b", "text": "Tap this card. The entire surface is a click target, not just a button.", "color": "#9E9EBF", "fontSize": 12 }
+    ]},
+    { "type": "spacer", "id": "10", "height": 12 },
+    { "type": "divider", "id": "11", "color": "#3A3A5C", "height": 1 },
+    { "type": "spacer", "id": "12", "height": 12 },
+    { "type": "row", "id": "13", "children": [
+      { "type": "button", "id": "13a", "text": "Toast", "color": "#BB86FC", "textColor": "#1A1A2E", "fontSize": 13, "cornerRadius": 20, "actionName": "show_toast" },
+      { "type": "button", "id": "13b", "text": "Navigate", "color": "#03DAC6", "textColor": "#1A1A2E", "fontSize": 13, "cornerRadius": 20, "actionName": "navigate:home" },
+      { "type": "button", "id": "13c", "text": "Alert", "color": "#CF6679", "textColor": "#1A1A2E", "fontSize": 13, "cornerRadius": 20, "actionName": "show_alert" }
+    ]},
+    { "type": "spacer", "id": "14", "height": 12 },
+    { "type": "text", "id": "15", "text": "No app update required.", "color": "#5C5C7A", "fontSize": 11 }
   ]
 }
