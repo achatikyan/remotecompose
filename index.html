@@ -135,10 +135,9 @@
             <div><h1>Remote Compose Editor</h1><div class="sub">Drag-and-drop UI builder &middot; <span id="versionLabel">v1</span></div></div>
         </div>
         <div class="ha">
-            <code id="fetchUrl" style="font-size:11px;background:rgba(98,0,234,.08);padding:3px 8px;border-radius:6px;color:var(--ts);font-family:'SF Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px">config.json</code>
             <span class="sb" id="deployStatus"><span class="dot"></span><span id="deployStatusText">Ready</span></span>
             <div style="display:flex;align-items:center;gap:4px;border:1.5px solid var(--outline);border-radius:8px;padding:2px 4px 2px 8px">
-                <input type="password" id="ghToken" placeholder="Token" style="border:none;outline:none;font-size:11px;font-family:inherit;width:80px;background:transparent">
+                <input type="password" id="ghToken" placeholder="GitHub Token" style="border:none;outline:none;font-size:11px;font-family:inherit;width:160px;background:transparent">
                 <button class="btn btn-g btn-s" onclick="toggleToken()" style="padding:2px"><span class="material-icons-round" id="tokenEye" style="font-size:14px">visibility</span></button>
             </div>
             <button class="btn btn-g" onclick="resetToDefaults()"><span class="material-icons-round">restart_alt</span>Reset</button>
@@ -253,7 +252,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=43;
+const BUILD_VERSION=44;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+getVersion()+'-alpha'}
 async function fetchScreen(key){
@@ -302,7 +301,7 @@ const defaultsEstimateDetail=[
     {type:'row',children:[{type:'text',text:'Total',color:'#1A1A1A',fontSize:18},{type:'text',text:'$3,012.99',color:'#1A1A1A',fontSize:18}]}
 ];
 function loadScreenDefs(key){const m={home:defaultsHome,detail:defaultsDetail,estimates:defaultsEstimates,estimate_detail:defaultsEstimateDetail};const defs=m[key]||[];screens[key].elements=defs.map(e=>assignIds(JSON.parse(JSON.stringify(e))))}
-function activateScreen(){const s=screens[activeScreen];elements=s.elements;document.getElementById('bgColor').value=s.bg;document.getElementById('bgColorCode').textContent=s.bg.toUpperCase();document.getElementById('fetchUrl').textContent='https://achatikyan.github.io/remotecompose/'+s.file;expandedIdx=-1;render()}
+function activateScreen(){const s=screens[activeScreen];elements=s.elements;document.getElementById('bgColor').value=s.bg;document.getElementById('bgColorCode').textContent=s.bg.toUpperCase();expandedIdx=-1;render()}
 function switchScreen(key){if(key===activeScreen)return;screens[activeScreen].elements=elements;screens[activeScreen].bg=document.getElementById('bgColor').value;activeScreen=key;document.querySelectorAll('.screen-tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+key).classList.add('active');activateScreen()}
 function assignIds(e){e={...e,id:e.id||uid()};if(e.children)e.children=e.children.map(c=>assignIds({...c}));return e}
 function maxId(els){let m=0;els.forEach(e=>{m=Math.max(m,parseInt(e.id)||0);if(e.children)m=Math.max(m,maxId(e.children))});return m}
