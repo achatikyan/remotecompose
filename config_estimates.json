@@ -96,7 +96,7 @@
               "type": "button",
               "id": "57",
               "text": "+  Add items",
-              "color": "#FFFFFF",
+              "color": "#DBDBDB",
               "textColor": "#333333",
               "fontSize": 13,
               "cornerRadius": 20,
