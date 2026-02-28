@@ -21,6 +21,6 @@
     { "type": "spacer", "id": "9", "height": 6 },
     { "type": "divider", "id": "10", "color": "#E0D6F2", "height": 1 },
     { "type": "spacer", "id": "11", "height": 6 },
-    { "type": "button", "id": "12", "text": "Open Full Demo", "color": "#4A148C", "textColor": "#FFFFFF", "fontSize": 16, "cornerRadius": 28, "actionName": "open_demo", "borderColor": "#7E57C2", "borderWidth": 2 }
+    { "type": "button", "id": "12", "text": "Go to Detail Screen →", "color": "#4A148C", "textColor": "#FFFFFF", "fontSize": 16, "cornerRadius": 28, "actionName": "navigate:detail", "borderColor": "#7E57C2", "borderWidth": 2 }
   ]
 }

@@ -1,0 +1,19 @@
+{
+  "backgroundColor": "#E8F5E9",
+  "elements": [
+    { "type": "text", "id": "1", "text": "Detail Screen", "color": "#1B5E20", "fontSize": 30 },
+    { "type": "text", "id": "2", "text": "This screen was navigated to from a remote config action.", "color": "#4CAF50", "fontSize": 14 },
+    { "type": "spacer", "id": "3", "height": 24 },
+    { "type": "card", "id": "4", "color": "#FFFFFF", "cornerRadius": 20, "borderColor": "#C8E6C9", "borderWidth": 1, "paddingH": 20, "paddingV": 16, "children": [
+      { "type": "text", "id": "4a", "text": "Server-Driven Navigation", "color": "#1B5E20", "fontSize": 18 },
+      { "type": "text", "id": "4b", "text": "The button on the previous screen triggered a navigate:detail action. The host app intercepted it and pushed this route via Compose Navigation.", "color": "#666666", "fontSize": 13 }
+    ]},
+    { "type": "spacer", "id": "5", "height": 16 },
+    { "type": "card", "id": "6", "color": "#FFFFFF", "cornerRadius": 20, "borderColor": "#C8E6C9", "borderWidth": 1, "paddingH": 20, "paddingV": 16, "children": [
+      { "type": "text", "id": "6a", "text": "Fully Remote", "color": "#1B5E20", "fontSize": 18 },
+      { "type": "text", "id": "6b", "text": "This screen's layout, colors, and content are all defined in config_detail.json — editable from the web without an app update.", "color": "#666666", "fontSize": 13 }
+    ]},
+    { "type": "spacer", "id": "7", "height": 20 },
+    { "type": "button", "id": "8", "text": "Tap Me!", "color": "#2E7D32", "textColor": "#FFFFFF", "fontSize": 16, "cornerRadius": 28, "actionName": "detail_action" }
+  ]
+}
