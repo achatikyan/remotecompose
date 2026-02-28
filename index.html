@@ -236,7 +236,7 @@ const defaultsDetail=[
     {type:'button',text:'Tap Me!',color:'#2E7D32',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'detail_action'}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail')}
-const BUILD_VERSION=18;
+const BUILD_VERSION=19;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='v'+getVersion()}
 async function fetchScreen(key){
@@ -286,7 +286,7 @@ function render(){
         return `<div class="el-card" draggable="true" ondragstart="onDragStart(event,${i})" ondragend="onDragEnd()" ondragover="onDragOver(event,${i})" ondrop="onDrop(event,${i})">
             <div class="el-handle"><span class="material-icons-round">drag_indicator</span></div>
             <div class="el-body">
-                <div class="el-top" onclick="toggleExpand(${i})" style="cursor:pointer">${badge}<span class="el-summary">${esc(summary)}</span></div>
+                <div class="el-top" role="button" tabindex="0" onclick="toggleExpand(${i})" style="cursor:pointer">${badge}<span class="el-summary">${esc(summary)}</span></div>
                 <div class="el-editor">${editor}</div>
             </div>
             <div class="el-actions"><button class="del" onclick="event.stopPropagation();removeElement(${i})" title="Delete"><span class="material-icons-round">close</span></button></div>
@@ -326,8 +326,8 @@ function childrenEditor(el,i,defaultChild){
     children.forEach((ch,ci)=>{
         const summary=ch.text||ch.type;
         html+=`<div class="child-item" id="child-${i}-${ci}">`;
-        html+=`<div class="child-hdr" onclick="toggleChildExpand(${i},${ci})"><span class="badge ${ch.type}">${ch.type}</span><span class="child-summary">${esc(summary)}</span>`;
-        html+=`<button class="child-del-btn" onclick="removeChild(${i},${ci})" title="Remove"><span class="material-icons-round" style="font-size:16px">close</span></button></div>`;
+        html+=`<div class="child-hdr" role="button" tabindex="0" onclick="toggleChildExpand(${i},${ci})"><span class="badge ${ch.type}">${ch.type}</span><span class="child-summary">${esc(summary)}</span>`;
+        html+=`<button class="child-del-btn" onclick="event.stopPropagation();removeChild(${i},${ci})" title="Remove"><span class="material-icons-round" style="font-size:16px">close</span></button></div>`;
         html+=`<div class="child-editor">${buildChildEditor(ch,i,ci)}</div>`;
         html+=`</div>`});
     html+='</div>';return html}
