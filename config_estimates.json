@@ -24,8 +24,12 @@
         { "type": "button", "id": "10j", "text": "+ Add items", "color": "#FFFFFF", "textColor": "#333333", "fontSize": 14, "cornerRadius": 20, "borderColor": "#CCCCCC", "borderWidth": 1, "actionName": "add_items_1" }
       ]},
       { "type": "divider", "id": "10l", "color": "#E0E0E0", "height": 1 },
-      { "type": "card", "id": "10m", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 16, "paddingV": 10, "align": "start", "children": [
-        { "type": "text", "id": "10n1", "text": "Recommend", "color": "#444444", "fontSize": 14 }
+      { "type": "card", "id": "10m", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 16, "paddingV": 6, "align": "start", "children": [
+        { "type": "row", "id": "10n", "children": [
+          { "type": "button", "id": "10n0", "text": "Recommend", "color": "#FFFFFF", "textColor": "#444444", "fontSize": 14, "cornerRadius": 4, "borderColor": "#BBBBBB", "borderWidth": 1, "paddingH": 8, "paddingV": 6, "actionName": "recommend_1" },
+          { "type": "button", "id": "10n2", "text": "Copy", "color": "#FFFFFF", "textColor": "#666666", "fontSize": 12, "cornerRadius": 4, "paddingH": 6, "paddingV": 6, "actionName": "duplicate_1" },
+          { "type": "button", "id": "10n3", "text": "More", "color": "#FFFFFF", "textColor": "#666666", "fontSize": 12, "cornerRadius": 4, "paddingH": 6, "paddingV": 6, "actionName": "more_1" }
+        ]}
       ]}
     ]}
   ]
