@@ -112,6 +112,13 @@
         .empty-state{text-align:center;padding:32px 16px;color:var(--ts)}
         .empty-state .material-icons-round{font-size:40px;color:var(--outline);margin-bottom:8px}
         .empty-state p{font-size:13px}
+
+        .screen-bar{background:var(--surface);border-bottom:1px solid var(--outline);padding:10px 24px;display:flex;align-items:center;gap:8px;max-width:1400px;margin:0 auto}
+        .screen-bar .lbl{font-size:12px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px;margin-right:4px}
+        .screen-tab{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1.5px solid var(--outline);border-radius:var(--rs);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--ts);transition:all .15s}
+        .screen-tab:hover{border-color:var(--primary);color:var(--primary)}
+        .screen-tab.active{background:var(--primary);color:var(--on-p);border-color:var(--primary)}
+        .screen-tab .material-icons-round{font-size:16px}
     </style>
 </head>
 <body>
@@ -126,6 +133,11 @@
             <button class="btn btn-p" onclick="deployConfig()"><span class="material-icons-round">cloud_upload</span>Deploy</button>
         </div>
     </header>
+    <div class="screen-bar">
+        <span class="lbl">Screen:</span>
+        <button class="screen-tab active" id="tab-home" onclick="switchScreen('home')"><span class="material-icons-round">home</span>Home</button>
+        <button class="screen-tab" id="tab-detail" onclick="switchScreen('detail')"><span class="material-icons-round">article</span>Detail</button>
+    </div>
     <main>
         <div class="panel">
             <div class="ph">
@@ -147,7 +159,7 @@
                 <div class="cf"><input type="color" id="bgColor" value="#F5F0FF" oninput="updatePreview()"><code id="bgColorCode">#F5F0FF</code></div>
             </div>
             <div class="bg-sec">
-                <div class="info-card" style="width:100%"><p><strong>Fetch URL:</strong> <code>https://achatikyan.github.io/remotecompose/config.json</code></p></div>
+                <div class="info-card" style="width:100%"><p><strong>Fetch URL:</strong> <code id="fetchUrl">https://achatikyan.github.io/remotecompose/config.json</code></p></div>
             </div>
             <div class="deploy-sec">
                 <div style="display:flex;align-items:center;justify-content:space-between">
@@ -172,10 +184,16 @@
     <div class="toast" id="toast"><span class="material-icons-round" id="toastIcon">check_circle</span><span id="toastMsg"></span></div>
 
 <script>
-const REPO='achatikyan',REPO_N='remotecompose',FP='config.json';
+const REPO='achatikyan',REPO_N='remotecompose';
+const screens={
+    home:{file:'config.json',label:'Home',elements:[],bg:'#F5F0FF'},
+    detail:{file:'config_detail.json',label:'Detail',elements:[],bg:'#E8F5E9'}
+};
+let activeScreen='home';
 let elements=[],dragIdx=null,nextId=1,expandedIdx=-1;
 function uid(){return String(nextId++)}
-const defaults=[
+function currentFile(){return screens[activeScreen].file}
+const defaultsHome=[
     {type:'text',text:'Remote Compose',color:'#4A148C',fontSize:32},
     {type:'text',text:'Server-driven UI, rendered natively',color:'#7E57C2',fontSize:14},
     {type:'spacer',height:20},
@@ -196,16 +214,32 @@ const defaults=[
     {type:'spacer',height:6},
     {type:'divider',color:'#E0D6F2',height:1},
     {type:'spacer',height:6},
-    {type:'button',text:'Open Full Demo',color:'#4A148C',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'open_demo',borderColor:'#7E57C2',borderWidth:2}
+    {type:'button',text:'Go to Detail Screen \u2192',color:'#4A148C',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'navigate:detail',borderColor:'#7E57C2',borderWidth:2}
 ];
-function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchConfig()}
+const defaultsDetail=[
+    {type:'text',text:'Detail Screen',color:'#1B5E20',fontSize:30},
+    {type:'text',text:'Navigated here via remote config action.',color:'#4CAF50',fontSize:14},
+    {type:'spacer',height:24},
+    {type:'card',color:'#FFFFFF',cornerRadius:20,borderColor:'#C8E6C9',borderWidth:1,paddingH:20,paddingV:16,children:[
+        {type:'text',text:'Server-Driven Navigation',color:'#1B5E20',fontSize:18},
+        {type:'text',text:'The button on the previous screen triggered navigate:detail. The host app intercepted it and pushed this route.',color:'#666666',fontSize:13}
+    ]},
+    {type:'spacer',height:16},
+    {type:'button',text:'Tap Me!',color:'#2E7D32',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'detail_action'}
+];
+function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail')}
 function getVersion(){return parseInt(localStorage.getItem('rc_version')||'1')}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='v'+getVersion()}
-async function fetchConfig(){try{const r=await fetch('config.json?'+Date.now());if(r.ok){const c=await r.json();document.getElementById('bgColor').value=c.backgroundColor||'#F5F0FF';document.getElementById('bgColorCode').textContent=(c.backgroundColor||'#F5F0FF').toUpperCase();elements=(c.elements||[]).map(e=>assignIds(e));nextId=maxId(elements)+1}else loadDefs()}catch{loadDefs()}render()}
+async function fetchScreen(key){
+    const s=screens[key];
+    try{const r=await fetch(s.file+'?'+Date.now());if(r.ok){const c=await r.json();s.bg=c.backgroundColor||s.bg;s.elements=(c.elements||[]).map(e=>assignIds(e));nextId=Math.max(nextId,maxId(s.elements)+1)}else{loadScreenDefs(key)}}catch{loadScreenDefs(key)}
+    if(key===activeScreen)activateScreen()}
+function loadScreenDefs(key){const defs=key==='home'?defaultsHome:defaultsDetail;screens[key].elements=defs.map(e=>assignIds(JSON.parse(JSON.stringify(e))));screens[key].bg=key==='home'?'#F5F0FF':'#E8F5E9'}
+function activateScreen(){const s=screens[activeScreen];elements=s.elements;document.getElementById('bgColor').value=s.bg;document.getElementById('bgColorCode').textContent=s.bg.toUpperCase();document.getElementById('fetchUrl').textContent='https://achatikyan.github.io/remotecompose/'+s.file;expandedIdx=-1;render()}
+function switchScreen(key){if(key===activeScreen)return;screens[activeScreen].elements=elements;screens[activeScreen].bg=document.getElementById('bgColor').value;activeScreen=key;document.querySelectorAll('.screen-tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+key).classList.add('active');activateScreen()}
 function assignIds(e){e={...e,id:e.id||uid()};if(e.children)e.children=e.children.map(c=>assignIds({...c}));return e}
 function maxId(els){let m=0;els.forEach(e=>{m=Math.max(m,parseInt(e.id)||0);if(e.children)m=Math.max(m,maxId(e.children))});return m}
-function loadDefs(){nextId=1;elements=defaults.map(e=>assignIds(JSON.parse(JSON.stringify(e))));document.getElementById('bgColor').value='#F5F0FF';document.getElementById('bgColorCode').textContent='#F5F0FF'}
-function resetToDefaults(){loadDefs();render();showToast('Reset to defaults','restart_alt')}
+function resetToDefaults(){nextId=1;loadScreenDefs('home');loadScreenDefs('detail');activateScreen();showToast('Reset to defaults','restart_alt')}
 function addElement(type){const el={type,id:uid()};
     if(type==='text'){el.text='New text';el.color='#000000';el.fontSize=16}
     else if(type==='button'){el.text='Button';el.color='#6200EA';el.textColor='#FFFFFF';el.fontSize=16;el.cornerRadius=24;el.actionName='btn_'+el.id}
@@ -329,11 +363,12 @@ async function deployConfig(){
     const token=document.getElementById('ghToken').value.trim();
     if(!token){showToast('Enter a GitHub token first','warning',true);document.getElementById('ghToken').focus();return}
     localStorage.setItem('gh_token',token);setDeploy('deploying');
-    try{const existing=await fetch(`https://api.github.com/repos/${REPO}/${REPO_N}/contents/${FP}`,{headers:{Authorization:`Bearer ${token}`}});let sha=null;if(existing.ok)sha=(await existing.json()).sha;
+    const fp=currentFile();
+    try{const existing=await fetch(`https://api.github.com/repos/${REPO}/${REPO_N}/contents/${fp}`,{headers:{Authorization:`Bearer ${token}`}});let sha=null;if(existing.ok)sha=(await existing.json()).sha;
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(getConfig(),null,2)+'\n')));
-    const body={message:'Update layout from web editor',content};if(sha)body.sha=sha;
-    const r=await fetch(`https://api.github.com/repos/${REPO}/${REPO_N}/contents/${FP}`,{method:'PUT',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(r.ok){const v=getVersion()+1;localStorage.setItem('rc_version',String(v));updateVersionLabel();setDeploy('ok');showToast('v'+v+' deployed! Live in ~30s','cloud_done')}else{const e=await r.json();setDeploy('err');showToast('Deploy failed: '+(e.message||r.status),'error',true)}}
+    const body={message:'Update '+screens[activeScreen].label+' screen from web editor',content};if(sha)body.sha=sha;
+    const r=await fetch(`https://api.github.com/repos/${REPO}/${REPO_N}/contents/${fp}`,{method:'PUT',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(r.ok){const v=getVersion()+1;localStorage.setItem('rc_version',String(v));updateVersionLabel();setDeploy('ok');showToast(screens[activeScreen].label+' v'+v+' deployed!','cloud_done')}else{const e=await r.json();setDeploy('err');showToast('Deploy failed: '+(e.message||r.status),'error',true)}}
     catch(e){setDeploy('err');showToast('Deploy failed: '+e.message,'error',true)}}
 
 function setDeploy(s){const b=document.getElementById('deployStatus'),t=document.getElementById('deployStatusText');b.className='sb';if(s==='deploying')t.textContent='Deploying...';else if(s==='ok'){b.classList.add('ok');t.textContent='Deployed';setTimeout(()=>{b.className='sb';t.textContent='Ready'},5000)}else if(s==='err'){b.classList.add('err');t.textContent='Failed';setTimeout(()=>{b.className='sb';t.textContent='Ready'},5000)}}
