@@ -260,7 +260,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=31;
+const BUILD_VERSION=32;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='v'+getVersion()}
 async function fetchScreen(key){
@@ -269,7 +269,7 @@ async function fetchScreen(key){
     if(key===activeScreen)activateScreen()}
 const defaultsEstimates=[
     {type:'spacer',height:4},
-    {type:'card',color:'#FFFFFF',cornerRadius:12,paddingH:0,paddingV:0,borderColor:'#E0E0E0',borderWidth:1,align:'start',actionName:'navigate:estimate_detail',children:[
+    {type:'card',color:'#FFFFFF',cornerRadius:12,paddingH:0,paddingV:0,borderColor:'#D0D0D0',borderWidth:2,align:'start',actionName:'navigate:estimate_detail',children:[
         {type:'card',color:'#00BCD4',cornerRadius:0,paddingH:14,paddingV:6,align:'start',children:[{type:'text',text:'Best',color:'#FFFFFF',fontSize:13}]},
         {type:'card',color:'#FFFFFF',cornerRadius:0,paddingH:14,paddingV:10,align:'start',children:[
             {type:'text',text:'Test Estimate',color:'#1A1A1A',fontSize:18},
@@ -280,22 +280,6 @@ const defaultsEstimates=[
             {type:'text',text:'1 Service(s), 1 Equipment, 1 Material(s)',color:'#666666',fontSize:12},
             {type:'spacer',height:8},
             {type:'button',text:'+  Add items',color:'#FFFFFF',textColor:'#333333',fontSize:13,cornerRadius:20,borderColor:'#DDDDDD',borderWidth:1,actionName:'add_items_1'}
-        ]},
-        {type:'divider',color:'#EEEEEE',height:1},
-        {type:'card',color:'#FFFFFF',cornerRadius:0,paddingH:14,paddingV:8,align:'start',children:[{type:'text',text:'Recommend',color:'#444444',fontSize:13}]}
-    ]},
-    {type:'spacer',height:12},
-    {type:'card',color:'#FFFFFF',cornerRadius:12,paddingH:0,paddingV:0,borderColor:'#E0E0E0',borderWidth:1,align:'start',actionName:'navigate:estimate_detail',children:[
-        {type:'card',color:'#B2EBF2',cornerRadius:0,paddingH:14,paddingV:6,align:'start',children:[{type:'text',text:'Second Estimate',color:'#006064',fontSize:13}]},
-        {type:'card',color:'#FFFFFF',cornerRadius:0,paddingH:14,paddingV:10,align:'start',children:[
-            {type:'text',text:'Second Estimate',color:'#1A1A1A',fontSize:18},
-            {type:'text',text:'TOTAL',color:'#999999',fontSize:10},
-            {type:'text',text:'$392.93',color:'#1A1A1A',fontSize:17},
-            {type:'spacer',height:6},
-            {type:'text',text:'5 ITEMS',color:'#00BCD4',fontSize:11},
-            {type:'text',text:'4 Service(s), 3 Equipment, 2 Material(s)',color:'#666666',fontSize:12},
-            {type:'spacer',height:8},
-            {type:'button',text:'+  Add items',color:'#FFFFFF',textColor:'#333333',fontSize:13,cornerRadius:20,borderColor:'#DDDDDD',borderWidth:1,actionName:'add_items_2'}
         ]},
         {type:'divider',color:'#EEEEEE',height:1},
         {type:'card',color:'#FFFFFF',cornerRadius:0,paddingH:14,paddingV:8,align:'start',children:[{type:'text',text:'Recommend',color:'#444444',fontSize:13}]}
@@ -341,8 +325,14 @@ function addElement(type){const el={type,id:uid()};
 function removeElement(idx){if(expandedIdx===idx)expandedIdx=-1;else if(expandedIdx>idx)expandedIdx--;elements.splice(idx,1);render()}
 function toggleExpand(idx){expandedIdx=expandedIdx===idx?-1:idx;const cards=document.querySelectorAll('.el-card');cards.forEach((c,i)=>{if(i===expandedIdx)c.classList.add('expanded');else c.classList.remove('expanded')})}
 function onFieldChange(idx,field,value){if(field==='fontSize'||field==='height'||field==='cornerRadius'||field==='borderWidth'||field==='paddingH'||field==='paddingV')value=parseInt(value)||0;elements[idx][field]=value;updatePreview()}
-function onChildField(parentIdx,childIdx,field,value){if(field==='fontSize'||field==='cornerRadius')value=parseInt(value)||0;elements[parentIdx].children[childIdx][field]=value;updatePreview()}
-function addChild(parentIdx,type){const ch={type,id:uid()};if(type==='text'){ch.text='New text';ch.color='#333333';ch.fontSize=14}else{ch.text='Button';ch.color='#6200EA';ch.textColor='#FFFFFF';ch.fontSize=14;ch.cornerRadius=20}if(!elements[parentIdx].children)elements[parentIdx].children=[];elements[parentIdx].children.push(ch);render()}
+function onChildField(parentIdx,childIdx,field,value){if(field==='fontSize'||field==='cornerRadius'||field==='height'||field==='borderWidth'||field==='paddingH'||field==='paddingV')value=parseInt(value)||0;elements[parentIdx].children[childIdx][field]=value;updatePreview()}
+function addChild(parentIdx,type){const ch={type,id:uid()};
+    if(type==='text'){ch.text='New text';ch.color='#333333';ch.fontSize=14}
+    else if(type==='button'){ch.text='Button';ch.color='#6200EA';ch.textColor='#FFFFFF';ch.fontSize=14;ch.cornerRadius=20}
+    else if(type==='spacer'){ch.height=16}
+    else if(type==='divider'){ch.color='#CCCCCC';ch.height=1}
+    else if(type==='card'){ch.color='#FFFFFF';ch.cornerRadius=0;ch.paddingH=14;ch.paddingV=10;ch.children=[]}
+    if(!elements[parentIdx].children)elements[parentIdx].children=[];elements[parentIdx].children.push(ch);render()}
 function removeChild(parentIdx,childIdx){elements[parentIdx].children.splice(childIdx,1);render()}
 
 function onDragStart(e,idx){dragIdx=idx;e.dataTransfer.effectAllowed='move';e.currentTarget.classList.add('dragging')}
@@ -379,7 +369,9 @@ function buildEditor(el,i){
     if(el.type==='text')return `
         <div class="field"><label>Text</label><input type="text" value="${esc(el.text||'')}" oninput="onFieldChange(${i},'text',this.value)"></div>
         <div class="fr"><div class="field"><label>Size</label><input type="number" min="8" max="72" value="${el.fontSize||16}" oninput="onFieldChange(${i},'fontSize',this.value)"></div>
-        <div class="field"><label>Color</label><div class="cf"><input type="color" value="${el.color||'#000000'}" oninput="onFieldChange(${i},'color',this.value)"><code>${(el.color||'#000000').toUpperCase()}</code></div></div></div>`;
+        <div class="field"><label>Color</label><div class="cf"><input type="color" value="${el.color||'#000000'}" oninput="onFieldChange(${i},'color',this.value)"><code>${(el.color||'#000000').toUpperCase()}</code></div></div></div>
+        <div class="fr"><div class="field"><label>Pad H</label><input type="number" min="0" max="50" value="${el.paddingH||0}" oninput="onFieldChange(${i},'paddingH',this.value)"></div>
+        <div class="field"><label>Pad V</label><input type="number" min="0" max="50" value="${el.paddingV||0}" oninput="onFieldChange(${i},'paddingV',this.value)"></div></div>`;
     if(el.type==='button')return `
         <div class="field"><label>Label</label><input type="text" value="${esc(el.text||'')}" oninput="onFieldChange(${i},'text',this.value)"></div>
         <div class="field"><label>Action Name</label><input type="text" value="${esc(el.actionName||'')}" oninput="onFieldChange(${i},'actionName',this.value)" placeholder="e.g. open_settings"></div>
@@ -403,7 +395,13 @@ function buildEditor(el,i){
 
 function childrenEditor(el,i,defaultChild){
     const children=el.children||[];
-    let html='<div class="children-area" onclick="event.stopPropagation()"><div class="child-label"><span>Children ('+children.length+')</span><button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\''+defaultChild+'\')"><span class="material-icons-round">add</span>Add</button></div>';
+    let html='<div class="children-area" onclick="event.stopPropagation()"><div class="child-label"><span>Children ('+children.length+')</span><div style="display:flex;gap:4px">';
+    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'text\')">T</button>';
+    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'button\')">B</button>';
+    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'spacer\')">S</button>';
+    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'divider\')">D</button>';
+    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'card\')">C</button>';
+    html+='</div></div>';
     children.forEach((ch,ci)=>{
         const summary=ch.text||ch.type;
         html+=`<div class="child-item" id="child-${i}-${ci}">`;
@@ -414,18 +412,30 @@ function childrenEditor(el,i,defaultChild){
     html+='</div>';return html}
 
 function buildChildEditor(ch,i,ci){
-    if(ch.type==='text')return `
-        <div class="field"><label>Text</label><input type="text" value="${esc(ch.text||'')}" oninput="onChildField(${i},${ci},'text',this.value)"></div>
+    let html='';
+    if(ch.type==='text'){
+        html+=`<div class="field"><label>Text</label><input type="text" value="${esc(ch.text||'')}" oninput="onChildField(${i},${ci},'text',this.value)"></div>
         <div class="fr"><div class="field"><label>Size</label><input type="number" min="8" max="72" value="${ch.fontSize||14}" oninput="onChildField(${i},${ci},'fontSize',this.value)"></div>
         <div class="field"><label>Color</label><div class="cf"><input type="color" value="${ch.color||'#000000'}" oninput="onChildField(${i},${ci},'color',this.value)"><code>${(ch.color||'#000000').toUpperCase()}</code></div></div></div>`;
-    if(ch.type==='button')return `
-        <div class="field"><label>Label</label><input type="text" value="${esc(ch.text||'')}" oninput="onChildField(${i},${ci},'text',this.value)"></div>
-        <div class="field"><label>Action Name</label><input type="text" value="${esc(ch.actionName||'')}" oninput="onChildField(${i},${ci},'actionName',this.value)" placeholder="e.g. navigate:detail"></div>
+    } else if(ch.type==='button'){
+        html+=`<div class="field"><label>Label</label><input type="text" value="${esc(ch.text||'')}" oninput="onChildField(${i},${ci},'text',this.value)"></div>
+        <div class="field"><label>Action</label><input type="text" value="${esc(ch.actionName||'')}" oninput="onChildField(${i},${ci},'actionName',this.value)" placeholder="e.g. navigate:detail"></div>
         <div class="fr"><div class="field"><label>Size</label><input type="number" min="8" max="72" value="${ch.fontSize||14}" oninput="onChildField(${i},${ci},'fontSize',this.value)"></div>
         <div class="field"><label>Radius</label><input type="number" min="0" max="50" value="${ch.cornerRadius||20}" oninput="onChildField(${i},${ci},'cornerRadius',this.value)"></div></div>
         <div class="fr"><div class="field"><label>BG</label><div class="cf"><input type="color" value="${ch.color||'#6200EA'}" oninput="onChildField(${i},${ci},'color',this.value)"><code>${(ch.color||'#6200EA').toUpperCase()}</code></div></div>
         <div class="field"><label>Text</label><div class="cf"><input type="color" value="${ch.textColor||'#FFFFFF'}" oninput="onChildField(${i},${ci},'textColor',this.value)"><code>${(ch.textColor||'#FFFFFF').toUpperCase()}</code></div></div></div>`;
-    return ''}
+    } else if(ch.type==='spacer'){
+        html+=`<div class="field"><label>Height (dp)</label><input type="number" min="1" max="200" value="${ch.height||16}" oninput="onChildField(${i},${ci},'height',this.value)"></div>`;
+    } else if(ch.type==='divider'){
+        html+=`<div class="fr"><div class="field"><label>Height</label><input type="number" min="1" max="10" value="${ch.height||1}" oninput="onChildField(${i},${ci},'height',this.value)"></div>
+        <div class="field"><label>Color</label><div class="cf"><input type="color" value="${ch.color||'#CCCCCC'}" oninput="onChildField(${i},${ci},'color',this.value)"><code>${(ch.color||'#CCCCCC').toUpperCase()}</code></div></div></div>`;
+    } else if(ch.type==='card'){
+        html+=`<div class="fr"><div class="field"><label>BG</label><div class="cf"><input type="color" value="${ch.color||'#FFFFFF'}" oninput="onChildField(${i},${ci},'color',this.value)"><code>${(ch.color||'#FFFFFF').toUpperCase()}</code></div></div>
+        <div class="field"><label>Radius</label><input type="number" min="0" max="50" value="${ch.cornerRadius||0}" oninput="onChildField(${i},${ci},'cornerRadius',this.value)"></div></div>
+        <div class="fr"><div class="field"><label>Pad H</label><input type="number" min="0" max="50" value="${ch.paddingH||0}" oninput="onChildField(${i},${ci},'paddingH',this.value)"></div>
+        <div class="field"><label>Pad V</label><input type="number" min="0" max="50" value="${ch.paddingV||0}" oninput="onChildField(${i},${ci},'paddingV',this.value)"></div></div>`;
+    }
+    return html||'<div style="font-size:11px;color:#999">No editable properties</div>'}
 
 function toggleChildExpand(parentIdx,childIdx){
     const el=document.getElementById('child-'+parentIdx+'-'+childIdx);

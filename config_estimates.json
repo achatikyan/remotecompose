@@ -23,50 +23,6 @@
       { "type": "card", "id": "10m", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 14, "paddingV": 8, "align": "start", "children": [
         { "type": "text", "id": "10n1", "text": "Recommend", "color": "#444444", "fontSize": 13 }
       ]}
-    ]},
-
-    { "type": "spacer", "id": "20", "height": 12 },
-
-    { "type": "card", "id": "30", "color": "#FFFFFF", "cornerRadius": 12, "paddingH": 0, "paddingV": 0, "borderColor": "#D0D0D0", "borderWidth": 2, "align": "start", "actionName": "navigate:estimate_detail", "children": [
-      { "type": "card", "id": "30a", "color": "#B2EBF2", "cornerRadius": 0, "paddingH": 14, "paddingV": 6, "align": "start", "children": [
-        { "type": "text", "id": "30a1", "text": "Second Estimate", "color": "#006064", "fontSize": 13 }
-      ]},
-      { "type": "card", "id": "30b", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 14, "paddingV": 10, "align": "start", "children": [
-        { "type": "text", "id": "30c", "text": "Second Estimate", "color": "#1A1A1A", "fontSize": 18 },
-        { "type": "text", "id": "30d", "text": "TOTAL", "color": "#999999", "fontSize": 10 },
-        { "type": "text", "id": "30e", "text": "$392.93", "color": "#1A1A1A", "fontSize": 17 },
-        { "type": "spacer", "id": "30f", "height": 6 },
-        { "type": "text", "id": "30g", "text": "5 ITEMS", "color": "#00BCD4", "fontSize": 11 },
-        { "type": "text", "id": "30h", "text": "4 Service(s), 3 Equipment, 2 Material(s)", "color": "#666666", "fontSize": 12 },
-        { "type": "spacer", "id": "30i", "height": 8 },
-        { "type": "button", "id": "30j", "text": "+  Add items", "color": "#FFFFFF", "textColor": "#333333", "fontSize": 13, "cornerRadius": 20, "borderColor": "#DDDDDD", "borderWidth": 1, "actionName": "add_items_2" }
-      ]},
-      { "type": "divider", "id": "30l", "color": "#EEEEEE", "height": 1 },
-      { "type": "card", "id": "30m", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 14, "paddingV": 8, "align": "start", "children": [
-        { "type": "text", "id": "30n1", "text": "Recommend", "color": "#444444", "fontSize": 13 }
-      ]}
-    ]},
-
-    { "type": "spacer", "id": "40", "height": 12 },
-
-    { "type": "card", "id": "50", "color": "#FFFFFF", "cornerRadius": 12, "paddingH": 0, "paddingV": 0, "borderColor": "#D0D0D0", "borderWidth": 2, "align": "start", "actionName": "navigate:estimate_detail", "children": [
-      { "type": "card", "id": "50a", "color": "#FFCCBC", "cornerRadius": 0, "paddingH": 14, "paddingV": 6, "align": "start", "children": [
-        { "type": "text", "id": "50a1", "text": "Premium Package", "color": "#BF360C", "fontSize": 13 }
-      ]},
-      { "type": "card", "id": "50b", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 14, "paddingV": 10, "align": "start", "children": [
-        { "type": "text", "id": "50c", "text": "Premium Package", "color": "#1A1A1A", "fontSize": 18 },
-        { "type": "text", "id": "50d", "text": "TOTAL", "color": "#999999", "fontSize": 10 },
-        { "type": "text", "id": "50e", "text": "$7,450.00", "color": "#1A1A1A", "fontSize": 17 },
-        { "type": "spacer", "id": "50f", "height": 6 },
-        { "type": "text", "id": "50g", "text": "8 ITEMS", "color": "#00BCD4", "fontSize": 11 },
-        { "type": "text", "id": "50h", "text": "3 Service(s), 3 Equipment, 2 Material(s)", "color": "#666666", "fontSize": 12 },
-        { "type": "spacer", "id": "50i", "height": 8 },
-        { "type": "button", "id": "50j", "text": "+  Add items", "color": "#FFFFFF", "textColor": "#333333", "fontSize": 13, "cornerRadius": 20, "borderColor": "#DDDDDD", "borderWidth": 1, "actionName": "add_items_3" }
-      ]},
-      { "type": "divider", "id": "50l", "color": "#EEEEEE", "height": 1 },
-      { "type": "card", "id": "50m", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 14, "paddingV": 8, "align": "start", "children": [
-        { "type": "text", "id": "50n1", "text": "Recommend", "color": "#444444", "fontSize": 13 }
-      ]}
     ]}
   ]
 }
