@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote Compose Editor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #f5f5f5;
+            --surface: #ffffff;
+            --surface-variant: #f0edf6;
+            --primary: #6200EA;
+            --primary-light: #ede7f6;
+            --on-primary: #ffffff;
+            --text: #1c1b1f;
+            --text-secondary: #49454f;
+            --outline: #cac4d0;
+            --radius: 16px;
+            --radius-sm: 12px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--outline);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        header .logo .material-icons-round {
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        header .subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+
+        .btn-primary:hover { background: #5000d4; }
+        .btn-primary:active { transform: scale(0.97); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+        }
+
+        .btn-outline:hover { background: var(--primary-light); }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .btn-ghost:hover { background: var(--surface-variant); }
+
+        .btn .material-icons-round { font-size: 18px; }
+
+        main {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+            padding: 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 900px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 20px 24px 16px;
+            border-bottom: 1px solid var(--outline);
+        }
+
+        .panel-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-header h2 .material-icons-round {
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        .panel-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid var(--outline);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text);
+            background: var(--surface);
+            transition: border-color 0.15s;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 56px;
+        }
+
+        .color-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .color-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border: 1.5px solid var(--outline);
+            border-radius: var(--radius-sm);
+            background: var(--surface);
+        }
+
+        .color-input input[type="color"] {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 0;
+            background: none;
+        }
+
+        .color-input input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        .color-input input[type="color"]::-webkit-color-swatch {
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 6px;
+        }
+
+        .color-input span {
+            font-size: 13px;
+            color: var(--text-secondary);
+            flex: 1;
+        }
+
+        .color-input code {
+            font-size: 12px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            color: var(--text);
+            background: var(--surface-variant);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .slider-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .slider-item label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .slider-item input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+        }
+
+        .slider-item .slider-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        .phone-frame {
+            width: 320px;
+            height: 640px;
+            border-radius: 36px;
+            border: 8px solid #1c1b1f;
+            overflow: hidden;
+            margin: 0 auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            position: relative;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 28px;
+            background: #1c1b1f;
+            border-radius: 0 0 16px 16px;
+            z-index: 2;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 20px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .phone-screen .preview-title {
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.2;
+            transition: all 0.3s;
+        }
+
+        .phone-screen .preview-subtitle {
+            margin-bottom: 28px;
+            line-height: 1.5;
+            transition: all 0.3s;
+        }
+
+        .phone-screen .preview-button {
+            padding: 14px 32px;
+            border-radius: 28px;
+            font-weight: 600;
+            text-align: center;
+            width: 80%;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .phone-screen .preview-button:hover { opacity: 0.9; }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #323232;
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 100;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast .material-icons-round { font-size: 18px; }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            margin-top: 8px;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--outline);
+            margin: 24px 0;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.connected {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-badge.disconnected {
+            background: #fce4ec;
+            color: #c62828;
+        }
+
+        .status-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .info-card {
+            background: var(--primary-light);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .info-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .info-card code {
+            font-size: 12px;
+            background: rgba(98, 0, 234, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            word-break: break-all;
+        }
+
+        .deploy-section {
+            padding: 20px 24px;
+            border-top: 1px solid var(--outline);
+            background: var(--surface-variant);
+        }
+
+        .deploy-section .token-input {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .deploy-section input[type="password"] {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1.5px solid var(--outline);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 13px;
+        }
+
+        .deploy-section input[type="password"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span class="material-icons-round">widgets</span>
+            <div>
+                <h1>Remote Compose Editor</h1>
+                <div class="subtitle">Server-Driven UI Configuration</div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-ghost" onclick="resetToDefaults()">
+                <span class="material-icons-round">restart_alt</span>
+                Reset
+            </button>
+            <button class="btn btn-outline" onclick="copyJson()">
+                <span class="material-icons-round">content_copy</span>
+                Copy JSON
+            </button>
+            <button class="btn btn-primary" onclick="deployConfig()">
+                <span class="material-icons-round">cloud_upload</span>
+                Deploy
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <div class="panel">
+            <div class="panel-header">
+                <h2>
+                    <span class="material-icons-round">tune</span>
+                    Layout Configuration
+                </h2>
+            </div>
+            <div class="panel-body">
+                <div class="section-label">Content</div>
+
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="title" value="Welcome to Remote Compose!" oninput="updatePreview()">
+                </div>
+
+                <div class="form-group">
+                    <label>Subtitle</label>
+                    <textarea id="subtitle" oninput="updatePreview()">This UI is configured remotely from a web editor.</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Button Text</label>
+                    <input type="text" id="buttonText" value="Get Started" oninput="updatePreview()">
+                </div>
+
+                <div class="divider"></div>
+                <div class="section-label">Colors</div>
+
+                <div class="color-row">
+                    <div class="color-input">
+                        <input type="color" id="backgroundColor" value="#F3E5F5" oninput="updatePreview(); updateColorCode(this)">
+                        <span>Background</span>
+                        <code id="backgroundColorCode">#F3E5F5</code>
+                    </div>
+                    <div class="color-input">
+                        <input type="color" id="titleColor" value="#4A148C" oninput="updatePreview(); updateColorCode(this)">
+                        <span>Title</span>
+                        <code id="titleColorCode">#4A148C</code>
+                    </div>
+                    <div class="color-input">
+                        <input type="color" id="subtitleColor" value="#666666" oninput="updatePreview(); updateColorCode(this)">
+                        <span>Subtitle</span>
+                        <code id="subtitleColorCode">#666666</code>
+                    </div>
+                    <div class="color-input">
+                        <input type="color" id="buttonColor" value="#6200EA" oninput="updatePreview(); updateColorCode(this)">
+                        <span>Button</span>
+                        <code id="buttonColorCode">#6200EA</code>
+                    </div>
+                    <div class="color-input">
+                        <input type="color" id="buttonTextColor" value="#FFFFFF" oninput="updatePreview(); updateColorCode(this)">
+                        <span>Button Text</span>
+                        <code id="buttonTextColorCode">#FFFFFF</code>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+                <div class="section-label">Typography</div>
+
+                <div class="slider-group">
+                    <div class="slider-item">
+                        <label>Title Size</label>
+                        <input type="range" id="titleFontSize" min="16" max="48" value="28" oninput="updatePreview(); updateSliderValue(this)">
+                        <div class="slider-value" id="titleFontSizeValue">28sp</div>
+                    </div>
+                    <div class="slider-item">
+                        <label>Subtitle Size</label>
+                        <input type="range" id="subtitleFontSize" min="12" max="32" value="16" oninput="updatePreview(); updateSliderValue(this)">
+                        <div class="slider-value" id="subtitleFontSizeValue">16sp</div>
+                    </div>
+                    <div class="slider-item">
+                        <label>Button Size</label>
+                        <input type="range" id="buttonFontSize" min="12" max="32" value="18" oninput="updatePreview(); updateSliderValue(this)">
+                        <div class="slider-value" id="buttonFontSizeValue">18sp</div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <p>
+                        <strong>Android App Fetch URL:</strong><br>
+                        <code>https://achatikyan.github.io/remotecompose/config.json</code>
+                    </p>
+                </div>
+            </div>
+
+            <div class="deploy-section">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600;">GitHub Deploy</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">Push config.json to GitHub Pages</div>
+                    </div>
+                    <span class="status-badge" id="deployStatus">
+                        <span class="dot"></span>
+                        <span id="deployStatusText">Ready</span>
+                    </span>
+                </div>
+                <div class="token-input">
+                    <input type="password" id="ghToken" placeholder="GitHub Personal Access Token (fine-grained)">
+                    <button class="btn btn-ghost" onclick="toggleTokenVisibility()" style="padding: 8px;">
+                        <span class="material-icons-round" id="tokenEyeIcon">visibility</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="panel" style="position: sticky; top: 88px;">
+                <div class="panel-header">
+                    <h2>
+                        <span class="material-icons-round">phone_android</span>
+                        Live Preview
+                    </h2>
+                </div>
+                <div class="panel-body" style="display: flex; justify-content: center; padding: 24px 16px;">
+                    <div class="phone-frame">
+                        <div class="phone-notch"></div>
+                        <div class="phone-screen" id="phoneScreen">
+                            <div class="preview-title" id="previewTitle">Welcome to Remote Compose!</div>
+                            <div class="preview-subtitle" id="previewSubtitle">This UI is configured remotely from a web editor.</div>
+                            <button class="preview-button" id="previewButton" onclick="showToast('Button clicked!')">Get Started</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast" id="toast">
+        <span class="material-icons-round" id="toastIcon">check_circle</span>
+        <span id="toastMessage">Copied to clipboard</span>
+    </div>
+
+    <script>
+        const REPO_OWNER = 'achatikyan';
+        const REPO_NAME = 'remotecompose';
+        const FILE_PATH = 'config.json';
+
+        const defaults = {
+            title: 'Welcome to Remote Compose!',
+            subtitle: 'This UI is configured remotely from a web editor.',
+            buttonText: 'Get Started',
+            backgroundColor: '#F3E5F5',
+            titleColor: '#4A148C',
+            subtitleColor: '#666666',
+            buttonColor: '#6200EA',
+            buttonTextColor: '#FFFFFF',
+            titleFontSize: 28,
+            subtitleFontSize: 16,
+            buttonFontSize: 18,
+        };
+
+        function init() {
+            const savedToken = localStorage.getItem('gh_token');
+            if (savedToken) {
+                document.getElementById('ghToken').value = savedToken;
+            }
+
+            fetchCurrentConfig();
+            updatePreview();
+        }
+
+        async function fetchCurrentConfig() {
+            try {
+                const resp = await fetch('config.json?' + Date.now());
+                if (resp.ok) {
+                    const config = await resp.json();
+                    applyConfig(config);
+                }
+            } catch (e) {
+                // Use defaults
+            }
+        }
+
+        function applyConfig(config) {
+            document.getElementById('title').value = config.title || defaults.title;
+            document.getElementById('subtitle').value = config.subtitle || defaults.subtitle;
+            document.getElementById('buttonText').value = config.buttonText || defaults.buttonText;
+            document.getElementById('backgroundColor').value = config.backgroundColor || defaults.backgroundColor;
+            document.getElementById('titleColor').value = config.titleColor || defaults.titleColor;
+            document.getElementById('subtitleColor').value = config.subtitleColor || defaults.subtitleColor;
+            document.getElementById('buttonColor').value = config.buttonColor || defaults.buttonColor;
+            document.getElementById('buttonTextColor').value = config.buttonTextColor || defaults.buttonTextColor;
+            document.getElementById('titleFontSize').value = config.titleFontSize || defaults.titleFontSize;
+            document.getElementById('subtitleFontSize').value = config.subtitleFontSize || defaults.subtitleFontSize;
+            document.getElementById('buttonFontSize').value = config.buttonFontSize || defaults.buttonFontSize;
+
+            document.querySelectorAll('.color-input input[type="color"]').forEach(input => updateColorCode(input));
+            document.querySelectorAll('.slider-item input[type="range"]').forEach(input => updateSliderValue(input));
+            updatePreview();
+        }
+
+        function getConfig() {
+            return {
+                title: document.getElementById('title').value,
+                subtitle: document.getElementById('subtitle').value,
+                buttonText: document.getElementById('buttonText').value,
+                backgroundColor: document.getElementById('backgroundColor').value.toUpperCase(),
+                titleColor: document.getElementById('titleColor').value.toUpperCase(),
+                subtitleColor: document.getElementById('subtitleColor').value.toUpperCase(),
+                buttonColor: document.getElementById('buttonColor').value.toUpperCase(),
+                buttonTextColor: document.getElementById('buttonTextColor').value.toUpperCase(),
+                titleFontSize: parseInt(document.getElementById('titleFontSize').value),
+                subtitleFontSize: parseInt(document.getElementById('subtitleFontSize').value),
+                buttonFontSize: parseInt(document.getElementById('buttonFontSize').value),
+            };
+        }
+
+        function updatePreview() {
+            const config = getConfig();
+            const screen = document.getElementById('phoneScreen');
+            const title = document.getElementById('previewTitle');
+            const subtitle = document.getElementById('previewSubtitle');
+            const button = document.getElementById('previewButton');
+
+            screen.style.backgroundColor = config.backgroundColor;
+            title.textContent = config.title;
+            title.style.color = config.titleColor;
+            title.style.fontSize = config.titleFontSize + 'px';
+            subtitle.textContent = config.subtitle;
+            subtitle.style.color = config.subtitleColor;
+            subtitle.style.fontSize = config.subtitleFontSize + 'px';
+            button.textContent = config.buttonText;
+            button.style.backgroundColor = config.buttonColor;
+            button.style.color = config.buttonTextColor;
+            button.style.fontSize = config.buttonFontSize + 'px';
+        }
+
+        function updateColorCode(input) {
+            const codeEl = document.getElementById(input.id + 'Code');
+            if (codeEl) codeEl.textContent = input.value.toUpperCase();
+        }
+
+        function updateSliderValue(input) {
+            const valueEl = document.getElementById(input.id + 'Value');
+            if (valueEl) valueEl.textContent = input.value + 'sp';
+        }
+
+        function resetToDefaults() {
+            applyConfig(defaults);
+            showToast('Reset to defaults', 'restart_alt');
+        }
+
+        async function copyJson() {
+            const json = JSON.stringify(getConfig(), null, 2);
+            try {
+                await navigator.clipboard.writeText(json);
+                showToast('JSON copied to clipboard', 'content_copy');
+            } catch {
+                const ta = document.createElement('textarea');
+                ta.value = json;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('JSON copied to clipboard', 'content_copy');
+            }
+        }
+
+        async function deployConfig() {
+            const token = document.getElementById('ghToken').value.trim();
+            if (!token) {
+                showToast('Enter a GitHub token first', 'warning', true);
+                document.getElementById('ghToken').focus();
+                return;
+            }
+
+            localStorage.setItem('gh_token', token);
+            setDeployStatus('deploying');
+
+            try {
+                const existingResp = await fetch(
+                    `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`,
+                    { headers: { 'Authorization': `Bearer ${token}` } }
+                );
+
+                let sha = null;
+                if (existingResp.ok) {
+                    const existing = await existingResp.json();
+                    sha = existing.sha;
+                }
+
+                const config = getConfig();
+                const content = btoa(unescape(encodeURIComponent(JSON.stringify(config, null, 2) + '\n')));
+
+                const body = {
+                    message: 'Update Remote Compose config from web editor',
+                    content: content,
+                };
+                if (sha) body.sha = sha;
+
+                const resp = await fetch(
+                    `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`,
+                    {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(body),
+                    }
+                );
+
+                if (resp.ok) {
+                    setDeployStatus('success');
+                    showToast('Deployed! Config will be live in ~30s', 'cloud_done');
+                } else {
+                    const err = await resp.json();
+                    setDeployStatus('error');
+                    showToast(`Deploy failed: ${err.message || resp.status}`, 'error', true);
+                }
+            } catch (e) {
+                setDeployStatus('error');
+                showToast(`Deploy failed: ${e.message}`, 'error', true);
+            }
+        }
+
+        function setDeployStatus(status) {
+            const badge = document.getElementById('deployStatus');
+            const text = document.getElementById('deployStatusText');
+            badge.className = 'status-badge';
+
+            if (status === 'deploying') {
+                badge.classList.add('disconnected');
+                text.textContent = 'Deploying...';
+            } else if (status === 'success') {
+                badge.classList.add('connected');
+                text.textContent = 'Deployed';
+                setTimeout(() => {
+                    badge.className = 'status-badge';
+                    text.textContent = 'Ready';
+                }, 5000);
+            } else if (status === 'error') {
+                badge.classList.add('disconnected');
+                text.textContent = 'Failed';
+                setTimeout(() => {
+                    badge.className = 'status-badge';
+                    text.textContent = 'Ready';
+                }, 5000);
+            }
+        }
+
+        function toggleTokenVisibility() {
+            const input = document.getElementById('ghToken');
+            const icon = document.getElementById('tokenEyeIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        }
+
+        let toastTimeout;
+        function showToast(message, icon, isError) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.textContent = message;
+            toastIcon.textContent = icon || 'check_circle';
+            toast.style.background = isError ? '#b71c1c' : '#323232';
+
+            clearTimeout(toastTimeout);
+            toast.classList.add('show');
+            toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        init();
+    </script>
+</body>
+</html>
