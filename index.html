@@ -98,18 +98,6 @@
 
         .phone-frame{width:380px;height:824px;border-radius:44px;border:6px solid #1c1b1f;overflow:hidden;margin:0 auto;box-shadow:0 8px 34px rgba(0,0,0,.16);position:relative}
         .phone-camera{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:10px;height:10px;background:#1c1b1f;border-radius:50%;z-index:2;box-shadow:0 0 0 2px #2a2a2a}
-        .phone-screen{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 10px 10px;text-align:center;transition:background-color .3s;overflow-y:auto;gap:0}
-        .pv-text{line-height:1.3;word-break:break-word;margin-bottom:6px}.pv-card>.pv-text{margin-bottom:0}
-        .pv-spacer{flex-shrink:0}
-        .pv-btn{padding:10px 24px;border-radius:24px;font-weight:600;text-align:center;cursor:pointer;border:none;font-family:inherit;transition:all .2s;display:inline-block;margin-bottom:6px}
-        .pv-card .pv-btn{display:block;width:100%}
-        .pv-row .pv-btn{display:inline-block;width:auto}
-        .pv-card .pv-divider{width:100%;margin:0}
-        .pv-btn:hover{opacity:.9}
-        .pv-divider{width:90%;margin:8px 0}
-        .pv-card{width:96%;margin-bottom:8px;transition:all .2s;overflow:hidden}
-        .pv-card .pv-card{width:100%;margin-bottom:0;border-radius:0}
-        .pv-row{display:flex;gap:8px;justify-content:center;width:90%;margin-bottom:6px;flex-wrap:wrap}
 
         .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:#323232;color:#fff;padding:10px 20px;border-radius:var(--rs);font-size:13px;font-weight:500;z-index:100;transition:transform .3s;display:flex;align-items:center;gap:8px}
         .toast.show{transform:translateX(-50%) translateY(0)}
@@ -525,22 +513,7 @@ function onPreviewLoad(){
     setTimeout(sendToPreview,5000);
 }
 
-function renderPreviewEl(el){
-    if(el.type==='text')return `<div class="pv-text" style="color:${el.color||'#000000'};font-size:${el.fontSize||16}px">${esc(el.text||'')}</div>`;
-    if(el.type==='button'){
-        let s=`background:${el.color||'#6200EA'};color:${el.textColor||'#FFFFFF'};font-size:${el.fontSize||16}px;border-radius:${el.cornerRadius||24}px`;
-        if(el.borderColor&&el.borderWidth)s+=`;border:${el.borderWidth}px solid ${el.borderColor}`;
-        return `<button class="pv-btn" style="${s}" onclick="showToast('Action: ${esc(el.actionName||el.text||'click')}')">${esc(el.text||'Button')}</button>`}
-    if(el.type==='spacer')return `<div class="pv-spacer" style="height:${el.height||16}px"></div>`;
-    if(el.type==='divider')return `<hr class="pv-divider" style="border:none;height:${el.height||1}px;background:${el.color||'#CCCCCC'}">`;
-    if(el.type==='card'){
-        const align=el.align==='start'?'left':el.align==='end'?'right':'center';
-        let s=`background:${el.color||'#FFFFFF'};border-radius:${el.cornerRadius!=null?el.cornerRadius:16}px;padding:${el.paddingV!=null?el.paddingV:16}px ${el.paddingH!=null?el.paddingH:16}px;text-align:${align};display:flex;flex-direction:column;justify-content:center`;
-        if(el.borderColor&&el.borderWidth)s+=`;border:${el.borderWidth}px solid ${el.borderColor}`;
-        const click=el.actionName?` onclick="showToast('Action: ${esc(el.actionName)}')" style="${s};cursor:pointer"`:` style="${s}"`;
-        return `<div class="pv-card"${click}>${(el.children||[]).map(c=>renderPreviewEl(c)).join('')}</div>`}
-    if(el.type==='row')return `<div class="pv-row">${(el.children||[]).map(c=>renderPreviewEl(c)).join('')}</div>`;
-    return ''}
+
 
 function getConfig(){const s=screens[activeScreen];const cfg={backgroundColor:document.getElementById('bgColor').value.toUpperCase()};if(s.scrollable)cfg.scrollable=true;if(s.padding!=null)cfg.padding=s.padding;cfg.elements=elements.map(el=>cleanEl(el));return cfg}
 function cleanEl(el){
