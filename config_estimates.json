@@ -55,11 +55,21 @@
               "fontSize": 18
             },
             {
+              "type": "spacer",
+              "id": "50_sp",
+              "height": 2
+            },
+            {
               "type": "text",
               "id": "51",
               "text": "TOTAL",
               "color": "#999999",
               "fontSize": 10
+            },
+            {
+              "type": "spacer",
+              "id": "51_sp",
+              "height": 2
             },
             {
               "type": "text",
@@ -79,6 +89,11 @@
               "text": "3 ITEMS",
               "color": "#00BCD4",
               "fontSize": 11
+            },
+            {
+              "type": "spacer",
+              "id": "54_sp",
+              "height": 2
             },
             {
               "type": "text",

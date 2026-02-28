@@ -188,15 +188,18 @@ function uid(){return String(nextId++)}
 function currentFile(){return screens[activeScreen].file}
 const defaultsHome=[
     {type:'text',text:'Remote Compose',color:'#4A148C',fontSize:32},
+    {type:'spacer',height:2},
     {type:'text',text:'Server-driven UI, rendered natively',color:'#7E57C2',fontSize:14},
     {type:'spacer',height:20},
     {type:'card',color:'#FFFFFF',cornerRadius:20,borderColor:'#E0D6F2',borderWidth:1,paddingH:20,paddingV:16,children:[
         {type:'text',text:'Dynamic Layouts',color:'#1A1A2E',fontSize:18},
+        {type:'spacer',height:2},
         {type:'text',text:'Add, remove, reorder UI elements from the web — no app update needed.',color:'#666666',fontSize:13}
     ]},
     {type:'spacer',height:10},
     {type:'card',color:'#FFFFFF',cornerRadius:20,borderColor:'#E0D6F2',borderWidth:1,paddingH:20,paddingV:16,actionName:'card_tap',children:[
         {type:'text',text:'Click Handling',color:'#1A1A2E',fontSize:18},
+        {type:'spacer',height:2},
         {type:'text',text:'Tap this card — the click event is handled by the host app.',color:'#666666',fontSize:13}
     ]},
     {type:'spacer',height:10},
@@ -214,20 +217,24 @@ const defaultsHome=[
 const defaultsDetail=[
     {type:'spacer',height:8},
     {type:'text',text:'Feature Showcase',color:'#1A1A2E',fontSize:26},
+    {type:'spacer',height:2},
     {type:'text',text:'Everything below is server-driven',color:'#6B7280',fontSize:13},
     {type:'spacer',height:16},
     {type:'card',color:'#FFFFFF',cornerRadius:16,borderColor:'#E2E8F0',borderWidth:1,paddingH:18,paddingV:14,children:[
         {type:'text',text:'Remote Layouts',color:'#6200EA',fontSize:16},
+        {type:'spacer',height:2},
         {type:'text',text:'Text, buttons, cards, rows, spacers, dividers \u2014 all rendered natively via Remote Compose.',color:'#6B7280',fontSize:12}
     ]},
     {type:'spacer',height:8},
     {type:'card',color:'#FFFFFF',cornerRadius:16,borderColor:'#E2E8F0',borderWidth:1,paddingH:18,paddingV:14,children:[
         {type:'text',text:'Click Actions',color:'#00897B',fontSize:16},
+        {type:'spacer',height:2},
         {type:'text',text:'Buttons fire HostAction events. The app handles them \u2014 toasts, navigation, or custom logic.',color:'#6B7280',fontSize:12}
     ]},
     {type:'spacer',height:8},
     {type:'card',color:'#FFFFFF',cornerRadius:16,borderColor:'#E2E8F0',borderWidth:1,paddingH:18,paddingV:14,actionName:'card_clicked',children:[
         {type:'text',text:'Clickable Cards',color:'#C62828',fontSize:16},
+        {type:'spacer',height:2},
         {type:'text',text:'Tap this card. The entire surface is a click target, not just a button.',color:'#6B7280',fontSize:12}
     ]},
     {type:'spacer',height:12},
@@ -242,7 +249,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=77;
+const BUILD_VERSION=78;
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+BUILD_VERSION+'-alpha'}
 async function fetchScreen(key){
     const s=screens[key];
@@ -254,10 +261,13 @@ const defaultsEstimates=[
         {type:'card',color:'#00BCD4',cornerRadius:0,paddingH:14,paddingV:6,align:'start',children:[{type:'text',text:'Best',color:'#FFFFFF',fontSize:13}]},
         {type:'card',color:'#FFFFFF',cornerRadius:0,paddingH:14,paddingV:10,align:'start',children:[
             {type:'text',text:'Test Estimate',color:'#1A1A1A',fontSize:18},
+            {type:'spacer',height:2},
             {type:'text',text:'TOTAL',color:'#999999',fontSize:10},
+            {type:'spacer',height:2},
             {type:'text',text:'$3,012.99',color:'#1A1A1A',fontSize:17},
             {type:'spacer',height:6},
             {type:'text',text:'3 ITEMS',color:'#00BCD4',fontSize:11},
+            {type:'spacer',height:2},
             {type:'text',text:'1 Service(s), 1 Equipment, 1 Material(s)',color:'#666666',fontSize:12},
             {type:'spacer',height:8},
             {type:'button',text:'+  Add items',color:'#FFFFFF',textColor:'#333333',fontSize:13,cornerRadius:20,borderColor:'#DDDDDD',borderWidth:1,actionName:'add_items_1'}

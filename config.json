@@ -9,6 +9,11 @@
       "fontSize": 32
     },
     {
+      "type": "spacer",
+      "id": "1_sp",
+      "height": 2
+    },
+    {
       "type": "text",
       "id": "2",
       "text": "Server-driven UI, rendered natively",
@@ -38,9 +43,14 @@
           "fontSize": 18
         },
         {
+          "type": "spacer",
+          "id": "5_sp",
+          "height": 2
+        },
+        {
           "type": "text",
           "id": "6",
-          "text": "Add, remove, reorder UI elements from the web — no app update needed.",
+          "text": "Add, remove, reorder UI elements from the web \u2014 no app update needed.",
           "color": "#666666",
           "fontSize": 13
         }
@@ -70,9 +80,14 @@
           "fontSize": 18
         },
         {
+          "type": "spacer",
+          "id": "9_sp",
+          "height": 2
+        },
+        {
           "type": "text",
           "id": "10",
-          "text": "Tap this card — the click event is handled by the host app.",
+          "text": "Tap this card \u2014 the click event is handled by the host app.",
           "color": "#666666",
           "fontSize": 13
         }
