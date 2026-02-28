@@ -94,7 +94,7 @@
         .bg-sec label{font-size:12px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px}
         .sb{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:16px;font-size:11px;font-weight:600}
         .sb .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
-        .sb.ok{background:#e8f5e9;color:#2e7d32}.sb.err{background:#fce4ec;color:#c62828}
+        .sb.ok{background:#e8f5e9;color:#2e7d32}.sb.err{background:#fce4ec;color:#c62828}.sb.action{background:#e3f2fd;color:#1565c0}
 
         .phone-frame{width:380px;height:824px;border-radius:44px;border:6px solid #1c1b1f;overflow:hidden;margin:0 auto;box-shadow:0 8px 34px rgba(0,0,0,.16);position:relative}
         .phone-camera{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:10px;height:10px;background:#1c1b1f;border-radius:50%;z-index:2;box-shadow:0 0 0 2px #2a2a2a}
@@ -567,10 +567,47 @@ async function deployConfig(){
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(getConfig(),null,2)+'\n')));
     const body={message:'Update '+screens[activeScreen].label+' screen from web editor',content};if(sha)body.sha=sha;
     const r=await fetch(`https://api.github.com/repos/${REPO}/${REPO_N}/contents/${fp}`,{method:'PUT',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(r.ok){setDeploy('ok');showToast(screens[activeScreen].label+' deployed!','cloud_done')}else{const e=await r.json();setDeploy('err');showToast('Deploy failed: '+(e.message||r.status),'error',true)}}
+    if(r.ok){setDeploy('deployed');showToast(screens[activeScreen].label+' deployed!','cloud_done');pollActionStatus(token)}else{const e=await r.json();setDeploy('err');showToast('Deploy failed: '+(e.message||r.status),'error',true)}}
     catch(e){setDeploy('err');showToast('Deploy failed: '+e.message,'error',true)}}
 
-function setDeploy(s){const b=document.getElementById('deployStatus'),t=document.getElementById('deployStatusText');b.className='sb';if(s==='deploying')t.textContent='Deploying...';else if(s==='ok'){b.classList.add('ok');t.textContent='Deployed';setTimeout(()=>{b.className='sb';t.textContent='Ready'},5000)}else if(s==='err'){b.classList.add('err');t.textContent='Failed';setTimeout(()=>{b.className='sb';t.textContent='Ready'},5000)}}
+function setDeploy(s,detail){const b=document.getElementById('deployStatus'),t=document.getElementById('deployStatusText');b.className='sb';
+if(s==='deploying'){t.textContent='Deploying...'}
+else if(s==='deployed'){b.classList.add('ok');t.textContent='Deployed \u2713'}
+else if(s==='action_queued'){b.classList.add('action');t.textContent='\u2699 Action: Queued'}
+else if(s==='action_running'){b.classList.add('action');t.textContent='\u2699 Action: Building'+(detail?' ('+detail+')':'')}
+else if(s==='action_done'){b.classList.add('ok');t.textContent='\u2713 Binary ready';setTimeout(()=>{b.className='sb';t.textContent='Ready'},8000)}
+else if(s==='action_fail'){b.classList.add('err');t.textContent='\u2717 Action failed';setTimeout(()=>{b.className='sb';t.textContent='Ready'},8000)}
+else if(s==='err'){b.classList.add('err');t.textContent='Failed';setTimeout(()=>{b.className='sb';t.textContent='Ready'},5000)}
+else{t.textContent='Ready'}}
+
+async function pollActionStatus(token){
+    await new Promise(r=>setTimeout(r,3000));
+    const wfName='Convert JSON to Remote Compose Binary';
+    const maxPolls=40;
+    for(let i=0;i<maxPolls;i++){
+        try{
+            const resp=await fetch(`https://api.github.com/repos/${REPO}/${REPO_N}/actions/runs?per_page=1`,{headers:{Authorization:`Bearer ${token}`}});
+            if(!resp.ok)break;
+            const data=await resp.json();
+            const run=data.workflow_runs?.find(r=>r.name===wfName);
+            if(!run){
+                if(i<5){setDeploy('action_queued');await new Promise(r=>setTimeout(r,3000));continue}
+                break;
+            }
+            if(run.status==='queued'||run.status==='waiting'){setDeploy('action_queued')}
+            else if(run.status==='in_progress'){
+                const elapsed=Math.round((Date.now()-new Date(run.run_started_at).getTime())/1000);
+                setDeploy('action_running',elapsed+'s');
+            }
+            else if(run.status==='completed'){
+                if(run.conclusion==='success'){setDeploy('action_done');showToast('Binary .rc files generated!','check_circle')}
+                else{setDeploy('action_fail');showToast('Action failed: '+run.conclusion,'error',true)}
+                return;
+            }
+        }catch(e){break}
+        await new Promise(r=>setTimeout(r,3000));
+    }
+}
 function toggleToken(){const i=document.getElementById('ghToken'),ic=document.getElementById('tokenEye');if(i.type==='password'){i.type='text';ic.textContent='visibility_off'}else{i.type='password';ic.textContent='visibility'}}
 let toastTimer;function showToast(msg,icon,err){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;document.getElementById('toastIcon').textContent=icon||'check_circle';t.style.background=err?'#b71c1c':'#323232';clearTimeout(toastTimer);t.classList.add('show');toastTimer=setTimeout(()=>t.classList.remove('show'),3000)}
 init();
