@@ -260,7 +260,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=32;
+const BUILD_VERSION=33;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='v'+getVersion()}
 async function fetchScreen(key){
@@ -326,6 +326,7 @@ function removeElement(idx){if(expandedIdx===idx)expandedIdx=-1;else if(expanded
 function toggleExpand(idx){expandedIdx=expandedIdx===idx?-1:idx;const cards=document.querySelectorAll('.el-card');cards.forEach((c,i)=>{if(i===expandedIdx)c.classList.add('expanded');else c.classList.remove('expanded')})}
 function onFieldChange(idx,field,value){if(field==='fontSize'||field==='height'||field==='cornerRadius'||field==='borderWidth'||field==='paddingH'||field==='paddingV')value=parseInt(value)||0;elements[idx][field]=value;updatePreview()}
 function onChildField(parentIdx,childIdx,field,value){if(field==='fontSize'||field==='cornerRadius'||field==='height'||field==='borderWidth'||field==='paddingH'||field==='paddingV')value=parseInt(value)||0;elements[parentIdx].children[childIdx][field]=value;updatePreview()}
+function onGrandchildField(parentIdx,childIdx,gcIdx,field,value){if(field==='fontSize')value=parseInt(value)||0;elements[parentIdx].children[childIdx].children[gcIdx][field]=value;updatePreview()}
 function addChild(parentIdx,type){const ch={type,id:uid()};
     if(type==='text'){ch.text='New text';ch.color='#333333';ch.fontSize=14}
     else if(type==='button'){ch.text='Button';ch.color='#6200EA';ch.textColor='#FFFFFF';ch.fontSize=14;ch.cornerRadius=20}
@@ -434,6 +435,32 @@ function buildChildEditor(ch,i,ci){
         <div class="field"><label>Radius</label><input type="number" min="0" max="50" value="${ch.cornerRadius||0}" oninput="onChildField(${i},${ci},'cornerRadius',this.value)"></div></div>
         <div class="fr"><div class="field"><label>Pad H</label><input type="number" min="0" max="50" value="${ch.paddingH||0}" oninput="onChildField(${i},${ci},'paddingH',this.value)"></div>
         <div class="field"><label>Pad V</label><input type="number" min="0" max="50" value="${ch.paddingV||0}" oninput="onChildField(${i},${ci},'paddingV',this.value)"></div></div>`;
+        if(ch.children&&ch.children.length){
+            html+=`<div style="margin-top:8px;padding:8px;background:var(--surface);border:1px dashed var(--outline);border-radius:6px">`;
+            html+=`<div style="font-size:10px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Nested (${ch.children.length})</div>`;
+            ch.children.forEach((gc,gi)=>{
+                if(gc.type==='text'){
+                    html+=`<div style="display:flex;gap:6px;align-items:center;margin-bottom:4px">
+                        <span class="badge text" style="font-size:8px;padding:1px 4px">T</span>
+                        <input type="text" value="${esc(gc.text||'')}" style="flex:1;padding:3px 6px;border:1px solid var(--outline);border-radius:4px;font-size:11px" oninput="onGrandchildField(${i},${ci},${gi},'text',this.value)">
+                        <input type="number" value="${gc.fontSize||14}" style="width:40px;padding:3px 4px;border:1px solid var(--outline);border-radius:4px;font-size:11px" oninput="onGrandchildField(${i},${ci},${gi},'fontSize',this.value)">
+                        <input type="color" value="${gc.color||'#000000'}" style="width:22px;height:22px;border:none;padding:0;border-radius:4px" oninput="onGrandchildField(${i},${ci},${gi},'color',this.value)">
+                    </div>`;
+                } else if(gc.type==='button'){
+                    html+=`<div style="display:flex;gap:6px;align-items:center;margin-bottom:4px">
+                        <span class="badge button" style="font-size:8px;padding:1px 4px">B</span>
+                        <input type="text" value="${esc(gc.text||'')}" style="flex:1;padding:3px 6px;border:1px solid var(--outline);border-radius:4px;font-size:11px" oninput="onGrandchildField(${i},${ci},${gi},'text',this.value)">
+                        <input type="color" value="${gc.color||'#6200EA'}" style="width:22px;height:22px;border:none;padding:0;border-radius:4px" oninput="onGrandchildField(${i},${ci},${gi},'color',this.value)">
+                    </div>`;
+                } else if(gc.type==='spacer'){
+                    html+=`<div style="display:flex;gap:6px;align-items:center;margin-bottom:4px">
+                        <span class="badge spacer" style="font-size:8px;padding:1px 4px">S</span>
+                        <span style="font-size:11px;color:var(--ts)">${gc.height||16}dp</span>
+                    </div>`;
+                }
+            });
+            html+=`</div>`;
+        }
     }
     return html||'<div style="font-size:11px;color:#999">No editable properties</div>'}
 
