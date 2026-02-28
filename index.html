@@ -254,7 +254,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=67;
+const BUILD_VERSION=68;
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+BUILD_VERSION+'-alpha'}
 async function fetchScreen(key){
     const s=screens[key];
@@ -595,23 +595,23 @@ function startDeployTimer(){
 function stopDeployTimer(){if(deployTimer){clearInterval(deployTimer);deployTimer=null}}
 
 async function pollActionStatus(token){
-    await new Promise(r=>setTimeout(r,8000));
-    for(let i=0;i<60;i++){
+    await new Promise(r=>setTimeout(r,5000));
+    let foundRunId=null;
+    for(let i=0;i<90;i++){
         try{
-            const resp=await fetch(`https://api.github.com/repos/${REPO}/${REPO_N}/actions/workflows/convert.yml/runs?per_page=1`,{headers:{Authorization:`Bearer ${token}`}});
-            if(!resp.ok)break;
+            const resp=await fetch(`https://api.github.com/repos/${REPO}/${REPO_N}/actions/workflows/convert.yml/runs?per_page=3`,{headers:{Authorization:`Bearer ${token}`}});
+            if(!resp.ok){await new Promise(r=>setTimeout(r,3000));continue}
             const data=await resp.json();
-            const run=data.workflow_runs?.[0];
-            if(!run){await new Promise(r=>setTimeout(r,4000));continue}
+            const runs=data.workflow_runs||[];
+            const run=foundRunId?runs.find(r=>r.id===foundRunId):runs.find(r=>new Date(r.created_at).getTime()>deployStartTime-5000);
+            if(!run){await new Promise(r=>setTimeout(r,3000));continue}
+            foundRunId=run.id;
             if(run.status==='completed'){
-                const finishedAt=new Date(run.updated_at).getTime();
-                if(finishedAt>deployStartTime){
-                    setDeploy(run.conclusion==='success'?'action_done':'action_fail');
-                    return;
-                }
+                setDeploy(run.conclusion==='success'?'action_done':'action_fail');
+                return;
             }
-        }catch(e){break}
-        await new Promise(r=>setTimeout(r,4000));
+        }catch(e){console.log('poll error',e)}
+        await new Promise(r=>setTimeout(r,3000));
     }
     stopDeployTimer();
 }
