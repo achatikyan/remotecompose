@@ -118,7 +118,7 @@
     <header>
         <div class="logo">
             <span class="material-icons-round">widgets</span>
-            <div><h1>Remote Compose Editor</h1><div class="sub">Drag-and-drop UI builder</div></div>
+            <div><h1>Remote Compose Editor</h1><div class="sub">Drag-and-drop UI builder &middot; <span id="versionLabel">v1</span></div></div>
         </div>
         <div class="ha">
             <button class="btn btn-g" onclick="resetToDefaults()"><span class="material-icons-round">restart_alt</span>Reset</button>
@@ -198,7 +198,9 @@ const defaults=[
     {type:'spacer',height:6},
     {type:'button',text:'Open Full Demo',color:'#4A148C',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'open_demo',borderColor:'#7E57C2',borderWidth:2}
 ];
-function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;fetchConfig()}
+function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchConfig()}
+function getVersion(){return parseInt(localStorage.getItem('rc_version')||'1')}
+function updateVersionLabel(){document.getElementById('versionLabel').textContent='v'+getVersion()}
 async function fetchConfig(){try{const r=await fetch('config.json?'+Date.now());if(r.ok){const c=await r.json();document.getElementById('bgColor').value=c.backgroundColor||'#F5F0FF';document.getElementById('bgColorCode').textContent=(c.backgroundColor||'#F5F0FF').toUpperCase();elements=(c.elements||[]).map(e=>assignIds(e));nextId=maxId(elements)+1}else loadDefs()}catch{loadDefs()}render()}
 function assignIds(e){e={...e,id:e.id||uid()};if(e.children)e.children=e.children.map(c=>assignIds({...c}));return e}
 function maxId(els){let m=0;els.forEach(e=>{m=Math.max(m,parseInt(e.id)||0);if(e.children)m=Math.max(m,maxId(e.children))});return m}
@@ -331,7 +333,7 @@ async function deployConfig(){
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(getConfig(),null,2)+'\n')));
     const body={message:'Update layout from web editor',content};if(sha)body.sha=sha;
     const r=await fetch(`https://api.github.com/repos/${REPO}/${REPO_N}/contents/${FP}`,{method:'PUT',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
-    if(r.ok){setDeploy('ok');showToast('Deployed! Live in ~30s','cloud_done')}else{const e=await r.json();setDeploy('err');showToast('Deploy failed: '+(e.message||r.status),'error',true)}}
+    if(r.ok){const v=getVersion()+1;localStorage.setItem('rc_version',String(v));updateVersionLabel();setDeploy('ok');showToast('v'+v+' deployed! Live in ~30s','cloud_done')}else{const e=await r.json();setDeploy('err');showToast('Deploy failed: '+(e.message||r.status),'error',true)}}
     catch(e){setDeploy('err');showToast('Deploy failed: '+e.message,'error',true)}}
 
 function setDeploy(s){const b=document.getElementById('deployStatus'),t=document.getElementById('deployStatusText');b.className='sb';if(s==='deploying')t.textContent='Deploying...';else if(s==='ok'){b.classList.add('ok');t.textContent='Deployed';setTimeout(()=>{b.className='sb';t.textContent='Ready'},5000)}else if(s==='err'){b.classList.add('err');t.textContent='Failed';setTimeout(()=>{b.className='sb';t.textContent='Ready'},5000)}}
