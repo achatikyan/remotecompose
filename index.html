@@ -9,442 +9,120 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
         :root {
-            --bg: #f5f5f5;
-            --surface: #ffffff;
-            --surface-variant: #f0edf6;
-            --primary: #6200EA;
-            --primary-light: #ede7f6;
-            --on-primary: #ffffff;
-            --text: #1c1b1f;
-            --text-secondary: #49454f;
-            --outline: #cac4d0;
-            --radius: 16px;
-            --radius-sm: 12px;
-            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+            --bg: #f5f5f5; --surface: #fff; --surface-variant: #f0edf6;
+            --primary: #6200EA; --primary-light: #ede7f6; --on-primary: #fff;
+            --text: #1c1b1f; --text-sec: #49454f; --outline: #cac4d0;
+            --radius: 16px; --radius-sm: 12px;
+            --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.04);
+            --danger: #b71c1c; --danger-light: #ffebee;
         }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-        }
+        header { background: var(--surface); border-bottom: 1px solid var(--outline); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+        header .logo { display: flex; align-items: center; gap: 10px; }
+        header .logo .material-icons-round { font-size: 26px; color: var(--primary); }
+        header h1 { font-size: 18px; font-weight: 700; }
+        header .sub { font-size: 11px; color: var(--text-sec); }
+        .hdr-actions { display: flex; gap: 8px; }
 
-        header {
-            background: var(--surface);
-            border-bottom: 1px solid var(--outline);
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        header .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        header .logo .material-icons-round {
-            font-size: 28px;
-            color: var(--primary);
-        }
-
-        header h1 {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text);
-        }
-
-        header .subtitle {
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: var(--on-primary);
-        }
-
+        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
+        .btn .material-icons-round { font-size: 17px; }
+        .btn-primary { background: var(--primary); color: var(--on-primary); }
         .btn-primary:hover { background: #5000d4; }
-        .btn-primary:active { transform: scale(0.97); }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--primary);
-            border: 1.5px solid var(--primary);
-        }
-
+        .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
         .btn-outline:hover { background: var(--primary-light); }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--text-secondary);
-        }
-
+        .btn-ghost { background: transparent; color: var(--text-sec); }
         .btn-ghost:hover { background: var(--surface-variant); }
+        .btn-sm { padding: 5px 10px; font-size: 12px; }
+        .btn-sm .material-icons-round { font-size: 15px; }
+        .btn-danger { background: transparent; color: var(--danger); }
+        .btn-danger:hover { background: var(--danger-light); }
 
-        .btn .material-icons-round { font-size: 18px; }
+        main { display: grid; grid-template-columns: 1fr 380px; gap: 20px; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
 
-        main {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 24px;
-            padding: 24px;
-            max-width: 1280px;
-            margin: 0 auto;
+        .panel { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+        .panel-hdr { padding: 16px 20px 12px; border-bottom: 1px solid var(--outline); display: flex; align-items: center; justify-content: space-between; }
+        .panel-hdr h2 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .panel-hdr h2 .material-icons-round { font-size: 19px; color: var(--primary); }
+        .panel-body { padding: 16px 20px; }
+
+        .add-bar { display: flex; gap: 8px; padding: 12px 20px; border-bottom: 1px solid var(--outline); background: var(--surface-variant); }
+        .add-bar span.lbl { font-size: 12px; font-weight: 600; color: var(--text-sec); text-transform: uppercase; letter-spacing: .5px; line-height: 30px; margin-right: 4px; }
+
+        #elementList { min-height: 60px; }
+        .el-card { display: flex; align-items: stretch; background: var(--surface); border: 1.5px solid var(--outline); border-radius: var(--radius-sm); margin-bottom: 8px; transition: border-color .15s, box-shadow .15s; position: relative; }
+        .el-card:hover { border-color: var(--primary); }
+        .el-card.dragging { opacity: .4; }
+        .el-card.drag-over { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
+        .el-handle { display: flex; align-items: center; padding: 0 8px; cursor: grab; color: var(--outline); border-right: 1px solid var(--outline); }
+        .el-handle:active { cursor: grabbing; }
+        .el-handle .material-icons-round { font-size: 18px; }
+        .el-body { flex: 1; padding: 10px 12px; min-width: 0; }
+        .el-top { display: flex; align-items: center; gap: 8px; }
+        .el-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 2px 8px; border-radius: 6px; }
+        .el-badge.text { background: #e8eaf6; color: #283593; }
+        .el-badge.button { background: #fce4ec; color: #c62828; }
+        .el-badge.spacer { background: #e0f2f1; color: #00695c; }
+        .el-summary { font-size: 13px; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .el-actions { display: flex; align-items: center; padding: 0 6px; gap: 2px; }
+        .el-actions button { background: none; border: none; cursor: pointer; padding: 4px; border-radius: 6px; color: var(--text-sec); display: flex; align-items: center; }
+        .el-actions button:hover { background: var(--surface-variant); }
+        .el-actions button.del:hover { background: var(--danger-light); color: var(--danger); }
+        .el-actions button .material-icons-round { font-size: 18px; }
+
+        .el-editor { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--outline); }
+        .el-card.expanded .el-editor { display: block; }
+        .field { margin-bottom: 10px; }
+        .field label { display: block; font-size: 11px; font-weight: 600; color: var(--text-sec); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+        .field input[type="text"], .field input[type="number"] {
+            width: 100%; padding: 7px 10px; border: 1.5px solid var(--outline); border-radius: 8px;
+            font-family: inherit; font-size: 13px; color: var(--text); background: var(--surface);
         }
+        .field input:focus { outline: none; border-color: var(--primary); }
+        .field-row { display: flex; gap: 10px; }
+        .field-row .field { flex: 1; }
+        .color-field { display: flex; align-items: center; gap: 8px; }
+        .color-field input[type="color"] { width: 28px; height: 28px; border: none; border-radius: 6px; cursor: pointer; padding: 0; background: none; }
+        .color-field input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        .color-field input[type="color"]::-webkit-color-swatch { border: 1px solid rgba(0,0,0,.1); border-radius: 4px; }
+        .color-field code { font-size: 11px; font-family: 'SF Mono', monospace; color: var(--text-sec); background: var(--surface-variant); padding: 2px 6px; border-radius: 4px; }
 
-        @media (max-width: 900px) {
-            main {
-                grid-template-columns: 1fr;
-            }
+        .bg-section { padding: 12px 20px; border-top: 1px solid var(--outline); display: flex; align-items: center; gap: 12px; }
+        .bg-section label { font-size: 12px; font-weight: 600; color: var(--text-sec); text-transform: uppercase; letter-spacing: .5px; }
+
+        .deploy-section { padding: 14px 20px; border-top: 1px solid var(--outline); background: var(--surface-variant); }
+        .deploy-row { display: flex; gap: 8px; margin-top: 6px; }
+        .deploy-row input[type="password"], .deploy-row input[type="text"] {
+            flex: 1; padding: 7px 10px; border: 1.5px solid var(--outline); border-radius: 8px;
+            font-family: inherit; font-size: 12px;
         }
+        .deploy-row input:focus { outline: none; border-color: var(--primary); }
+        .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 16px; font-size: 11px; font-weight: 600; }
+        .status-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+        .status-badge.ok { background: #e8f5e9; color: #2e7d32; }
+        .status-badge.err { background: #fce4ec; color: #c62828; }
 
-        .panel {
-            background: var(--surface);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
+        .phone-frame { width: 300px; height: 600px; border-radius: 32px; border: 7px solid #1c1b1f; overflow: hidden; margin: 0 auto; box-shadow: 0 8px 32px rgba(0,0,0,.15); position: relative; }
+        .phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100px; height: 24px; background: #1c1b1f; border-radius: 0 0 14px 14px; z-index: 2; }
+        .phone-screen { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 36px 18px 18px; text-align: center; transition: background-color .3s; overflow-y: auto; gap: 0; }
+        .prev-text { line-height: 1.3; transition: all .2s; word-break: break-word; }
+        .prev-spacer { flex-shrink: 0; }
+        .prev-btn { padding: 12px 28px; border-radius: 24px; font-weight: 600; text-align: center; width: 85%; cursor: pointer; border: none; font-family: inherit; transition: all .2s; }
+        .prev-btn:hover { opacity: .9; }
 
-        .panel-header {
-            padding: 20px 24px 16px;
-            border-bottom: 1px solid var(--outline);
-        }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: #323232; color: #fff; padding: 10px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; z-index: 100; transition: transform .3s; display: flex; align-items: center; gap: 8px; }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast .material-icons-round { font-size: 17px; }
 
-        .panel-header h2 {
-            font-size: 16px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .info-card { background: var(--primary-light); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 8px; }
+        .info-card p { font-size: 12px; color: var(--text-sec); line-height: 1.4; }
+        .info-card code { font-size: 11px; background: rgba(98,0,234,.1); padding: 2px 5px; border-radius: 4px; font-family: 'SF Mono', monospace; word-break: break-all; }
 
-        .panel-header h2 .material-icons-round {
-            font-size: 20px;
-            color: var(--primary);
-        }
-
-        .panel-body {
-            padding: 24px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .form-group input[type="text"],
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1.5px solid var(--outline);
-            border-radius: var(--radius-sm);
-            font-family: inherit;
-            font-size: 14px;
-            color: var(--text);
-            background: var(--surface);
-            transition: border-color 0.15s;
-        }
-
-        .form-group input[type="text"]:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 56px;
-        }
-
-        .color-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .color-input {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            border: 1.5px solid var(--outline);
-            border-radius: var(--radius-sm);
-            background: var(--surface);
-        }
-
-        .color-input input[type="color"] {
-            width: 32px;
-            height: 32px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            padding: 0;
-            background: none;
-        }
-
-        .color-input input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-        .color-input input[type="color"]::-webkit-color-swatch {
-            border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 6px;
-        }
-
-        .color-input span {
-            font-size: 13px;
-            color: var(--text-secondary);
-            flex: 1;
-        }
-
-        .color-input code {
-            font-size: 12px;
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            color: var(--text);
-            background: var(--surface-variant);
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-
-        .slider-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px;
-        }
-
-        .slider-item label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .slider-item input[type="range"] {
-            width: 100%;
-            accent-color: var(--primary);
-        }
-
-        .slider-item .slider-value {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--primary);
-            text-align: center;
-            margin-top: 4px;
-        }
-
-        .phone-frame {
-            width: 320px;
-            height: 640px;
-            border-radius: 36px;
-            border: 8px solid #1c1b1f;
-            overflow: hidden;
-            margin: 0 auto;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-            position: relative;
-        }
-
-        .phone-notch {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 28px;
-            background: #1c1b1f;
-            border-radius: 0 0 16px 16px;
-            z-index: 2;
-        }
-
-        .phone-screen {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 32px 20px;
-            text-align: center;
-            transition: background-color 0.3s;
-        }
-
-        .phone-screen .preview-title {
-            font-weight: 700;
-            margin-bottom: 12px;
-            line-height: 1.2;
-            transition: all 0.3s;
-        }
-
-        .phone-screen .preview-subtitle {
-            margin-bottom: 28px;
-            line-height: 1.5;
-            transition: all 0.3s;
-        }
-
-        .phone-screen .preview-button {
-            padding: 14px 32px;
-            border-radius: 28px;
-            font-weight: 600;
-            text-align: center;
-            width: 80%;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: none;
-            font-family: inherit;
-        }
-
-        .phone-screen .preview-button:hover { opacity: 0.9; }
-
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #323232;
-            color: white;
-            padding: 12px 24px;
-            border-radius: var(--radius-sm);
-            font-size: 14px;
-            font-weight: 500;
-            z-index: 100;
-            transition: transform 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast .material-icons-round { font-size: 18px; }
-
-        .section-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-            margin-top: 8px;
-        }
-
-        .divider {
-            height: 1px;
-            background: var(--outline);
-            margin: 24px 0;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-badge.connected {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .status-badge.disconnected {
-            background: #fce4ec;
-            color: #c62828;
-        }
-
-        .status-badge .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: currentColor;
-        }
-
-        .info-card {
-            background: var(--primary-light);
-            border-radius: var(--radius-sm);
-            padding: 16px;
-            margin-top: 16px;
-        }
-
-        .info-card p {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .info-card code {
-            font-size: 12px;
-            background: rgba(98, 0, 234, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            word-break: break-all;
-        }
-
-        .deploy-section {
-            padding: 20px 24px;
-            border-top: 1px solid var(--outline);
-            background: var(--surface-variant);
-        }
-
-        .deploy-section .token-input {
-            display: flex;
-            gap: 8px;
-            margin-top: 8px;
-        }
-
-        .deploy-section input[type="password"] {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1.5px solid var(--outline);
-            border-radius: var(--radius-sm);
-            font-family: inherit;
-            font-size: 13px;
-        }
-
-        .deploy-section input[type="password"]:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
+        .empty-state { text-align: center; padding: 32px 16px; color: var(--text-sec); }
+        .empty-state .material-icons-round { font-size: 40px; color: var(--outline); margin-bottom: 8px; }
+        .empty-state p { font-size: 13px; }
     </style>
 </head>
 <body>
@@ -453,147 +131,70 @@
             <span class="material-icons-round">widgets</span>
             <div>
                 <h1>Remote Compose Editor</h1>
-                <div class="subtitle">Server-Driven UI Configuration</div>
+                <div class="sub">Drag-and-drop UI builder</div>
             </div>
         </div>
-        <div class="header-actions">
-            <button class="btn btn-ghost" onclick="resetToDefaults()">
-                <span class="material-icons-round">restart_alt</span>
-                Reset
-            </button>
-            <button class="btn btn-outline" onclick="copyJson()">
-                <span class="material-icons-round">content_copy</span>
-                Copy JSON
-            </button>
-            <button class="btn btn-primary" onclick="deployConfig()">
-                <span class="material-icons-round">cloud_upload</span>
-                Deploy
-            </button>
+        <div class="hdr-actions">
+            <button class="btn btn-ghost" onclick="resetToDefaults()"><span class="material-icons-round">restart_alt</span>Reset</button>
+            <button class="btn btn-outline" onclick="copyJson()"><span class="material-icons-round">content_copy</span>Copy JSON</button>
+            <button class="btn btn-primary" onclick="deployConfig()"><span class="material-icons-round">cloud_upload</span>Deploy</button>
         </div>
     </header>
 
     <main>
         <div class="panel">
-            <div class="panel-header">
-                <h2>
-                    <span class="material-icons-round">tune</span>
-                    Layout Configuration
-                </h2>
+            <div class="panel-hdr">
+                <h2><span class="material-icons-round">tune</span>Layout Builder</h2>
+                <span style="font-size:12px;color:var(--text-sec)" id="elCount">0 elements</span>
             </div>
-            <div class="panel-body">
-                <div class="section-label">Content</div>
 
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" id="title" value="Welcome to Remote Compose!" oninput="updatePreview()">
+            <div class="add-bar">
+                <span class="lbl">Add:</span>
+                <button class="btn btn-outline btn-sm" onclick="addElement('text')"><span class="material-icons-round">title</span>Text</button>
+                <button class="btn btn-outline btn-sm" onclick="addElement('button')"><span class="material-icons-round">smart_button</span>Button</button>
+                <button class="btn btn-outline btn-sm" onclick="addElement('spacer')"><span class="material-icons-round">space_bar</span>Spacer</button>
+            </div>
+
+            <div class="panel-body" id="elementList"></div>
+
+            <div class="bg-section">
+                <label>Background</label>
+                <div class="color-field">
+                    <input type="color" id="bgColor" value="#F3E5F5" oninput="updatePreview()">
+                    <code id="bgColorCode">#F3E5F5</code>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label>Subtitle</label>
-                    <textarea id="subtitle" oninput="updatePreview()">This UI is configured remotely from a web editor.</textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Button Text</label>
-                    <input type="text" id="buttonText" value="Get Started" oninput="updatePreview()">
-                </div>
-
-                <div class="divider"></div>
-                <div class="section-label">Colors</div>
-
-                <div class="color-row">
-                    <div class="color-input">
-                        <input type="color" id="backgroundColor" value="#F3E5F5" oninput="updatePreview(); updateColorCode(this)">
-                        <span>Background</span>
-                        <code id="backgroundColorCode">#F3E5F5</code>
-                    </div>
-                    <div class="color-input">
-                        <input type="color" id="titleColor" value="#4A148C" oninput="updatePreview(); updateColorCode(this)">
-                        <span>Title</span>
-                        <code id="titleColorCode">#4A148C</code>
-                    </div>
-                    <div class="color-input">
-                        <input type="color" id="subtitleColor" value="#666666" oninput="updatePreview(); updateColorCode(this)">
-                        <span>Subtitle</span>
-                        <code id="subtitleColorCode">#666666</code>
-                    </div>
-                    <div class="color-input">
-                        <input type="color" id="buttonColor" value="#6200EA" oninput="updatePreview(); updateColorCode(this)">
-                        <span>Button</span>
-                        <code id="buttonColorCode">#6200EA</code>
-                    </div>
-                    <div class="color-input">
-                        <input type="color" id="buttonTextColor" value="#FFFFFF" oninput="updatePreview(); updateColorCode(this)">
-                        <span>Button Text</span>
-                        <code id="buttonTextColorCode">#FFFFFF</code>
-                    </div>
-                </div>
-
-                <div class="divider"></div>
-                <div class="section-label">Typography</div>
-
-                <div class="slider-group">
-                    <div class="slider-item">
-                        <label>Title Size</label>
-                        <input type="range" id="titleFontSize" min="16" max="48" value="28" oninput="updatePreview(); updateSliderValue(this)">
-                        <div class="slider-value" id="titleFontSizeValue">28sp</div>
-                    </div>
-                    <div class="slider-item">
-                        <label>Subtitle Size</label>
-                        <input type="range" id="subtitleFontSize" min="12" max="32" value="16" oninput="updatePreview(); updateSliderValue(this)">
-                        <div class="slider-value" id="subtitleFontSizeValue">16sp</div>
-                    </div>
-                    <div class="slider-item">
-                        <label>Button Size</label>
-                        <input type="range" id="buttonFontSize" min="12" max="32" value="18" oninput="updatePreview(); updateSliderValue(this)">
-                        <div class="slider-value" id="buttonFontSizeValue">18sp</div>
-                    </div>
-                </div>
-
-                <div class="info-card">
-                    <p>
-                        <strong>Android App Fetch URL:</strong><br>
-                        <code>https://achatikyan.github.io/remotecompose/config.json</code>
-                    </p>
+            <div class="bg-section">
+                <div class="info-card" style="width:100%">
+                    <p><strong>Fetch URL:</strong> <code>https://achatikyan.github.io/remotecompose/config.json</code></p>
                 </div>
             </div>
 
             <div class="deploy-section">
-                <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="display:flex;align-items:center;justify-content:space-between">
                     <div>
-                        <div style="font-size: 13px; font-weight: 600;">GitHub Deploy</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">Push config.json to GitHub Pages</div>
+                        <div style="font-size:12px;font-weight:600">GitHub Deploy</div>
+                        <div style="font-size:11px;color:var(--text-sec)">Push config.json to GitHub Pages</div>
                     </div>
-                    <span class="status-badge" id="deployStatus">
-                        <span class="dot"></span>
-                        <span id="deployStatusText">Ready</span>
-                    </span>
+                    <span class="status-badge" id="deployStatus"><span class="dot"></span><span id="deployStatusText">Ready</span></span>
                 </div>
-                <div class="token-input">
-                    <input type="password" id="ghToken" placeholder="GitHub Personal Access Token (fine-grained)">
-                    <button class="btn btn-ghost" onclick="toggleTokenVisibility()" style="padding: 8px;">
-                        <span class="material-icons-round" id="tokenEyeIcon">visibility</span>
-                    </button>
+                <div class="deploy-row">
+                    <input type="password" id="ghToken" placeholder="GitHub Personal Access Token">
+                    <button class="btn btn-ghost btn-sm" onclick="toggleToken()"><span class="material-icons-round" id="tokenEye">visibility</span></button>
                 </div>
             </div>
         </div>
 
         <div>
-            <div class="panel" style="position: sticky; top: 88px;">
-                <div class="panel-header">
-                    <h2>
-                        <span class="material-icons-round">phone_android</span>
-                        Live Preview
-                    </h2>
+            <div class="panel" style="position:sticky;top:76px">
+                <div class="panel-hdr">
+                    <h2><span class="material-icons-round">phone_android</span>Live Preview</h2>
                 </div>
-                <div class="panel-body" style="display: flex; justify-content: center; padding: 24px 16px;">
+                <div class="panel-body" style="display:flex;justify-content:center;padding:20px 12px">
                     <div class="phone-frame">
                         <div class="phone-notch"></div>
-                        <div class="phone-screen" id="phoneScreen">
-                            <div class="preview-title" id="previewTitle">Welcome to Remote Compose!</div>
-                            <div class="preview-subtitle" id="previewSubtitle">This UI is configured remotely from a web editor.</div>
-                            <button class="preview-button" id="previewButton" onclick="showToast('Button clicked!')">Get Started</button>
-                        </div>
+                        <div class="phone-screen" id="phoneScreen"></div>
                     </div>
                 </div>
             </div>
@@ -602,246 +203,252 @@
 
     <div class="toast" id="toast">
         <span class="material-icons-round" id="toastIcon">check_circle</span>
-        <span id="toastMessage">Copied to clipboard</span>
+        <span id="toastMsg"></span>
     </div>
 
-    <script>
-        const REPO_OWNER = 'achatikyan';
-        const REPO_NAME = 'remotecompose';
-        const FILE_PATH = 'config.json';
+<script>
+const REPO_OWNER = 'achatikyan', REPO_NAME = 'remotecompose', FILE_PATH = 'config.json';
+let elements = [];
+let dragIdx = null;
+let nextId = 1;
 
-        const defaults = {
-            title: 'Welcome to Remote Compose!',
-            subtitle: 'This UI is configured remotely from a web editor.',
-            buttonText: 'Get Started',
-            backgroundColor: '#F3E5F5',
-            titleColor: '#4A148C',
-            subtitleColor: '#666666',
-            buttonColor: '#6200EA',
-            buttonTextColor: '#FFFFFF',
-            titleFontSize: 28,
-            subtitleFontSize: 16,
-            buttonFontSize: 18,
-        };
+const defaults = [
+    { type:'text', text:'Welcome to Remote Compose!', color:'#4A148C', fontSize:28 },
+    { type:'text', text:'This UI is configured remotely from a web editor.', color:'#666666', fontSize:16 },
+    { type:'spacer', height:24 },
+    { type:'button', text:'Get Started', color:'#6200EA', textColor:'#FFFFFF', fontSize:18 },
+];
 
-        function init() {
-            const savedToken = localStorage.getItem('gh_token');
-            if (savedToken) {
-                document.getElementById('ghToken').value = savedToken;
-            }
+function uid() { return String(nextId++); }
 
-            fetchCurrentConfig();
-            updatePreview();
+function init() {
+    const t = localStorage.getItem('gh_token');
+    if (t) document.getElementById('ghToken').value = t;
+    fetchCurrentConfig();
+}
+
+async function fetchCurrentConfig() {
+    try {
+        const r = await fetch('config.json?' + Date.now());
+        if (r.ok) {
+            const cfg = await r.json();
+            document.getElementById('bgColor').value = cfg.backgroundColor || '#F3E5F5';
+            document.getElementById('bgColorCode').textContent = (cfg.backgroundColor || '#F3E5F5').toUpperCase();
+            elements = (cfg.elements || []).map(e => ({ ...e, id: e.id || uid() }));
+            nextId = elements.reduce((m, e) => Math.max(m, parseInt(e.id)||0), 0) + 1;
+        } else {
+            loadDefaults();
+        }
+    } catch { loadDefaults(); }
+    render();
+}
+
+function loadDefaults() {
+    elements = defaults.map(e => ({ ...e, id: uid() }));
+    document.getElementById('bgColor').value = '#F3E5F5';
+    document.getElementById('bgColorCode').textContent = '#F3E5F5';
+}
+
+function resetToDefaults() {
+    nextId = 1;
+    loadDefaults();
+    render();
+    showToast('Reset to defaults', 'restart_alt');
+}
+
+function addElement(type) {
+    const el = { type, id: uid() };
+    if (type === 'text') { el.text = 'New text'; el.color = '#000000'; el.fontSize = 16; }
+    else if (type === 'button') { el.text = 'Button'; el.color = '#6200EA'; el.textColor = '#FFFFFF'; el.fontSize = 16; }
+    else { el.height = 16; }
+    elements.push(el);
+    render();
+}
+
+function removeElement(idx) {
+    elements.splice(idx, 1);
+    render();
+}
+
+function toggleExpand(idx) {
+    const cards = document.querySelectorAll('.el-card');
+    cards.forEach((c, i) => { if (i !== idx) c.classList.remove('expanded'); });
+    cards[idx]?.classList.toggle('expanded');
+}
+
+function onFieldChange(idx, field, value) {
+    if (field === 'fontSize' || field === 'height') value = parseInt(value) || 0;
+    elements[idx][field] = value;
+    updatePreview();
+}
+
+function onDragStart(e, idx) {
+    dragIdx = idx;
+    e.dataTransfer.effectAllowed = 'move';
+    e.currentTarget.classList.add('dragging');
+}
+function onDragEnd(e) {
+    dragIdx = null;
+    document.querySelectorAll('.el-card').forEach(c => c.classList.remove('dragging', 'drag-over'));
+}
+function onDragOver(e, idx) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    document.querySelectorAll('.el-card').forEach(c => c.classList.remove('drag-over'));
+    e.currentTarget.closest('.el-card')?.classList.add('drag-over');
+}
+function onDrop(e, idx) {
+    e.preventDefault();
+    if (dragIdx === null || dragIdx === idx) return;
+    const moved = elements.splice(dragIdx, 1)[0];
+    elements.splice(idx, 0, moved);
+    dragIdx = null;
+    render();
+}
+
+function render() {
+    const list = document.getElementById('elementList');
+    document.getElementById('elCount').textContent = elements.length + ' element' + (elements.length !== 1 ? 's' : '');
+
+    if (elements.length === 0) {
+        list.innerHTML = '<div class="empty-state"><span class="material-icons-round">add_circle_outline</span><p>No elements yet. Add a Text, Button, or Spacer above.</p></div>';
+        updatePreview();
+        return;
+    }
+
+    list.innerHTML = elements.map((el, i) => {
+        const badge = `<span class="el-badge ${el.type}">${el.type}</span>`;
+        let summary = '';
+        if (el.type === 'text') summary = el.text || 'Empty text';
+        else if (el.type === 'button') summary = el.text || 'Button';
+        else summary = (el.height || 16) + 'dp';
+
+        let editor = '';
+        if (el.type === 'text') {
+            editor = `
+                <div class="field"><label>Text</label><input type="text" value="${esc(el.text||'')}" oninput="onFieldChange(${i},'text',this.value)"></div>
+                <div class="field-row">
+                    <div class="field"><label>Font size</label><input type="number" min="8" max="72" value="${el.fontSize||16}" oninput="onFieldChange(${i},'fontSize',this.value)"></div>
+                    <div class="field"><label>Color</label><div class="color-field"><input type="color" value="${el.color||'#000000'}" oninput="onFieldChange(${i},'color',this.value)"><code>${(el.color||'#000000').toUpperCase()}</code></div></div>
+                </div>`;
+        } else if (el.type === 'button') {
+            editor = `
+                <div class="field"><label>Label</label><input type="text" value="${esc(el.text||'')}" oninput="onFieldChange(${i},'text',this.value)"></div>
+                <div class="field-row">
+                    <div class="field"><label>Font size</label><input type="number" min="8" max="72" value="${el.fontSize||16}" oninput="onFieldChange(${i},'fontSize',this.value)"></div>
+                    <div class="field"><label>BG Color</label><div class="color-field"><input type="color" value="${el.color||'#6200EA'}" oninput="onFieldChange(${i},'color',this.value)"><code>${(el.color||'#6200EA').toUpperCase()}</code></div></div>
+                    <div class="field"><label>Text Color</label><div class="color-field"><input type="color" value="${el.textColor||'#FFFFFF'}" oninput="onFieldChange(${i},'textColor',this.value)"><code>${(el.textColor||'#FFFFFF').toUpperCase()}</code></div></div>
+                </div>`;
+        } else {
+            editor = `<div class="field"><label>Height (dp)</label><input type="number" min="1" max="200" value="${el.height||16}" oninput="onFieldChange(${i},'height',this.value)"></div>`;
         }
 
-        async function fetchCurrentConfig() {
-            try {
-                const resp = await fetch('config.json?' + Date.now());
-                if (resp.ok) {
-                    const config = await resp.json();
-                    applyConfig(config);
-                }
-            } catch (e) {
-                // Use defaults
-            }
+        return `<div class="el-card" draggable="true" ondragstart="onDragStart(event,${i})" ondragend="onDragEnd(event)" ondragover="onDragOver(event,${i})" ondrop="onDrop(event,${i})">
+            <div class="el-handle"><span class="material-icons-round">drag_indicator</span></div>
+            <div class="el-body" onclick="toggleExpand(${i})">
+                <div class="el-top">${badge}<span class="el-summary">${esc(summary)}</span></div>
+                <div class="el-editor">${editor}</div>
+            </div>
+            <div class="el-actions">
+                <button class="del" onclick="event.stopPropagation();removeElement(${i})" title="Delete"><span class="material-icons-round">close</span></button>
+            </div>
+        </div>`;
+    }).join('');
+
+    updatePreview();
+}
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function updatePreview() {
+    const screen = document.getElementById('phoneScreen');
+    const bg = document.getElementById('bgColor').value;
+    document.getElementById('bgColorCode').textContent = bg.toUpperCase();
+    screen.style.backgroundColor = bg;
+
+    if (elements.length === 0) {
+        screen.innerHTML = '<div style="color:#999;font-size:14px">Empty layout</div>';
+        return;
+    }
+
+    screen.innerHTML = elements.map(el => {
+        if (el.type === 'text') {
+            return `<div class="prev-text" style="color:${el.color||'#000'};font-size:${el.fontSize||16}px;margin-bottom:8px">${esc(el.text||'')}</div>`;
+        } else if (el.type === 'button') {
+            return `<button class="prev-btn" style="background:${el.color||'#6200EA'};color:${el.textColor||'#FFF'};font-size:${el.fontSize||16}px;margin-bottom:8px" onclick="showToast('Button clicked!')">${esc(el.text||'Button')}</button>`;
+        } else {
+            return `<div class="prev-spacer" style="height:${el.height||16}px"></div>`;
         }
+    }).join('');
+}
 
-        function applyConfig(config) {
-            document.getElementById('title').value = config.title || defaults.title;
-            document.getElementById('subtitle').value = config.subtitle || defaults.subtitle;
-            document.getElementById('buttonText').value = config.buttonText || defaults.buttonText;
-            document.getElementById('backgroundColor').value = config.backgroundColor || defaults.backgroundColor;
-            document.getElementById('titleColor').value = config.titleColor || defaults.titleColor;
-            document.getElementById('subtitleColor').value = config.subtitleColor || defaults.subtitleColor;
-            document.getElementById('buttonColor').value = config.buttonColor || defaults.buttonColor;
-            document.getElementById('buttonTextColor').value = config.buttonTextColor || defaults.buttonTextColor;
-            document.getElementById('titleFontSize').value = config.titleFontSize || defaults.titleFontSize;
-            document.getElementById('subtitleFontSize').value = config.subtitleFontSize || defaults.subtitleFontSize;
-            document.getElementById('buttonFontSize').value = config.buttonFontSize || defaults.buttonFontSize;
+function getConfig() {
+    return {
+        backgroundColor: document.getElementById('bgColor').value.toUpperCase(),
+        elements: elements.map(el => {
+            const o = { type: el.type, id: el.id };
+            if (el.type === 'text') { o.text = el.text; o.color = (el.color||'#000000').toUpperCase(); o.fontSize = el.fontSize||16; }
+            else if (el.type === 'button') { o.text = el.text; o.color = (el.color||'#6200EA').toUpperCase(); o.textColor = (el.textColor||'#FFFFFF').toUpperCase(); o.fontSize = el.fontSize||16; }
+            else { o.height = el.height||16; }
+            return o;
+        }),
+    };
+}
 
-            document.querySelectorAll('.color-input input[type="color"]').forEach(input => updateColorCode(input));
-            document.querySelectorAll('.slider-item input[type="range"]').forEach(input => updateSliderValue(input));
-            updatePreview();
-        }
+async function copyJson() {
+    const json = JSON.stringify(getConfig(), null, 2);
+    try { await navigator.clipboard.writeText(json); } catch {
+        const t = document.createElement('textarea'); t.value = json; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t);
+    }
+    showToast('JSON copied', 'content_copy');
+}
 
-        function getConfig() {
-            return {
-                title: document.getElementById('title').value,
-                subtitle: document.getElementById('subtitle').value,
-                buttonText: document.getElementById('buttonText').value,
-                backgroundColor: document.getElementById('backgroundColor').value.toUpperCase(),
-                titleColor: document.getElementById('titleColor').value.toUpperCase(),
-                subtitleColor: document.getElementById('subtitleColor').value.toUpperCase(),
-                buttonColor: document.getElementById('buttonColor').value.toUpperCase(),
-                buttonTextColor: document.getElementById('buttonTextColor').value.toUpperCase(),
-                titleFontSize: parseInt(document.getElementById('titleFontSize').value),
-                subtitleFontSize: parseInt(document.getElementById('subtitleFontSize').value),
-                buttonFontSize: parseInt(document.getElementById('buttonFontSize').value),
-            };
-        }
+async function deployConfig() {
+    const token = document.getElementById('ghToken').value.trim();
+    if (!token) { showToast('Enter a GitHub token first', 'warning', true); document.getElementById('ghToken').focus(); return; }
+    localStorage.setItem('gh_token', token);
+    setDeploy('deploying');
+    try {
+        const existing = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, { headers: { Authorization: `Bearer ${token}` } });
+        let sha = null;
+        if (existing.ok) sha = (await existing.json()).sha;
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(getConfig(), null, 2) + '\n')));
+        const body = { message: 'Update layout from web editor', content };
+        if (sha) body.sha = sha;
+        const r = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+            method: 'PUT', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+        });
+        if (r.ok) { setDeploy('ok'); showToast('Deployed! Live in ~30s', 'cloud_done'); }
+        else { const e = await r.json(); setDeploy('err'); showToast('Deploy failed: ' + (e.message||r.status), 'error', true); }
+    } catch (e) { setDeploy('err'); showToast('Deploy failed: ' + e.message, 'error', true); }
+}
 
-        function updatePreview() {
-            const config = getConfig();
-            const screen = document.getElementById('phoneScreen');
-            const title = document.getElementById('previewTitle');
-            const subtitle = document.getElementById('previewSubtitle');
-            const button = document.getElementById('previewButton');
+function setDeploy(s) {
+    const b = document.getElementById('deployStatus'), t = document.getElementById('deployStatusText');
+    b.className = 'status-badge';
+    if (s === 'deploying') { t.textContent = 'Deploying...'; }
+    else if (s === 'ok') { b.classList.add('ok'); t.textContent = 'Deployed'; setTimeout(() => { b.className = 'status-badge'; t.textContent = 'Ready'; }, 5000); }
+    else if (s === 'err') { b.classList.add('err'); t.textContent = 'Failed'; setTimeout(() => { b.className = 'status-badge'; t.textContent = 'Ready'; }, 5000); }
+}
 
-            screen.style.backgroundColor = config.backgroundColor;
-            title.textContent = config.title;
-            title.style.color = config.titleColor;
-            title.style.fontSize = config.titleFontSize + 'px';
-            subtitle.textContent = config.subtitle;
-            subtitle.style.color = config.subtitleColor;
-            subtitle.style.fontSize = config.subtitleFontSize + 'px';
-            button.textContent = config.buttonText;
-            button.style.backgroundColor = config.buttonColor;
-            button.style.color = config.buttonTextColor;
-            button.style.fontSize = config.buttonFontSize + 'px';
-        }
+function toggleToken() {
+    const i = document.getElementById('ghToken'), ic = document.getElementById('tokenEye');
+    if (i.type === 'password') { i.type = 'text'; ic.textContent = 'visibility_off'; }
+    else { i.type = 'password'; ic.textContent = 'visibility'; }
+}
 
-        function updateColorCode(input) {
-            const codeEl = document.getElementById(input.id + 'Code');
-            if (codeEl) codeEl.textContent = input.value.toUpperCase();
-        }
+let toastTimer;
+function showToast(msg, icon, isErr) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    document.getElementById('toastIcon').textContent = icon || 'check_circle';
+    t.style.background = isErr ? '#b71c1c' : '#323232';
+    clearTimeout(toastTimer);
+    t.classList.add('show');
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
 
-        function updateSliderValue(input) {
-            const valueEl = document.getElementById(input.id + 'Value');
-            if (valueEl) valueEl.textContent = input.value + 'sp';
-        }
-
-        function resetToDefaults() {
-            applyConfig(defaults);
-            showToast('Reset to defaults', 'restart_alt');
-        }
-
-        async function copyJson() {
-            const json = JSON.stringify(getConfig(), null, 2);
-            try {
-                await navigator.clipboard.writeText(json);
-                showToast('JSON copied to clipboard', 'content_copy');
-            } catch {
-                const ta = document.createElement('textarea');
-                ta.value = json;
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
-                showToast('JSON copied to clipboard', 'content_copy');
-            }
-        }
-
-        async function deployConfig() {
-            const token = document.getElementById('ghToken').value.trim();
-            if (!token) {
-                showToast('Enter a GitHub token first', 'warning', true);
-                document.getElementById('ghToken').focus();
-                return;
-            }
-
-            localStorage.setItem('gh_token', token);
-            setDeployStatus('deploying');
-
-            try {
-                const existingResp = await fetch(
-                    `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`,
-                    { headers: { 'Authorization': `Bearer ${token}` } }
-                );
-
-                let sha = null;
-                if (existingResp.ok) {
-                    const existing = await existingResp.json();
-                    sha = existing.sha;
-                }
-
-                const config = getConfig();
-                const content = btoa(unescape(encodeURIComponent(JSON.stringify(config, null, 2) + '\n')));
-
-                const body = {
-                    message: 'Update Remote Compose config from web editor',
-                    content: content,
-                };
-                if (sha) body.sha = sha;
-
-                const resp = await fetch(
-                    `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`,
-                    {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(body),
-                    }
-                );
-
-                if (resp.ok) {
-                    setDeployStatus('success');
-                    showToast('Deployed! Config will be live in ~30s', 'cloud_done');
-                } else {
-                    const err = await resp.json();
-                    setDeployStatus('error');
-                    showToast(`Deploy failed: ${err.message || resp.status}`, 'error', true);
-                }
-            } catch (e) {
-                setDeployStatus('error');
-                showToast(`Deploy failed: ${e.message}`, 'error', true);
-            }
-        }
-
-        function setDeployStatus(status) {
-            const badge = document.getElementById('deployStatus');
-            const text = document.getElementById('deployStatusText');
-            badge.className = 'status-badge';
-
-            if (status === 'deploying') {
-                badge.classList.add('disconnected');
-                text.textContent = 'Deploying...';
-            } else if (status === 'success') {
-                badge.classList.add('connected');
-                text.textContent = 'Deployed';
-                setTimeout(() => {
-                    badge.className = 'status-badge';
-                    text.textContent = 'Ready';
-                }, 5000);
-            } else if (status === 'error') {
-                badge.classList.add('disconnected');
-                text.textContent = 'Failed';
-                setTimeout(() => {
-                    badge.className = 'status-badge';
-                    text.textContent = 'Ready';
-                }, 5000);
-            }
-        }
-
-        function toggleTokenVisibility() {
-            const input = document.getElementById('ghToken');
-            const icon = document.getElementById('tokenEyeIcon');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.textContent = 'visibility_off';
-            } else {
-                input.type = 'password';
-                icon.textContent = 'visibility';
-            }
-        }
-
-        let toastTimeout;
-        function showToast(message, icon, isError) {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toastMessage');
-            const toastIcon = document.getElementById('toastIcon');
-
-            toastMsg.textContent = message;
-            toastIcon.textContent = icon || 'check_circle';
-            toast.style.background = isError ? '#b71c1c' : '#323232';
-
-            clearTimeout(toastTimeout);
-            toast.classList.add('show');
-            toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
-        }
-
-        init();
-    </script>
+init();
+</script>
 </body>
 </html>

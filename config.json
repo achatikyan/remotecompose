@@ -1,13 +1,9 @@
 {
-  "title": "Welcome to Remote Compose!",
-  "subtitle": "This UI is configured remotely from a web editor.",
-  "buttonText": "Get Started changed",
   "backgroundColor": "#F3E5F5",
-  "titleColor": "#4A148C",
-  "subtitleColor": "#666666",
-  "buttonColor": "#6200EA",
-  "buttonTextColor": "#FFFFFF",
-  "titleFontSize": 28,
-  "subtitleFontSize": 30,
-  "buttonFontSize": 18
+  "elements": [
+    { "type": "text", "id": "1", "text": "Welcome to Remote Compose!", "color": "#4A148C", "fontSize": 28 },
+    { "type": "text", "id": "2", "text": "This UI is configured remotely from a web editor.", "color": "#666666", "fontSize": 16 },
+    { "type": "spacer", "id": "3", "height": 24 },
+    { "type": "button", "id": "4", "text": "Get Started", "color": "#6200EA", "textColor": "#FFFFFF", "fontSize": 18 }
+  ]
 }
