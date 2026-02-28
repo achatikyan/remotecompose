@@ -3,7 +3,7 @@
   "scrollable": true,
   "padding": 12,
   "elements": [
-    { "type": "spacer", "id": "5", "height": 4 },
+    { "type": "spacer", "id": "5", "height": 40 },
 
     { "type": "card", "id": "10", "color": "#FFFFFF", "cornerRadius": 12, "paddingH": 0, "paddingV": 0, "borderColor": "#D0D0D0", "borderWidth": 1, "align": "start", "actionName": "navigate:estimate_detail", "children": [
       { "type": "card", "id": "10a", "color": "#00BCD4", "cornerRadius": 0, "paddingH": 16, "paddingV": 0, "align": "start", "children": [
