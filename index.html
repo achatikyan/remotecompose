@@ -252,7 +252,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=44;
+const BUILD_VERSION=45;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+getVersion()+'-alpha'}
 async function fetchScreen(key){
@@ -429,10 +429,12 @@ function childrenEditor(el,i,defaultChild){
     html+='</div></div>';
     children.forEach((ch,ci)=>{
         const summary=ch.text||ch.type;
-        html+=`<div class="child-item" id="child-${i}-${ci}">`;
-        html+=`<div class="child-hdr" role="button" tabindex="0" onclick="toggleChildExpand(${i},${ci})"><span class="badge ${ch.type}">${ch.type}</span><span class="child-summary">${esc(summary)}</span>`;
-        html+=`<button class="child-del-btn" onclick="event.stopPropagation();removeChild(${i},${ci})" title="Remove"><span class="material-icons-round" style="font-size:16px">close</span></button></div>`;
+        html+=`<div class="child-item" id="child-${i}-${ci}" style="display:flex;align-items:stretch">`;
+        html+=`<div style="flex:1;min-width:0">`;
+        html+=`<div class="child-hdr" role="button" tabindex="0" onclick="toggleChildExpand(${i},${ci})"><span class="badge ${ch.type}">${ch.type}</span><span class="child-summary">${esc(summary)}</span></div>`;
         html+=`<div class="child-editor">${buildChildEditor(ch,i,ci)}</div>`;
+        html+=`</div>`;
+        html+=`<button class="child-del-btn" onclick="event.stopPropagation();removeChild(${i},${ci})" title="Remove" style="align-self:flex-start;margin:6px 4px 0 0"><span class="material-icons-round" style="font-size:16px">close</span></button>`;
         html+=`</div>`});
     html+='</div>';return html}
 
