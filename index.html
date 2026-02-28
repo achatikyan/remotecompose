@@ -254,7 +254,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=65;
+const BUILD_VERSION=66;
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+BUILD_VERSION+'-alpha'}
 async function fetchScreen(key){
     const s=screens[key];
