@@ -6,7 +6,7 @@
     {
       "type": "spacer",
       "id": "45",
-      "height": 4
+      "height": 40
     },
     {
       "type": "card",
@@ -17,7 +17,7 @@
       "color": "#FFFFFF",
       "cornerRadius": 12,
       "borderColor": "#D0D0D0",
-      "borderWidth": 6,
+      "borderWidth": 2,
       "actionName": "navigate:estimate_detail",
       "children": [
         {
