@@ -26,7 +26,7 @@
         .btn-g{background:transparent;color:var(--ts)}.btn-g:hover{background:var(--sv)}
         .btn-s{padding:5px 10px;font-size:12px}.btn-s .material-icons-round{font-size:15px}
 
-        main{display:grid;grid-template-columns:1fr 430px;gap:20px;padding:20px 24px;max-width:1340px;margin:0 auto}
+        main{display:grid;grid-template-columns:1fr 430px;gap:20px;padding:20px 24px;max-width:100%;margin:0 auto}
         @media(max-width:900px){main{grid-template-columns:1fr}}
 
         .panel{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
@@ -122,7 +122,7 @@
         .empty-state .material-icons-round{font-size:40px;color:var(--outline);margin-bottom:8px}
         .empty-state p{font-size:13px}
 
-        .screen-bar{background:var(--surface);border-bottom:1px solid var(--outline);padding:10px 24px;display:flex;align-items:center;gap:8px;max-width:1340px;margin:0 auto}
+        .screen-bar{background:var(--surface);border-bottom:1px solid var(--outline);padding:10px 24px;display:flex;align-items:center;gap:8px;max-width:100%;margin:0 auto}
         .screen-bar .lbl{font-size:12px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px;margin-right:4px}
         .screen-tab{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1.5px solid var(--outline);border-radius:var(--rs);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--ts);transition:all .15s}
         .screen-tab:hover{border-color:var(--primary);color:var(--primary)}
@@ -260,7 +260,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=33;
+const BUILD_VERSION=34;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='v'+getVersion()}
 async function fetchScreen(key){
@@ -397,11 +397,11 @@ function buildEditor(el,i){
 function childrenEditor(el,i,defaultChild){
     const children=el.children||[];
     let html='<div class="children-area" onclick="event.stopPropagation()"><div class="child-label"><span>Children ('+children.length+')</span><div style="display:flex;gap:4px">';
-    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'text\')">T</button>';
-    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'button\')">B</button>';
-    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'spacer\')">S</button>';
-    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'divider\')">D</button>';
-    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'card\')">C</button>';
+    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'text\')">Text</button>';
+    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'button\')">Button</button>';
+    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'spacer\')">Spacer</button>';
+    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'divider\')">Divider</button>';
+    html+='<button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\'card\')">Card</button>';
     html+='</div></div>';
     children.forEach((ch,ci)=>{
         const summary=ch.text||ch.type;
@@ -441,20 +441,20 @@ function buildChildEditor(ch,i,ci){
             ch.children.forEach((gc,gi)=>{
                 if(gc.type==='text'){
                     html+=`<div style="display:flex;gap:6px;align-items:center;margin-bottom:4px">
-                        <span class="badge text" style="font-size:8px;padding:1px 4px">T</span>
+                        <span class="badge text" style="font-size:8px;padding:1px 4px">Text</span>
                         <input type="text" value="${esc(gc.text||'')}" style="flex:1;padding:3px 6px;border:1px solid var(--outline);border-radius:4px;font-size:11px" oninput="onGrandchildField(${i},${ci},${gi},'text',this.value)">
                         <input type="number" value="${gc.fontSize||14}" style="width:40px;padding:3px 4px;border:1px solid var(--outline);border-radius:4px;font-size:11px" oninput="onGrandchildField(${i},${ci},${gi},'fontSize',this.value)">
                         <input type="color" value="${gc.color||'#000000'}" style="width:22px;height:22px;border:none;padding:0;border-radius:4px" oninput="onGrandchildField(${i},${ci},${gi},'color',this.value)">
                     </div>`;
                 } else if(gc.type==='button'){
                     html+=`<div style="display:flex;gap:6px;align-items:center;margin-bottom:4px">
-                        <span class="badge button" style="font-size:8px;padding:1px 4px">B</span>
+                        <span class="badge button" style="font-size:8px;padding:1px 4px">Button</span>
                         <input type="text" value="${esc(gc.text||'')}" style="flex:1;padding:3px 6px;border:1px solid var(--outline);border-radius:4px;font-size:11px" oninput="onGrandchildField(${i},${ci},${gi},'text',this.value)">
                         <input type="color" value="${gc.color||'#6200EA'}" style="width:22px;height:22px;border:none;padding:0;border-radius:4px" oninput="onGrandchildField(${i},${ci},${gi},'color',this.value)">
                     </div>`;
                 } else if(gc.type==='spacer'){
                     html+=`<div style="display:flex;gap:6px;align-items:center;margin-bottom:4px">
-                        <span class="badge spacer" style="font-size:8px;padding:1px 4px">S</span>
+                        <span class="badge spacer" style="font-size:8px;padding:1px 4px">Spacer</span>
                         <span style="font-size:11px;color:var(--ts)">${gc.height||16}dp</span>
                     </div>`;
                 }
