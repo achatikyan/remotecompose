@@ -14,10 +14,10 @@
       "align": "start",
       "paddingH": 0,
       "paddingV": 0,
-      "color": "#E10909",
+      "color": "#FFFFFF",
       "cornerRadius": 12,
       "borderColor": "#D0D0D0",
-      "borderWidth": 2,
+      "borderWidth": 6,
       "actionName": "navigate:estimate_detail",
       "children": [
         {
