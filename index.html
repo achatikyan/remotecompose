@@ -195,7 +195,7 @@ const screens={
     estimate_detail:{file:'config_estimate_detail.json',label:'Est. Detail',elements:[],bg:'#FFFFFF',scrollable:true,padding:12}
 };
 let activeScreen='home';
-let elements=[],dragIdx=null,nextId=1,expandedIdx=-1;
+let elements=[],dragIdx=null,nextId=1,expandedIdx=-1,expandedChildId=null,expandedGcId=null;
 function uid(){return String(nextId++)}
 function currentFile(){return screens[activeScreen].file}
 const defaultsHome=[
@@ -254,7 +254,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=57;
+const BUILD_VERSION=58;
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+BUILD_VERSION+'-alpha'}
 async function fetchScreen(key){
     const s=screens[key];
@@ -302,7 +302,7 @@ const defaultsEstimateDetail=[
     {type:'row',children:[{type:'text',text:'Total',color:'#1A1A1A',fontSize:18},{type:'text',text:'$3,012.99',color:'#1A1A1A',fontSize:18}]}
 ];
 function loadScreenDefs(key){const m={home:defaultsHome,detail:defaultsDetail,estimates:defaultsEstimates,estimate_detail:defaultsEstimateDetail};const defs=m[key]||[];screens[key].elements=defs.map(e=>assignIds(JSON.parse(JSON.stringify(e))))}
-function activateScreen(){const s=screens[activeScreen];elements=s.elements;document.getElementById('bgColor').value=s.bg;document.getElementById('bgColorCode').textContent=s.bg.toUpperCase();expandedIdx=-1;render()}
+function activateScreen(){const s=screens[activeScreen];elements=s.elements;document.getElementById('bgColor').value=s.bg;document.getElementById('bgColorCode').textContent=s.bg.toUpperCase();expandedIdx=-1;expandedChildId=null;expandedGcId=null;render()}
 function switchScreen(key){if(key===activeScreen)return;screens[activeScreen].elements=elements;screens[activeScreen].bg=document.getElementById('bgColor').value;activeScreen=key;document.querySelectorAll('.screen-tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+key).classList.add('active');activateScreen()}
 function assignIds(e){e={...e,id:e.id||uid()};if(e.children)e.children=e.children.map(c=>assignIds({...c}));return e}
 function maxId(els){let m=0;els.forEach(e=>{m=Math.max(m,parseInt(e.id)||0);if(e.children)m=Math.max(m,maxId(e.children))});return m}
@@ -321,7 +321,7 @@ function onFieldChange(idx,field,value){if(field==='fontSize'||field==='height'|
 function onChildField(parentIdx,childIdx,field,value){if(field==='fontSize'||field==='cornerRadius'||field==='height'||field==='borderWidth'||field==='paddingH'||field==='paddingV')value=parseInt(value)||0;elements[parentIdx].children[childIdx][field]=value;updatePreview()}
 function onGrandchildField(parentIdx,childIdx,gcIdx,field,value){if(field==='fontSize'||field==='cornerRadius'||field==='height'||field==='borderWidth'||field==='paddingH'||field==='paddingV')value=parseInt(value)||0;elements[parentIdx].children[childIdx].children[gcIdx][field]=value;updatePreview()}
 function removeGrandchild(pi,ci,gi){elements[pi].children[ci].children.splice(gi,1);render()}
-function toggleGcExpand(pi,ci,gi){const el=document.getElementById('gc-'+pi+'-'+ci+'-'+gi);if(!el)return;const was=el.classList.contains('child-expanded');document.querySelectorAll('.child-item .child-item').forEach(c=>c.classList.remove('child-expanded'));if(!was)el.classList.add('child-expanded')}
+function toggleGcExpand(pi,ci,gi){const id='gc-'+pi+'-'+ci+'-'+gi;const el=document.getElementById(id);if(!el)return;const was=el.classList.contains('child-expanded');document.querySelectorAll('.child-item .child-item').forEach(c=>c.classList.remove('child-expanded'));if(!was){el.classList.add('child-expanded');expandedGcId=id}else{expandedGcId=null}}
 function buildGcEditor(gc,i,ci,gi){
     const f=(field,val)=>`onGrandchildField(${i},${ci},${gi},'${field}',this.value)`;
     let html='';
@@ -367,12 +367,12 @@ function onDragEnd(){dragIdx=null;document.querySelectorAll('.el-card').forEach(
 function onDragOver(e,idx){e.preventDefault();e.dataTransfer.dropEffect='move';document.querySelectorAll('.el-card').forEach(c=>c.classList.remove('drag-over'));e.currentTarget.closest('.el-card')?.classList.add('drag-over')}
 function onDrop(e,idx){e.preventDefault();if(dragIdx===null||dragIdx===idx)return;const m=elements.splice(dragIdx,1)[0];elements.splice(idx,0,m);dragIdx=null;render()}
 
-function onChildDragStart(e,pi,ci){e.stopPropagation();childDragInfo={type:'child',pi,ci};dragIdx=null;e.dataTransfer.effectAllowed='move';e.currentTarget.classList.add('dragging')}
+function onChildDragStart(e,pi,ci){e.stopPropagation();e.stopImmediatePropagation();childDragInfo={type:'child',pi,ci};dragIdx=null;e.dataTransfer.effectAllowed='move';e.dataTransfer.setDragImage(e.currentTarget,0,0);e.currentTarget.classList.add('dragging')}
 function onChildDragEnd(e){childDragInfo=null;document.querySelectorAll('.child-item').forEach(c=>c.classList.remove('dragging','drag-over'))}
 function onChildDragOver(e,pi,ci){e.preventDefault();e.stopPropagation();e.dataTransfer.dropEffect='move';document.querySelectorAll('.child-item').forEach(c=>c.classList.remove('drag-over'));e.currentTarget.closest('.child-item')?.classList.add('drag-over')}
 function onChildDrop(e,pi,ci){e.preventDefault();e.stopPropagation();if(!childDragInfo||childDragInfo.type!=='child'||childDragInfo.pi!==pi||childDragInfo.ci===ci)return;const arr=elements[pi].children;const m=arr.splice(childDragInfo.ci,1)[0];arr.splice(ci,0,m);childDragInfo=null;render()}
 
-function onGcDragStart(e,pi,ci,gi){e.stopPropagation();childDragInfo={type:'gc',pi,ci,gi};dragIdx=null;e.dataTransfer.effectAllowed='move';e.currentTarget.classList.add('dragging')}
+function onGcDragStart(e,pi,ci,gi){e.stopPropagation();e.stopImmediatePropagation();childDragInfo={type:'gc',pi,ci,gi};dragIdx=null;e.dataTransfer.effectAllowed='move';e.dataTransfer.setDragImage(e.currentTarget,0,0);e.currentTarget.classList.add('dragging')}
 function onGcDragOver(e,pi,ci,gi){e.preventDefault();e.stopPropagation();e.dataTransfer.dropEffect='move';document.querySelectorAll('.child-item .child-item').forEach(c=>c.classList.remove('drag-over'));e.currentTarget.closest('.child-item')?.classList.add('drag-over')}
 function onGcDrop(e,pi,ci,gi){e.preventDefault();e.stopPropagation();if(!childDragInfo||childDragInfo.type!=='gc'||childDragInfo.pi!==pi||childDragInfo.ci!==ci||childDragInfo.gi===gi)return;const arr=elements[pi].children[ci].children;const m=arr.splice(childDragInfo.gi,1)[0];arr.splice(gi,0,m);childDragInfo=null;render()}
 
@@ -399,6 +399,8 @@ function render(){
             <div class="el-actions"><button class="del" onclick="event.stopPropagation();removeElement(${i})" title="Delete"><span class="material-icons-round">close</span></button></div>
         </div>`}).join('');
     if(expandedIdx>=0&&expandedIdx<elements.length){document.querySelectorAll('.el-card')[expandedIdx]?.classList.add('expanded')}
+    if(expandedChildId){const ce=document.getElementById(expandedChildId);if(ce)ce.classList.add('child-expanded')}
+    if(expandedGcId){const ge=document.getElementById(expandedGcId);if(ge)ge.classList.add('child-expanded')}
     updatePreview()}
 
 function buildEditor(el,i){
@@ -491,11 +493,13 @@ function buildChildEditor(ch,i,ci){
     return html||'<div style="font-size:11px;color:#999">No editable properties</div>'}
 
 function toggleChildExpand(parentIdx,childIdx){
-    const el=document.getElementById('child-'+parentIdx+'-'+childIdx);
+    const id='child-'+parentIdx+'-'+childIdx;
+    const el=document.getElementById(id);
     if(!el)return;
     const wasExpanded=el.classList.contains('child-expanded');
     document.querySelectorAll('.child-item').forEach(c=>c.classList.remove('child-expanded'));
-    if(!wasExpanded)el.classList.add('child-expanded')}
+    expandedGcId=null;
+    if(!wasExpanded){el.classList.add('child-expanded');expandedChildId=id}else{expandedChildId=null}}
 
 
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
