@@ -145,6 +145,7 @@
         <span class="lbl">Screen:</span>
         <button class="screen-tab active" id="tab-home" onclick="switchScreen('home')"><span class="material-icons-round">home</span>Home</button>
         <button class="screen-tab" id="tab-detail" onclick="switchScreen('detail')"><span class="material-icons-round">article</span>Detail</button>
+        <button class="screen-tab" id="tab-estimates" onclick="switchScreen('estimates')"><span class="material-icons-round">receipt_long</span>Estimates</button>
     </div>
     <main>
         <div class="panel">
@@ -195,7 +196,8 @@
 const REPO='achatikyan',REPO_N='remotecompose';
 const screens={
     home:{file:'config.json',label:'Home',elements:[],bg:'#F5F0FF'},
-    detail:{file:'config_detail.json',label:'Detail',elements:[],bg:'#E8F5E9'}
+    detail:{file:'config_detail.json',label:'Detail',elements:[],bg:'#1A1A2E'},
+    estimates:{file:'config_estimates.json',label:'Estimates',elements:[],bg:'#F5F5F5'}
 };
 let activeScreen='home';
 let elements=[],dragIdx=null,nextId=1,expandedIdx=-1;
@@ -254,20 +256,55 @@ const defaultsDetail=[
     {type:'spacer',height:12},
     {type:'text',text:'No app update required.',color:'#5C5C7A',fontSize:11}
 ];
-function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail')}
-const BUILD_VERSION=21;
+function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates')}
+const BUILD_VERSION=22;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='v'+getVersion()}
 async function fetchScreen(key){
     const s=screens[key];
     try{const r=await fetch(s.file+'?'+Date.now());if(r.ok){const c=await r.json();s.bg=c.backgroundColor||s.bg;s.elements=(c.elements||[]).map(e=>assignIds(e));nextId=Math.max(nextId,maxId(s.elements)+1)}else{loadScreenDefs(key)}}catch{loadScreenDefs(key)}
     if(key===activeScreen)activateScreen()}
-function loadScreenDefs(key){const defs=key==='home'?defaultsHome:defaultsDetail;screens[key].elements=defs.map(e=>assignIds(JSON.parse(JSON.stringify(e))));screens[key].bg=key==='home'?'#F5F0FF':'#1A1A2E'}
+const defaultsEstimates=[
+    {type:'spacer',height:4},
+    {type:'row',children:[
+        {type:'button',text:'Calculate',color:'#F0F0F0',textColor:'#333333',fontSize:14,cornerRadius:20,actionName:'calculate'},
+        {type:'button',text:'Show all pricing',color:'#00BCD4',textColor:'#FFFFFF',fontSize:13,cornerRadius:20,actionName:'pricing_display'}
+    ]},
+    {type:'spacer',height:8},
+    {type:'button',text:'Add estimates from template',color:'#F0F0F0',textColor:'#444444',fontSize:14,cornerRadius:24,actionName:'add_template'},
+    {type:'spacer',height:12},
+    {type:'card',color:'#FFFFFF',cornerRadius:12,paddingH:0,paddingV:0,borderColor:'#E0E0E0',borderWidth:1,align:'start',children:[
+        {type:'card',color:'#00BCD4',cornerRadius:0,paddingH:16,paddingV:8,children:[{type:'text',text:'Best',color:'#FFFFFF',fontSize:14}]},
+        {type:'spacer',height:12},
+        {type:'text',text:'Test Estimate',color:'#1A1A1A',fontSize:22},
+        {type:'text',text:'TOTAL',color:'#888888',fontSize:11},
+        {type:'text',text:'$3,012.99',color:'#1A1A1A',fontSize:20},
+        {type:'spacer',height:10},
+        {type:'text',text:'3 ITEMS',color:'#00BCD4',fontSize:12},
+        {type:'text',text:'1 Service(s), 1 Equipment, 1 Material(s)',color:'#666666',fontSize:13},
+        {type:'spacer',height:10},
+        {type:'button',text:'+  Add items',color:'#F5F5F5',textColor:'#333333',fontSize:14,cornerRadius:24,borderColor:'#E0E0E0',borderWidth:1,actionName:'add_items_1'}
+    ]},
+    {type:'spacer',height:14},
+    {type:'card',color:'#FFFFFF',cornerRadius:12,paddingH:0,paddingV:0,borderColor:'#E0E0E0',borderWidth:1,align:'start',children:[
+        {type:'card',color:'#B2EBF2',cornerRadius:0,paddingH:16,paddingV:8,children:[{type:'text',text:'Second Estimate',color:'#006064',fontSize:14}]},
+        {type:'spacer',height:12},
+        {type:'text',text:'Second Estimate',color:'#1A1A1A',fontSize:22},
+        {type:'text',text:'TOTAL',color:'#888888',fontSize:11},
+        {type:'text',text:'$392.93',color:'#1A1A1A',fontSize:20},
+        {type:'spacer',height:10},
+        {type:'text',text:'5 ITEMS',color:'#00BCD4',fontSize:12},
+        {type:'text',text:'4 Service(s), 3 Equipment, 2 Material(s)',color:'#666666',fontSize:13},
+        {type:'spacer',height:10},
+        {type:'button',text:'+  Add items',color:'#F5F5F5',textColor:'#333333',fontSize:14,cornerRadius:24,borderColor:'#E0E0E0',borderWidth:1,actionName:'add_items_2'}
+    ]}
+];
+function loadScreenDefs(key){const defs=key==='home'?defaultsHome:key==='detail'?defaultsDetail:defaultsEstimates;screens[key].elements=defs.map(e=>assignIds(JSON.parse(JSON.stringify(e))));screens[key].bg=screens[key].bg||'#F5F5F5'}
 function activateScreen(){const s=screens[activeScreen];elements=s.elements;document.getElementById('bgColor').value=s.bg;document.getElementById('bgColorCode').textContent=s.bg.toUpperCase();document.getElementById('fetchUrl').textContent='https://achatikyan.github.io/remotecompose/'+s.file;expandedIdx=-1;render()}
 function switchScreen(key){if(key===activeScreen)return;screens[activeScreen].elements=elements;screens[activeScreen].bg=document.getElementById('bgColor').value;activeScreen=key;document.querySelectorAll('.screen-tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+key).classList.add('active');activateScreen()}
 function assignIds(e){e={...e,id:e.id||uid()};if(e.children)e.children=e.children.map(c=>assignIds({...c}));return e}
 function maxId(els){let m=0;els.forEach(e=>{m=Math.max(m,parseInt(e.id)||0);if(e.children)m=Math.max(m,maxId(e.children))});return m}
-function resetToDefaults(){nextId=1;loadScreenDefs('home');loadScreenDefs('detail');activateScreen();showToast('Reset to defaults','restart_alt')}
+function resetToDefaults(){nextId=1;loadScreenDefs('home');loadScreenDefs('detail');loadScreenDefs('estimates');activateScreen();showToast('Reset to defaults','restart_alt')}
 function addElement(type){const el={type,id:uid()};
     if(type==='text'){el.text='New text';el.color='#000000';el.fontSize=16}
     else if(type==='button'){el.text='Button';el.color='#6200EA';el.textColor='#FFFFFF';el.fontSize=16;el.cornerRadius=24;el.actionName='btn_'+el.id}

@@ -21,6 +21,8 @@
     { "type": "spacer", "id": "9", "height": 6 },
     { "type": "divider", "id": "10", "color": "#E0D6F2", "height": 1 },
     { "type": "spacer", "id": "11", "height": 6 },
-    { "type": "button", "id": "12", "text": "Go to Detail Screen →", "color": "#4A148C", "textColor": "#FFFFFF", "fontSize": 16, "cornerRadius": 28, "actionName": "navigate:detail", "borderColor": "#7E57C2", "borderWidth": 2 }
+    { "type": "button", "id": "12", "text": "Go to Detail Screen →", "color": "#4A148C", "textColor": "#FFFFFF", "fontSize": 16, "cornerRadius": 28, "actionName": "navigate:detail", "borderColor": "#7E57C2", "borderWidth": 2 },
+    { "type": "spacer", "id": "13", "height": 8 },
+    { "type": "button", "id": "14", "text": "View Estimates →", "color": "#00897B", "textColor": "#FFFFFF", "fontSize": 16, "cornerRadius": 28, "actionName": "navigate:estimates" }
   ]
 }
