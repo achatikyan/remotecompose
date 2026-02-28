@@ -24,13 +24,8 @@
         { "type": "button", "id": "10j", "text": "+ Add items", "color": "#FFFFFF", "textColor": "#333333", "fontSize": 14, "cornerRadius": 20, "borderColor": "#CCCCCC", "borderWidth": 1, "actionName": "add_items_1" }
       ]},
       { "type": "divider", "id": "10l", "color": "#E0E0E0", "height": 1 },
-      { "type": "card", "id": "10m", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 16, "paddingV": 8, "align": "start", "children": [
-        { "type": "row", "id": "10n", "children": [
-          { "type": "icon", "id": "10n00", "text": "check_box", "color": "#1A1A1A", "fontSize": 22, "actionName": "recommend_1" },
-          { "type": "text", "id": "10n0", "text": "Recommend", "color": "#444444", "fontSize": 14 },
-          { "type": "icon", "id": "10n2", "text": "content_copy", "color": "#444444", "fontSize": 24, "actionName": "duplicate_1" },
-          { "type": "icon", "id": "10n3", "text": "more_vert", "color": "#444444", "fontSize": 24, "actionName": "more_1" }
-        ]}
+      { "type": "card", "id": "10m", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 16, "paddingV": 10, "align": "start", "children": [
+        { "type": "text", "id": "10n0", "text": "Recommend", "color": "#444444", "fontSize": 14 }
       ]}
     ]}
   ]
