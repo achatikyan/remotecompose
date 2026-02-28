@@ -77,8 +77,8 @@
         .child-item .badge{font-size:9px;padding:1px 6px}
         .child-item input{flex:1;padding:4px 8px;border:1px solid var(--outline);border-radius:6px;font-family:inherit;font-size:12px}
         .child-item input:focus{outline:none;border-color:var(--primary)}
-        .child-item button{background:none;border:none;cursor:pointer;padding:2px;color:var(--ts);display:flex}
-        .child-item button:hover{color:var(--danger)}
+        .child-item button{background:none;border:none;cursor:pointer;padding:4px;color:var(--ts);display:flex;border-radius:4px;flex-shrink:0}
+        .child-item button:hover{color:var(--danger);background:var(--dl)}
 
         .bg-sec{padding:12px 20px;border-top:1px solid var(--outline);display:flex;align-items:center;gap:12px}
         .bg-sec label{font-size:12px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px}
@@ -277,12 +277,12 @@ function buildEditor(el,i){
 
 function childrenEditor(el,i,defaultChild){
     const children=el.children||[];
-    let html='<div class="children-area"><div class="child-label"><span>Children ('+children.length+')</span><button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\''+defaultChild+'\')"><span class="material-icons-round">add</span>Add</button></div>';
+    let html='<div class="children-area" onclick="event.stopPropagation()"><div class="child-label"><span>Children ('+children.length+')</span><button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\''+defaultChild+'\')"><span class="material-icons-round">add</span>Add</button></div>';
     children.forEach((ch,ci)=>{
         html+=`<div class="child-item"><span class="badge ${ch.type}">${ch.type}</span>`;
         if(ch.type==='text')html+=`<input type="text" value="${esc(ch.text||'')}" onclick="event.stopPropagation()" oninput="onChildField(${i},${ci},'text',this.value)">`;
         else html+=`<input type="text" value="${esc(ch.text||'')}" onclick="event.stopPropagation()" oninput="onChildField(${i},${ci},'text',this.value)">`;
-        html+=`<button onclick="event.stopPropagation();removeChild(${i},${ci})"><span class="material-icons-round" style="font-size:16px">close</span></button></div>`});
+        html+=`<button onclick="event.preventDefault();event.stopPropagation();removeChild(${i},${ci});return false;" title="Remove"><span class="material-icons-round" style="font-size:16px">close</span></button></div>`});
     html+='</div>';return html}
 
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
