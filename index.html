@@ -254,7 +254,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=68;
+const BUILD_VERSION=69;
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+BUILD_VERSION+'-alpha'}
 async function fetchScreen(key){
     const s=screens[key];
@@ -596,17 +596,19 @@ function stopDeployTimer(){if(deployTimer){clearInterval(deployTimer);deployTime
 
 async function pollActionStatus(token){
     await new Promise(r=>setTimeout(r,5000));
-    let foundRunId=null;
+    let targetId=null;
     for(let i=0;i<90;i++){
         try{
-            const resp=await fetch(`https://api.github.com/repos/${REPO}/${REPO_N}/actions/workflows/convert.yml/runs?per_page=3`,{headers:{Authorization:`Bearer ${token}`}});
+            const resp=await fetch(`https://api.github.com/repos/${REPO}/${REPO_N}/actions/workflows/convert.yml/runs?per_page=1`,{headers:{Authorization:`Bearer ${token}`}});
             if(!resp.ok){await new Promise(r=>setTimeout(r,3000));continue}
             const data=await resp.json();
-            const runs=data.workflow_runs||[];
-            const run=foundRunId?runs.find(r=>r.id===foundRunId):runs.find(r=>new Date(r.created_at).getTime()>deployStartTime-5000);
+            const run=(data.workflow_runs||[])[0];
             if(!run){await new Promise(r=>setTimeout(r,3000));continue}
-            foundRunId=run.id;
-            if(run.status==='completed'){
+            if(!targetId){
+                if(run.status!=='completed'){targetId=run.id}
+                else{await new Promise(r=>setTimeout(r,3000));continue}
+            }
+            if(run.id===targetId&&run.status==='completed'){
                 setDeploy(run.conclusion==='success'?'action_done':'action_fail');
                 return;
             }
