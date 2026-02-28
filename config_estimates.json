@@ -10,7 +10,7 @@
     { "type": "button", "id": "4", "text": "Add estimates from template", "color": "#F0F0F0", "textColor": "#444444", "fontSize": 14, "cornerRadius": 24, "actionName": "add_template" },
     { "type": "spacer", "id": "5", "height": 12 },
 
-    { "type": "card", "id": "10", "color": "#FFFFFF", "cornerRadius": 12, "paddingH": 0, "paddingV": 0, "borderColor": "#E0E0E0", "borderWidth": 1, "align": "start", "children": [
+    { "type": "card", "id": "10", "color": "#FFFFFF", "cornerRadius": 12, "paddingH": 0, "paddingV": 0, "borderColor": "#E0E0E0", "borderWidth": 1, "align": "start", "actionName": "navigate:estimate_detail", "children": [
       { "type": "card", "id": "10a", "color": "#00BCD4", "cornerRadius": 0, "paddingH": 16, "paddingV": 8, "children": [
         { "type": "text", "id": "10a1", "text": "Best", "color": "#FFFFFF", "fontSize": 14 }
       ]},
@@ -33,7 +33,7 @@
 
     { "type": "spacer", "id": "20", "height": 14 },
 
-    { "type": "card", "id": "30", "color": "#FFFFFF", "cornerRadius": 12, "paddingH": 0, "paddingV": 0, "borderColor": "#E0E0E0", "borderWidth": 1, "align": "start", "children": [
+    { "type": "card", "id": "30", "color": "#FFFFFF", "cornerRadius": 12, "paddingH": 0, "paddingV": 0, "borderColor": "#E0E0E0", "borderWidth": 1, "align": "start", "actionName": "navigate:estimate_detail", "children": [
       { "type": "card", "id": "30a", "color": "#B2EBF2", "cornerRadius": 0, "paddingH": 16, "paddingV": 8, "children": [
         { "type": "text", "id": "30a1", "text": "Second Estimate", "color": "#006064", "fontSize": 14 }
       ]},
