@@ -7,9 +7,9 @@
 
     { "type": "card", "id": "10", "color": "#FFFFFF", "cornerRadius": 12, "paddingH": 0, "paddingV": 0, "borderColor": "#D0D0D0", "borderWidth": 1, "align": "start", "actionName": "navigate:estimate_detail", "children": [
       { "type": "card", "id": "10a", "color": "#00BCD4", "cornerRadius": 0, "paddingH": 16, "paddingV": 0, "align": "start", "children": [
-        { "type": "spacer", "id": "10a0", "height": 8 },
-        { "type": "text", "id": "10a1", "text": "Best", "color": "#FFFFFF", "fontSize": 14 },
-        { "type": "spacer", "id": "10a2", "height": 8 }
+        { "type": "spacer", "id": "10a0", "height": 5 },
+        { "type": "text", "id": "10a1", "text": "Best", "color": "#1A1A1A", "fontSize": 16 },
+        { "type": "spacer", "id": "10a2", "height": 5 }
       ]},
       { "type": "card", "id": "10b", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 16, "paddingV": 12, "align": "start", "children": [
         { "type": "text", "id": "10c", "text": "Test Estimate", "color": "#1A1A1A", "fontSize": 20 },
