@@ -1,0 +1,44 @@
+name: Convert JSON to Remote Compose Binary
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '*.json'
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout web repo
+        uses: actions/checkout@v4
+
+      - name: Checkout server converter
+        uses: actions/checkout@v4
+        with:
+          repository: achatikyan/remotecompose-server
+          path: converter
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Convert JSON configs to binary .rc files
+        run: |
+          cd converter
+          chmod +x gradlew
+          ./gradlew run --args="--dir $GITHUB_WORKSPACE $GITHUB_WORKSPACE"
+
+      - name: Commit binary files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add *.rc
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-generate binary .rc files from JSON configs"
+            git push
+          fi

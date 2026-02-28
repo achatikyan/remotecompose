@@ -13,10 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.remotecompose.shared.ElementConfig
+import com.example.remotecompose.shared.LayoutConfig
+import com.example.remotecompose.shared.parseColorLong
+
+private fun parseColor(hex: String): Color = Color(parseColorLong(hex))
 
 @Composable
 fun PreviewRenderer(config: LayoutConfig) {
@@ -49,7 +54,6 @@ private fun RenderElement(el: ElementConfig) {
         "divider" -> DividerElement(el)
         "card" -> CardElement(el)
         "row" -> RowElement(el)
-        "icon" -> IconElement(el)
     }
 }
 
@@ -68,28 +72,6 @@ private fun TextElement(el: ElementConfig) {
 }
 
 @Composable
-private fun IconElement(el: ElementConfig) {
-    val size = (el.fontSize ?: 24)
-    val color = parseColor(el.color ?: "#333333")
-    val label = when (el.text) {
-        "content_copy" -> "[]"
-        "more_vert" -> ":"
-        else -> "o"
-    }
-    Box(
-        modifier = Modifier.size(size.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = label,
-            fontSize = (size - 4).sp,
-            color = color,
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
-
-@Composable
 private fun ButtonElement(el: ElementConfig, fillWidth: Boolean = true) {
     val radius = el.cornerRadius ?: 24
     val bgColor = parseColor(el.color ?: "#6200EA")
@@ -103,7 +85,7 @@ private fun ButtonElement(el: ElementConfig, fillWidth: Boolean = true) {
     if (el.borderColor != null && (el.borderWidth ?: 0) > 0) {
         mod = mod.border(
             width = (el.borderWidth ?: 1).dp,
-            color = parseColor(el.borderColor),
+            color = parseColor(el.borderColor!!),
             shape = shape
         )
     }
@@ -164,7 +146,7 @@ private fun CardElement(el: ElementConfig) {
     if (el.borderColor != null && (el.borderWidth ?: 0) > 0) {
         mod = mod.border(
             width = (el.borderWidth ?: 1).dp,
-            color = parseColor(el.borderColor),
+            color = parseColor(el.borderColor!!),
             shape = shape
         )
     }

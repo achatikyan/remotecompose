@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.ComposeViewport
 import kotlinx.browser.document
+import com.example.remotecompose.shared.LayoutConfig
 import kotlinx.serialization.json.Json
 
 private val json = Json { ignoreUnknownKeys = true }
