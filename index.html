@@ -254,7 +254,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=54;
+const BUILD_VERSION=55;
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+BUILD_VERSION+'-alpha'}
 async function fetchScreen(key){
     const s=screens[key];
@@ -495,6 +495,7 @@ function updatePreview(){
     const bg=document.getElementById('bgColor').value;
     document.getElementById('bgColorCode').textContent=bg.toUpperCase();
     screen.style.backgroundColor=bg;
+    screen.style.justifyContent=screens[activeScreen].scrollable?'flex-start':'center';
     if(!elements.length){screen.innerHTML='<div style="color:#999;font-size:14px">Empty layout</div>';return}
     screen.innerHTML=elements.map(el=>renderPreviewEl(el)).join('')}
 
