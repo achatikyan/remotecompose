@@ -5,23 +5,27 @@
   "elements": [
     { "type": "spacer", "id": "5", "height": 4 },
 
-    { "type": "card", "id": "10", "color": "#FFFFFF", "cornerRadius": 12, "paddingH": 0, "paddingV": 0, "borderColor": "#D0D0D0", "borderWidth": 2, "align": "start", "actionName": "navigate:estimate_detail", "children": [
-      { "type": "card", "id": "10a", "color": "#00BCD4", "cornerRadius": 0, "paddingH": 14, "paddingV": 6, "align": "start", "children": [
-        { "type": "text", "id": "10a1", "text": "Best", "color": "#FFFFFF", "fontSize": 13 }
+    { "type": "card", "id": "10", "color": "#FFFFFF", "cornerRadius": 12, "paddingH": 0, "paddingV": 0, "borderColor": "#D0D0D0", "borderWidth": 1, "align": "start", "actionName": "navigate:estimate_detail", "children": [
+      { "type": "card", "id": "10a", "color": "#00BCD4", "cornerRadius": 0, "paddingH": 16, "paddingV": 0, "align": "start", "children": [
+        { "type": "spacer", "id": "10a0", "height": 8 },
+        { "type": "text", "id": "10a1", "text": "Best", "color": "#FFFFFF", "fontSize": 14 },
+        { "type": "spacer", "id": "10a2", "height": 8 }
       ]},
-      { "type": "card", "id": "10b", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 14, "paddingV": 10, "align": "start", "children": [
-        { "type": "text", "id": "10c", "text": "Test Estimate", "color": "#1A1A1A", "fontSize": 18 },
-        { "type": "text", "id": "10d", "text": "TOTAL", "color": "#999999", "fontSize": 10 },
-        { "type": "text", "id": "10e", "text": "$3,012.99", "color": "#1A1A1A", "fontSize": 17 },
-        { "type": "spacer", "id": "10f", "height": 6 },
+      { "type": "card", "id": "10b", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 16, "paddingV": 12, "align": "start", "children": [
+        { "type": "text", "id": "10c", "text": "Test Estimate", "color": "#1A1A1A", "fontSize": 20 },
+        { "type": "spacer", "id": "10c1", "height": 2 },
+        { "type": "text", "id": "10d", "text": "TOTAL", "color": "#888888", "fontSize": 11 },
+        { "type": "text", "id": "10e", "text": "$3,012.99", "color": "#1A1A1A", "fontSize": 18 },
+        { "type": "spacer", "id": "10e1", "height": 8 },
         { "type": "text", "id": "10g", "text": "3 ITEMS", "color": "#00BCD4", "fontSize": 11 },
-        { "type": "text", "id": "10h", "text": "1 Service(s), 1 Equipment, 1 Material(s)", "color": "#666666", "fontSize": 12 },
-        { "type": "spacer", "id": "10i", "height": 8 },
-        { "type": "button", "id": "10j", "text": "+  Add items", "color": "#FFFFFF", "textColor": "#333333", "fontSize": 13, "cornerRadius": 20, "borderColor": "#DDDDDD", "borderWidth": 1, "actionName": "add_items_1" }
+        { "type": "spacer", "id": "10g1", "height": 2 },
+        { "type": "text", "id": "10h", "text": "1 Service(s), 1 Equipment, 1 Material(s)", "color": "#444444", "fontSize": 13 },
+        { "type": "spacer", "id": "10i", "height": 12 },
+        { "type": "button", "id": "10j", "text": "+ Add items", "color": "#FFFFFF", "textColor": "#333333", "fontSize": 14, "cornerRadius": 20, "borderColor": "#CCCCCC", "borderWidth": 1, "actionName": "add_items_1" }
       ]},
-      { "type": "divider", "id": "10l", "color": "#EEEEEE", "height": 1 },
-      { "type": "card", "id": "10m", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 14, "paddingV": 8, "align": "start", "children": [
-        { "type": "text", "id": "10n1", "text": "Recommend", "color": "#444444", "fontSize": 13 }
+      { "type": "divider", "id": "10l", "color": "#E0E0E0", "height": 1 },
+      { "type": "card", "id": "10m", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 16, "paddingV": 10, "align": "start", "children": [
+        { "type": "text", "id": "10n1", "text": "Recommend", "color": "#444444", "fontSize": 14 }
       ]}
     ]}
   ]
