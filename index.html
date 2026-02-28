@@ -260,7 +260,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=35;
+const BUILD_VERSION=36;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='v'+getVersion()}
 async function fetchScreen(key){
@@ -468,14 +468,14 @@ function buildChildEditor(ch,i,ci){
         <div class="fr"><div class="field"><label>Pad H</label><input type="number" min="0" max="50" value="${ch.paddingH||0}" oninput="onChildField(${i},${ci},'paddingH',this.value)"></div>
         <div class="field"><label>Pad V</label><input type="number" min="0" max="50" value="${ch.paddingV||0}" oninput="onChildField(${i},${ci},'paddingV',this.value)"></div></div>`;
         if(ch.children&&ch.children.length){
-            html+=`<div style="margin-top:8px;padding:8px;background:var(--surface);border:1px dashed var(--outline);border-radius:6px">`;
+            html+=`<div style="margin-top:8px;padding:8px;background:var(--surface);border:1px dashed var(--outline);border-radius:6px" onclick="event.stopPropagation()">`;
             html+=`<div style="font-size:10px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Nested (${ch.children.length})</div>`;
             ch.children.forEach((gc,gi)=>{
                 const gcSummary=gc.text||gc.type+' '+(gc.height?gc.height+'dp':'');
                 html+=`<div class="child-item" id="gc-${i}-${ci}-${gi}">`;
-                html+=`<div class="child-hdr" role="button" tabindex="0" onclick="toggleGcExpand(${i},${ci},${gi})"><span class="badge ${gc.type}">${gc.type}</span><span class="child-summary">${esc(gcSummary)}</span>`;
+                html+=`<div class="child-hdr" role="button" tabindex="0" onclick="event.stopPropagation();toggleGcExpand(${i},${ci},${gi})"><span class="badge ${gc.type}">${gc.type}</span><span class="child-summary">${esc(gcSummary)}</span>`;
                 html+=`<button class="child-del-btn" onclick="event.stopPropagation();removeGrandchild(${i},${ci},${gi})" title="Remove"><span class="material-icons-round" style="font-size:16px">close</span></button></div>`;
-                html+=`<div class="child-editor">${buildGcEditor(gc,i,ci,gi)}</div>`;
+                html+=`<div class="child-editor" onclick="event.stopPropagation()">${buildGcEditor(gc,i,ci,gi)}</div>`;
                 html+=`</div>`;
             });
             html+=`</div>`;
