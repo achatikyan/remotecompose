@@ -228,7 +228,7 @@ const defaultsDetail=[
     {type:'button',text:'Tap Me!',color:'#2E7D32',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'detail_action'}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail')}
-const BUILD_VERSION=12;
+const BUILD_VERSION=16;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='v'+getVersion()}
 async function fetchScreen(key){
@@ -317,10 +317,17 @@ function childrenEditor(el,i,defaultChild){
     let html='<div class="children-area" onclick="event.stopPropagation()"><div class="child-label"><span>Children ('+children.length+')</span><button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\''+defaultChild+'\')"><span class="material-icons-round">add</span>Add</button></div>';
     children.forEach((ch,ci)=>{
         html+=`<div class="child-item"><span class="badge ${ch.type}">${ch.type}</span>`;
-        if(ch.type==='text')html+=`<input type="text" value="${esc(ch.text||'')}" onclick="event.stopPropagation()" oninput="onChildField(${i},${ci},'text',this.value)">`;
-        else html+=`<input type="text" value="${esc(ch.text||'')}" onclick="event.stopPropagation()" oninput="onChildField(${i},${ci},'text',this.value)">`;
-        html+=`<button onclick="event.preventDefault();event.stopPropagation();removeChild(${i},${ci});return false;" title="Remove"><span class="material-icons-round" style="font-size:16px">close</span></button></div>`});
+        html+=`<input type="text" value="${esc(ch.text||'')}" onclick="event.stopPropagation()" oninput="onChildField(${i},${ci},'text',this.value)">`;
+        html+=`<button class="child-del-btn" data-parent="${i}" data-child="${ci}" title="Remove"><span class="material-icons-round" style="font-size:16px">close</span></button></div>`});
     html+='</div>';return html}
+
+document.addEventListener('click',function(e){
+    const btn=e.target.closest('.child-del-btn');
+    if(!btn)return;
+    e.preventDefault();e.stopPropagation();
+    const pi=parseInt(btn.dataset.parent),ci=parseInt(btn.dataset.child);
+    removeChild(pi,ci);
+})
 
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
