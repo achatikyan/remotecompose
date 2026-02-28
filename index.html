@@ -179,7 +179,7 @@
             <div class="panel" style="position:sticky;top:76px">
                 <div class="ph"><h2><span class="material-icons-round">phone_android</span>Live Preview</h2></div>
                 <div class="pb" style="display:flex;justify-content:center;padding:20px 12px">
-                    <div class="phone-frame"><div class="phone-camera"></div><iframe id="composePreview" src="preview/index.html" style="width:100%;height:100%;border:none;background:white"></iframe></div>
+                    <div class="phone-frame"><div class="phone-camera"></div><iframe id="composePreview" src="preview/index.html" onload="onPreviewLoad()" style="width:100%;height:100%;border:none;background:white"></iframe></div>
                 </div>
             </div>
         </div>
@@ -512,10 +512,17 @@ function esc(s){const d=document.createElement('div');d.textContent=s;return d.i
 
 function updatePreview(){
     document.getElementById('bgColorCode').textContent=document.getElementById('bgColor').value.toUpperCase();
+    sendToPreview()}
+function sendToPreview(){
     const iframe=document.getElementById('composePreview');
     if(iframe&&iframe.contentWindow){
         try{iframe.contentWindow.postMessage(JSON.stringify(getConfig()),'*')}catch(e){}
-    }
+    }}
+function onPreviewLoad(){
+    setTimeout(sendToPreview,500);
+    setTimeout(sendToPreview,1500);
+    setTimeout(sendToPreview,3000);
+    setTimeout(sendToPreview,5000);
 }
 
 function renderPreviewEl(el){
