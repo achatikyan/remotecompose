@@ -57,7 +57,7 @@
             {
               "type": "spacer",
               "id": "50_sp",
-              "height": 400
+              "height": 4
             },
             {
               "type": "text",
