@@ -1,5 +1,6 @@
 {
   "backgroundColor": "#FFFFFF",
+  "scrollable": true,
   "elements": [
     { "type": "card", "id": "1", "color": "#F5F5F5", "cornerRadius": 12, "paddingH": 0, "paddingV": 0, "align": "start", "children": [
       { "type": "card", "id": "1a", "color": "#E0E0E0", "cornerRadius": 0, "paddingH": 16, "paddingV": 10, "children": [
