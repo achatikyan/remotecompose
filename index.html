@@ -82,7 +82,8 @@
         .child-item .child-del-btn{background:none;border:none;cursor:pointer;padding:4px;color:var(--ts);display:flex;border-radius:4px;flex-shrink:0}
         .child-item .child-del-btn:hover{color:var(--danger);background:var(--dl)}
         .child-editor{max-height:0;overflow:hidden;transition:max-height .25s ease,opacity .2s ease;opacity:0;padding:0;border-top:none;background:var(--sv)}
-        .child-item.child-expanded > .child-editor{max-height:none;overflow:visible;opacity:1;padding:8px;border-top:1px solid var(--outline)}
+        .child-item.child-expanded > .child-editor,
+        .child-item.child-expanded > div > .child-editor{max-height:none;overflow:visible;opacity:1;padding:8px;border-top:1px solid var(--outline)}
         .child-editor .field{margin-bottom:8px}
         .child-editor .field label{font-size:10px}
         .child-editor .field input[type="text"],.child-editor .field input[type="number"]{padding:5px 8px;font-size:12px}
@@ -253,7 +254,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=52;
+const BUILD_VERSION=53;
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+BUILD_VERSION+'-alpha'}
 async function fetchScreen(key){
     const s=screens[key];
