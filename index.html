@@ -196,7 +196,7 @@
 const REPO='achatikyan',REPO_N='remotecompose';
 const screens={
     home:{file:'config.json',label:'Home',elements:[],bg:'#F5F0FF'},
-    detail:{file:'config_detail.json',label:'Detail',elements:[],bg:'#1A1A2E'},
+    detail:{file:'config_detail.json',label:'Detail',elements:[],bg:'#F0F4F8'},
     estimates:{file:'config_estimates.json',label:'Estimates',elements:[],bg:'#F5F5F5'}
 };
 let activeScreen='home';
@@ -228,36 +228,36 @@ const defaultsHome=[
 ];
 const defaultsDetail=[
     {type:'spacer',height:8},
-    {type:'text',text:'Feature Showcase',color:'#E0E0E0',fontSize:26},
-    {type:'text',text:'Everything below is server-driven',color:'#7C7C9A',fontSize:13},
+    {type:'text',text:'Feature Showcase',color:'#1A1A2E',fontSize:26},
+    {type:'text',text:'Everything below is server-driven',color:'#6B7280',fontSize:13},
     {type:'spacer',height:16},
-    {type:'card',color:'#262640',cornerRadius:16,borderColor:'#3A3A5C',borderWidth:1,paddingH:18,paddingV:14,children:[
-        {type:'text',text:'Remote Layouts',color:'#BB86FC',fontSize:16},
-        {type:'text',text:'Text, buttons, cards, rows, spacers, dividers \u2014 all rendered natively via Remote Compose.',color:'#9E9EBF',fontSize:12}
+    {type:'card',color:'#FFFFFF',cornerRadius:16,borderColor:'#E2E8F0',borderWidth:1,paddingH:18,paddingV:14,children:[
+        {type:'text',text:'Remote Layouts',color:'#6200EA',fontSize:16},
+        {type:'text',text:'Text, buttons, cards, rows, spacers, dividers \u2014 all rendered natively via Remote Compose.',color:'#6B7280',fontSize:12}
     ]},
     {type:'spacer',height:8},
-    {type:'card',color:'#262640',cornerRadius:16,borderColor:'#3A3A5C',borderWidth:1,paddingH:18,paddingV:14,children:[
-        {type:'text',text:'Click Actions',color:'#03DAC6',fontSize:16},
-        {type:'text',text:'Buttons fire HostAction events. The app handles them \u2014 toasts, navigation, or custom logic.',color:'#9E9EBF',fontSize:12}
+    {type:'card',color:'#FFFFFF',cornerRadius:16,borderColor:'#E2E8F0',borderWidth:1,paddingH:18,paddingV:14,children:[
+        {type:'text',text:'Click Actions',color:'#00897B',fontSize:16},
+        {type:'text',text:'Buttons fire HostAction events. The app handles them \u2014 toasts, navigation, or custom logic.',color:'#6B7280',fontSize:12}
     ]},
     {type:'spacer',height:8},
-    {type:'card',color:'#262640',cornerRadius:16,borderColor:'#3A3A5C',borderWidth:1,paddingH:18,paddingV:14,actionName:'card_clicked',children:[
-        {type:'text',text:'Clickable Cards',color:'#CF6679',fontSize:16},
-        {type:'text',text:'Tap this card. The entire surface is a click target, not just a button.',color:'#9E9EBF',fontSize:12}
+    {type:'card',color:'#FFFFFF',cornerRadius:16,borderColor:'#E2E8F0',borderWidth:1,paddingH:18,paddingV:14,actionName:'card_clicked',children:[
+        {type:'text',text:'Clickable Cards',color:'#C62828',fontSize:16},
+        {type:'text',text:'Tap this card. The entire surface is a click target, not just a button.',color:'#6B7280',fontSize:12}
     ]},
     {type:'spacer',height:12},
-    {type:'divider',color:'#3A3A5C',height:1},
+    {type:'divider',color:'#E2E8F0',height:1},
     {type:'spacer',height:12},
     {type:'row',children:[
-        {type:'button',text:'Toast',color:'#BB86FC',textColor:'#1A1A2E',fontSize:13,cornerRadius:20,actionName:'show_toast'},
-        {type:'button',text:'Navigate',color:'#03DAC6',textColor:'#1A1A2E',fontSize:13,cornerRadius:20,actionName:'navigate:home'},
-        {type:'button',text:'Alert',color:'#CF6679',textColor:'#1A1A2E',fontSize:13,cornerRadius:20,actionName:'show_alert'}
+        {type:'button',text:'Toast',color:'#6200EA',textColor:'#FFFFFF',fontSize:13,cornerRadius:20,actionName:'show_toast'},
+        {type:'button',text:'Navigate',color:'#00897B',textColor:'#FFFFFF',fontSize:13,cornerRadius:20,actionName:'navigate:home'},
+        {type:'button',text:'Alert',color:'#C62828',textColor:'#FFFFFF',fontSize:13,cornerRadius:20,actionName:'show_alert'}
     ]},
     {type:'spacer',height:12},
-    {type:'text',text:'No app update required.',color:'#5C5C7A',fontSize:11}
+    {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates')}
-const BUILD_VERSION=22;
+const BUILD_VERSION=23;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='v'+getVersion()}
 async function fetchScreen(key){
