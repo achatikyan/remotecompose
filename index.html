@@ -73,7 +73,8 @@
 
         .children-area{margin-top:8px;padding:10px;background:var(--sv);border-radius:8px;border:1px dashed var(--outline)}
         .children-area .child-label{font-size:11px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
-        .child-item{background:var(--surface);border:1px solid var(--outline);border-radius:8px;margin-bottom:4px;font-size:12px;overflow:hidden}
+        .child-item{background:var(--surface);border:1px solid var(--outline);border-radius:8px;margin-bottom:4px;font-size:12px}
+        .child-item:not(.child-expanded){overflow:hidden}
         .child-item .child-hdr{display:flex;align-items:center;gap:8px;padding:6px 8px;cursor:pointer}
         .child-item .child-hdr:hover{background:var(--sv)}
         .child-item .badge{font-size:9px;padding:1px 6px}
@@ -252,7 +253,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=45;
+const BUILD_VERSION=46;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+getVersion()+'-alpha'}
 async function fetchScreen(key){
@@ -466,10 +467,12 @@ function buildChildEditor(ch,i,ci){
             html+=`<div style="font-size:10px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Nested (${ch.children.length})</div>`;
             ch.children.forEach((gc,gi)=>{
                 const gcSummary=gc.text||gc.type+' '+(gc.height?gc.height+'dp':'');
-                html+=`<div class="child-item" id="gc-${i}-${ci}-${gi}">`;
-                html+=`<div class="child-hdr" role="button" tabindex="0" onclick="event.stopPropagation();toggleGcExpand(${i},${ci},${gi})"><span class="badge ${gc.type}">${gc.type}</span><span class="child-summary">${esc(gcSummary)}</span>`;
-                html+=`<button class="child-del-btn" onclick="event.stopPropagation();removeGrandchild(${i},${ci},${gi})" title="Remove"><span class="material-icons-round" style="font-size:16px">close</span></button></div>`;
+                html+=`<div class="child-item" id="gc-${i}-${ci}-${gi}" style="display:flex;align-items:stretch">`;
+                html+=`<div style="flex:1;min-width:0">`;
+                html+=`<div class="child-hdr" role="button" tabindex="0" onclick="event.stopPropagation();toggleGcExpand(${i},${ci},${gi})"><span class="badge ${gc.type}">${gc.type}</span><span class="child-summary">${esc(gcSummary)}</span></div>`;
                 html+=`<div class="child-editor" onclick="event.stopPropagation()">${buildGcEditor(gc,i,ci,gi)}</div>`;
+                html+=`</div>`;
+                html+=`<button class="child-del-btn" onclick="event.stopPropagation();removeGrandchild(${i},${ci},${gi})" title="Remove" style="align-self:flex-start;margin:6px 4px 0 0"><span class="material-icons-round" style="font-size:16px">close</span></button>`;
                 html+=`</div>`;
             });
             html+=`</div>`;
