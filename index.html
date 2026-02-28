@@ -104,6 +104,8 @@
         .pv-text{line-height:1.3;word-break:break-word;margin-bottom:6px}
         .pv-spacer{flex-shrink:0}
         .pv-btn{padding:10px 24px;border-radius:24px;font-weight:600;text-align:center;cursor:pointer;border:none;font-family:inherit;transition:all .2s;display:inline-block;margin-bottom:6px}
+        .pv-card .pv-btn{display:block;width:100%}
+        .pv-row .pv-btn{display:inline-block;width:auto}
         .pv-card .pv-divider{width:100%;margin:0}
         .pv-btn:hover{opacity:.9}
         .pv-divider{width:90%;margin:8px 0}
@@ -260,7 +262,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=40;
+const BUILD_VERSION=41;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+getVersion()+'-alpha'}
 async function fetchScreen(key){
