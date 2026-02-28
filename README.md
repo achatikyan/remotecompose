@@ -64,5 +64,6 @@ The Android app downloads the binary `.rc` files and renders them using `RemoteC
 
 ## Related
 
+- [remotecompose-android](https://github.com/achatikyan/remotecompose-android) — Android player app (pure player, no creation code)
 - [Remote Compose documentation](https://github.com/androidx/androidx/tree/androidx-main/compose/remote/Documentation)
 - [Remote Compose releases](https://developer.android.com/jetpack/androidx/releases/compose-remote)
