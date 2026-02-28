@@ -1,11 +1,11 @@
 {
   "title": "Welcome to Remote Compose!",
   "subtitle": "This UI is configured remotely from a web editor.",
-  "buttonText": "Get Started",
+  "buttonText": "Get Started changed",
   "backgroundColor": "#F3E5F5",
   "titleColor": "#4A148C",
   "subtitleColor": "#666666",
-  "buttonColor": "#EB4600",
+  "buttonColor": "#6200EA",
   "buttonTextColor": "#FFFFFF",
   "titleFontSize": 28,
   "subtitleFontSize": 16,
