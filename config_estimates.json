@@ -26,9 +26,9 @@
       { "type": "divider", "id": "10l", "color": "#E0E0E0", "height": 1 },
       { "type": "card", "id": "10m", "color": "#FFFFFF", "cornerRadius": 0, "paddingH": 16, "paddingV": 6, "align": "start", "children": [
         { "type": "row", "id": "10n", "children": [
-          { "type": "button", "id": "10n0", "text": "Recommend", "color": "#FFFFFF", "textColor": "#444444", "fontSize": 14, "cornerRadius": 4, "borderColor": "#BBBBBB", "borderWidth": 1, "paddingH": 8, "paddingV": 6, "actionName": "recommend_1" },
-          { "type": "button", "id": "10n2", "text": "Copy", "color": "#FFFFFF", "textColor": "#666666", "fontSize": 12, "cornerRadius": 4, "paddingH": 6, "paddingV": 6, "actionName": "duplicate_1" },
-          { "type": "button", "id": "10n3", "text": "More", "color": "#FFFFFF", "textColor": "#666666", "fontSize": 12, "cornerRadius": 4, "paddingH": 6, "paddingV": 6, "actionName": "more_1" }
+          { "type": "text", "id": "10n0", "text": "Recommend", "color": "#444444", "fontSize": 14 },
+          { "type": "icon", "id": "10n2", "text": "content_copy", "color": "#444444", "fontSize": 24, "actionName": "duplicate_1" },
+          { "type": "icon", "id": "10n3", "text": "more_vert", "color": "#444444", "fontSize": 24, "actionName": "more_1" }
         ]}
       ]}
     ]}
