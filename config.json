@@ -1,9 +1,26 @@
 {
-  "backgroundColor": "#F3E5F5",
+  "backgroundColor": "#F5F0FF",
   "elements": [
-    { "type": "text", "id": "1", "text": "Welcome to Remote Compose!", "color": "#4A148C", "fontSize": 28 },
-    { "type": "text", "id": "2", "text": "This UI is configured remotely from a web editor.", "color": "#666666", "fontSize": 16 },
-    { "type": "spacer", "id": "3", "height": 24 },
-    { "type": "button", "id": "4", "text": "Get Started", "color": "#6200EA", "textColor": "#FFFFFF", "fontSize": 18 }
+    { "type": "text", "id": "1", "text": "Remote Compose", "color": "#4A148C", "fontSize": 32 },
+    { "type": "text", "id": "2", "text": "Server-driven UI, rendered natively", "color": "#7E57C2", "fontSize": 14 },
+    { "type": "spacer", "id": "3", "height": 20 },
+    { "type": "card", "id": "4", "color": "#FFFFFF", "cornerRadius": 20, "borderColor": "#E0D6F2", "borderWidth": 1, "paddingH": 20, "paddingV": 16, "children": [
+      { "type": "text", "id": "4a", "text": "Dynamic Layouts", "color": "#1A1A2E", "fontSize": 18 },
+      { "type": "text", "id": "4b", "text": "Add, remove, and reorder UI elements from the web — no app update needed.", "color": "#666666", "fontSize": 13 }
+    ]},
+    { "type": "spacer", "id": "5", "height": 10 },
+    { "type": "card", "id": "6", "color": "#FFFFFF", "cornerRadius": 20, "borderColor": "#E0D6F2", "borderWidth": 1, "paddingH": 20, "paddingV": 16, "actionName": "card_tap", "children": [
+      { "type": "text", "id": "6a", "text": "Click Handling", "color": "#1A1A2E", "fontSize": 18 },
+      { "type": "text", "id": "6b", "text": "Tap this card — the click event is handled by the host app.", "color": "#666666", "fontSize": 13 }
+    ]},
+    { "type": "spacer", "id": "7", "height": 10 },
+    { "type": "row", "id": "8", "children": [
+      { "type": "button", "id": "8a", "text": "Action A", "color": "#6200EA", "textColor": "#FFFFFF", "fontSize": 14, "cornerRadius": 24, "actionName": "action_a" },
+      { "type": "button", "id": "8b", "text": "Action B", "color": "#00897B", "textColor": "#FFFFFF", "fontSize": 14, "cornerRadius": 24, "actionName": "action_b" }
+    ]},
+    { "type": "spacer", "id": "9", "height": 6 },
+    { "type": "divider", "id": "10", "color": "#E0D6F2", "height": 1 },
+    { "type": "spacer", "id": "11", "height": 6 },
+    { "type": "button", "id": "12", "text": "Open Full Demo", "color": "#4A148C", "textColor": "#FFFFFF", "fontSize": 16, "cornerRadius": 28, "actionName": "open_demo", "borderColor": "#7E57C2", "borderWidth": 2 }
   ]
 }

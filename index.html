@@ -8,446 +8,334 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        :root {
-            --bg: #f5f5f5; --surface: #fff; --surface-variant: #f0edf6;
-            --primary: #6200EA; --primary-light: #ede7f6; --on-primary: #fff;
-            --text: #1c1b1f; --text-sec: #49454f; --outline: #cac4d0;
-            --radius: 16px; --radius-sm: 12px;
-            --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.04);
-            --danger: #b71c1c; --danger-light: #ffebee;
-        }
-        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{--bg:#f5f5f5;--surface:#fff;--sv:#f0edf6;--primary:#6200EA;--pl:#ede7f6;--on-p:#fff;--text:#1c1b1f;--ts:#49454f;--outline:#cac4d0;--r:16px;--rs:12px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);--danger:#b71c1c;--dl:#ffebee}
+        body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
-        header { background: var(--surface); border-bottom: 1px solid var(--outline); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
-        header .logo { display: flex; align-items: center; gap: 10px; }
-        header .logo .material-icons-round { font-size: 26px; color: var(--primary); }
-        header h1 { font-size: 18px; font-weight: 700; }
-        header .sub { font-size: 11px; color: var(--text-sec); }
-        .hdr-actions { display: flex; gap: 8px; }
+        header{background:var(--surface);border-bottom:1px solid var(--outline);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+        header .logo{display:flex;align-items:center;gap:10px}
+        header .logo .material-icons-round{font-size:26px;color:var(--primary)}
+        header h1{font-size:18px;font-weight:700}
+        header .sub{font-size:11px;color:var(--ts)}
+        .ha{display:flex;gap:8px}
 
-        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
-        .btn .material-icons-round { font-size: 17px; }
-        .btn-primary { background: var(--primary); color: var(--on-primary); }
-        .btn-primary:hover { background: #5000d4; }
-        .btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
-        .btn-outline:hover { background: var(--primary-light); }
-        .btn-ghost { background: transparent; color: var(--text-sec); }
-        .btn-ghost:hover { background: var(--surface-variant); }
-        .btn-sm { padding: 5px 10px; font-size: 12px; }
-        .btn-sm .material-icons-round { font-size: 15px; }
-        .btn-danger { background: transparent; color: var(--danger); }
-        .btn-danger:hover { background: var(--danger-light); }
+        .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:none;border-radius:var(--rs);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
+        .btn .material-icons-round{font-size:17px}
+        .btn-p{background:var(--primary);color:var(--on-p)}.btn-p:hover{background:#5000d4}
+        .btn-o{background:transparent;color:var(--primary);border:1.5px solid var(--primary)}.btn-o:hover{background:var(--pl)}
+        .btn-g{background:transparent;color:var(--ts)}.btn-g:hover{background:var(--sv)}
+        .btn-s{padding:5px 10px;font-size:12px}.btn-s .material-icons-round{font-size:15px}
 
-        main { display: grid; grid-template-columns: 1fr 380px; gap: 20px; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
-        @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+        main{display:grid;grid-template-columns:1fr 380px;gap:20px;padding:20px 24px;max-width:1280px;margin:0 auto}
+        @media(max-width:900px){main{grid-template-columns:1fr}}
 
-        .panel { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-        .panel-hdr { padding: 16px 20px 12px; border-bottom: 1px solid var(--outline); display: flex; align-items: center; justify-content: space-between; }
-        .panel-hdr h2 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .panel-hdr h2 .material-icons-round { font-size: 19px; color: var(--primary); }
-        .panel-body { padding: 16px 20px; }
+        .panel{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+        .ph{padding:16px 20px 12px;border-bottom:1px solid var(--outline);display:flex;align-items:center;justify-content:space-between}
+        .ph h2{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+        .ph h2 .material-icons-round{font-size:19px;color:var(--primary)}
+        .pb{padding:16px 20px}
 
-        .add-bar { display: flex; gap: 8px; padding: 12px 20px; border-bottom: 1px solid var(--outline); background: var(--surface-variant); }
-        .add-bar span.lbl { font-size: 12px; font-weight: 600; color: var(--text-sec); text-transform: uppercase; letter-spacing: .5px; line-height: 30px; margin-right: 4px; }
+        .add-bar{display:flex;gap:6px;padding:12px 20px;border-bottom:1px solid var(--outline);background:var(--sv);flex-wrap:wrap}
+        .add-bar span.lbl{font-size:12px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px;line-height:30px;margin-right:4px}
 
-        #elementList { min-height: 60px; }
-        .el-card { display: flex; align-items: stretch; background: var(--surface); border: 1.5px solid var(--outline); border-radius: var(--radius-sm); margin-bottom: 8px; transition: border-color .15s, box-shadow .15s; position: relative; }
-        .el-card:hover { border-color: var(--primary); }
-        .el-card.dragging { opacity: .4; }
-        .el-card.drag-over { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
-        .el-handle { display: flex; align-items: center; padding: 0 8px; cursor: grab; color: var(--outline); border-right: 1px solid var(--outline); }
-        .el-handle:active { cursor: grabbing; }
-        .el-handle .material-icons-round { font-size: 18px; }
-        .el-body { flex: 1; padding: 10px 12px; min-width: 0; }
-        .el-top { display: flex; align-items: center; gap: 8px; }
-        .el-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 2px 8px; border-radius: 6px; }
-        .el-badge.text { background: #e8eaf6; color: #283593; }
-        .el-badge.button { background: #fce4ec; color: #c62828; }
-        .el-badge.spacer { background: #e0f2f1; color: #00695c; }
-        .el-summary { font-size: 13px; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .el-actions { display: flex; align-items: center; padding: 0 6px; gap: 2px; }
-        .el-actions button { background: none; border: none; cursor: pointer; padding: 4px; border-radius: 6px; color: var(--text-sec); display: flex; align-items: center; }
-        .el-actions button:hover { background: var(--surface-variant); }
-        .el-actions button.del:hover { background: var(--danger-light); color: var(--danger); }
-        .el-actions button .material-icons-round { font-size: 18px; }
+        #elementList{min-height:60px}
+        .el-card{display:flex;align-items:stretch;background:var(--surface);border:1.5px solid var(--outline);border-radius:var(--rs);margin-bottom:8px;transition:border-color .15s,box-shadow .15s}
+        .el-card:hover{border-color:var(--primary)}
+        .el-card.dragging{opacity:.4}
+        .el-card.drag-over{border-color:var(--primary);box-shadow:0 0 0 2px var(--pl)}
+        .el-handle{display:flex;align-items:center;padding:0 8px;cursor:grab;color:var(--outline);border-right:1px solid var(--outline)}
+        .el-handle:active{cursor:grabbing}
+        .el-handle .material-icons-round{font-size:18px}
+        .el-body{flex:1;padding:10px 12px;min-width:0}
+        .el-top{display:flex;align-items:center;gap:8px}
+        .badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:6px}
+        .badge.text{background:#e8eaf6;color:#283593}.badge.button{background:#fce4ec;color:#c62828}.badge.spacer{background:#e0f2f1;color:#00695c}
+        .badge.divider{background:#fff3e0;color:#e65100}.badge.card{background:#e3f2fd;color:#1565c0}.badge.row{background:#f3e5f5;color:#7b1fa2}
+        .el-summary{font-size:13px;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .el-actions{display:flex;align-items:center;padding:0 6px;gap:2px}
+        .el-actions button{background:none;border:none;cursor:pointer;padding:4px;border-radius:6px;color:var(--ts);display:flex;align-items:center}
+        .el-actions button:hover{background:var(--sv)}
+        .el-actions button.del:hover{background:var(--dl);color:var(--danger)}
+        .el-actions button .material-icons-round{font-size:18px}
 
-        .el-editor { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--outline); }
-        .el-card.expanded .el-editor { display: block; }
-        .field { margin-bottom: 10px; }
-        .field label { display: block; font-size: 11px; font-weight: 600; color: var(--text-sec); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
-        .field input[type="text"], .field input[type="number"] {
-            width: 100%; padding: 7px 10px; border: 1.5px solid var(--outline); border-radius: 8px;
-            font-family: inherit; font-size: 13px; color: var(--text); background: var(--surface);
-        }
-        .field input:focus { outline: none; border-color: var(--primary); }
-        .field-row { display: flex; gap: 10px; }
-        .field-row .field { flex: 1; }
-        .color-field { display: flex; align-items: center; gap: 8px; }
-        .color-field input[type="color"] { width: 28px; height: 28px; border: none; border-radius: 6px; cursor: pointer; padding: 0; background: none; }
-        .color-field input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-        .color-field input[type="color"]::-webkit-color-swatch { border: 1px solid rgba(0,0,0,.1); border-radius: 4px; }
-        .color-field code { font-size: 11px; font-family: 'SF Mono', monospace; color: var(--text-sec); background: var(--surface-variant); padding: 2px 6px; border-radius: 4px; }
+        .el-editor{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--outline)}
+        .el-card.expanded .el-editor{display:block}
+        .field{margin-bottom:10px}
+        .field label{display:block;font-size:11px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+        .field input[type="text"],.field input[type="number"]{width:100%;padding:7px 10px;border:1.5px solid var(--outline);border-radius:8px;font-family:inherit;font-size:13px;color:var(--text);background:var(--surface)}
+        .field input:focus{outline:none;border-color:var(--primary)}
+        .fr{display:flex;gap:10px}.fr .field{flex:1}
+        .cf{display:flex;align-items:center;gap:8px}
+        .cf input[type="color"]{width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none}
+        .cf input[type="color"]::-webkit-color-swatch-wrapper{padding:0}
+        .cf input[type="color"]::-webkit-color-swatch{border:1px solid rgba(0,0,0,.1);border-radius:4px}
+        .cf code{font-size:11px;font-family:'SF Mono',monospace;color:var(--ts);background:var(--sv);padding:2px 6px;border-radius:4px}
 
-        .bg-section { padding: 12px 20px; border-top: 1px solid var(--outline); display: flex; align-items: center; gap: 12px; }
-        .bg-section label { font-size: 12px; font-weight: 600; color: var(--text-sec); text-transform: uppercase; letter-spacing: .5px; }
+        .children-area{margin-top:8px;padding:10px;background:var(--sv);border-radius:8px;border:1px dashed var(--outline)}
+        .children-area .child-label{font-size:11px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+        .child-item{display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--surface);border:1px solid var(--outline);border-radius:8px;margin-bottom:4px;font-size:12px}
+        .child-item .badge{font-size:9px;padding:1px 6px}
+        .child-item input{flex:1;padding:4px 8px;border:1px solid var(--outline);border-radius:6px;font-family:inherit;font-size:12px}
+        .child-item input:focus{outline:none;border-color:var(--primary)}
+        .child-item button{background:none;border:none;cursor:pointer;padding:2px;color:var(--ts);display:flex}
+        .child-item button:hover{color:var(--danger)}
 
-        .deploy-section { padding: 14px 20px; border-top: 1px solid var(--outline); background: var(--surface-variant); }
-        .deploy-row { display: flex; gap: 8px; margin-top: 6px; }
-        .deploy-row input[type="password"], .deploy-row input[type="text"] {
-            flex: 1; padding: 7px 10px; border: 1.5px solid var(--outline); border-radius: 8px;
-            font-family: inherit; font-size: 12px;
-        }
-        .deploy-row input:focus { outline: none; border-color: var(--primary); }
-        .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 16px; font-size: 11px; font-weight: 600; }
-        .status-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-        .status-badge.ok { background: #e8f5e9; color: #2e7d32; }
-        .status-badge.err { background: #fce4ec; color: #c62828; }
+        .bg-sec{padding:12px 20px;border-top:1px solid var(--outline);display:flex;align-items:center;gap:12px}
+        .bg-sec label{font-size:12px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px}
+        .deploy-sec{padding:14px 20px;border-top:1px solid var(--outline);background:var(--sv)}
+        .deploy-row{display:flex;gap:8px;margin-top:6px}
+        .deploy-row input{flex:1;padding:7px 10px;border:1.5px solid var(--outline);border-radius:8px;font-family:inherit;font-size:12px}
+        .deploy-row input:focus{outline:none;border-color:var(--primary)}
+        .sb{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:16px;font-size:11px;font-weight:600}
+        .sb .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+        .sb.ok{background:#e8f5e9;color:#2e7d32}.sb.err{background:#fce4ec;color:#c62828}
 
-        .phone-frame { width: 300px; height: 600px; border-radius: 32px; border: 7px solid #1c1b1f; overflow: hidden; margin: 0 auto; box-shadow: 0 8px 32px rgba(0,0,0,.15); position: relative; }
-        .phone-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100px; height: 24px; background: #1c1b1f; border-radius: 0 0 14px 14px; z-index: 2; }
-        .phone-screen { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 36px 18px 18px; text-align: center; transition: background-color .3s; overflow-y: auto; gap: 0; }
-        .prev-text { line-height: 1.3; transition: all .2s; word-break: break-word; }
-        .prev-spacer { flex-shrink: 0; }
-        .prev-btn { padding: 12px 28px; border-radius: 24px; font-weight: 600; text-align: center; width: 85%; cursor: pointer; border: none; font-family: inherit; transition: all .2s; }
-        .prev-btn:hover { opacity: .9; }
+        .phone-frame{width:300px;height:600px;border-radius:32px;border:7px solid #1c1b1f;overflow:hidden;margin:0 auto;box-shadow:0 8px 32px rgba(0,0,0,.15);position:relative}
+        .phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:100px;height:24px;background:#1c1b1f;border-radius:0 0 14px 14px;z-index:2}
+        .phone-screen{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 18px 18px;text-align:center;transition:background-color .3s;overflow-y:auto;gap:0}
+        .pv-text{line-height:1.3;word-break:break-word;margin-bottom:6px}
+        .pv-spacer{flex-shrink:0}
+        .pv-btn{padding:12px 24px;border-radius:24px;font-weight:600;text-align:center;cursor:pointer;border:none;font-family:inherit;transition:all .2s;display:inline-block;margin-bottom:6px}
+        .pv-btn:hover{opacity:.9}
+        .pv-divider{width:90%;margin:8px 0}
+        .pv-card{width:90%;border-radius:16px;padding:14px 16px;margin-bottom:8px;text-align:center;transition:all .2s}
+        .pv-card:hover{transform:scale(1.01)}
+        .pv-row{display:flex;gap:8px;justify-content:center;width:90%;margin-bottom:6px;flex-wrap:wrap}
 
-        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: #323232; color: #fff; padding: 10px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; z-index: 100; transition: transform .3s; display: flex; align-items: center; gap: 8px; }
-        .toast.show { transform: translateX(-50%) translateY(0); }
-        .toast .material-icons-round { font-size: 17px; }
+        .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:#323232;color:#fff;padding:10px 20px;border-radius:var(--rs);font-size:13px;font-weight:500;z-index:100;transition:transform .3s;display:flex;align-items:center;gap:8px}
+        .toast.show{transform:translateX(-50%) translateY(0)}
+        .toast .material-icons-round{font-size:17px}
 
-        .info-card { background: var(--primary-light); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 8px; }
-        .info-card p { font-size: 12px; color: var(--text-sec); line-height: 1.4; }
-        .info-card code { font-size: 11px; background: rgba(98,0,234,.1); padding: 2px 5px; border-radius: 4px; font-family: 'SF Mono', monospace; word-break: break-all; }
-
-        .empty-state { text-align: center; padding: 32px 16px; color: var(--text-sec); }
-        .empty-state .material-icons-round { font-size: 40px; color: var(--outline); margin-bottom: 8px; }
-        .empty-state p { font-size: 13px; }
+        .info-card{background:var(--pl);border-radius:var(--rs);padding:12px 14px;margin-top:8px}
+        .info-card p{font-size:12px;color:var(--ts);line-height:1.4}
+        .info-card code{font-size:11px;background:rgba(98,0,234,.1);padding:2px 5px;border-radius:4px;font-family:'SF Mono',monospace;word-break:break-all}
+        .empty-state{text-align:center;padding:32px 16px;color:var(--ts)}
+        .empty-state .material-icons-round{font-size:40px;color:var(--outline);margin-bottom:8px}
+        .empty-state p{font-size:13px}
     </style>
 </head>
 <body>
     <header>
         <div class="logo">
             <span class="material-icons-round">widgets</span>
-            <div>
-                <h1>Remote Compose Editor</h1>
-                <div class="sub">Drag-and-drop UI builder</div>
-            </div>
+            <div><h1>Remote Compose Editor</h1><div class="sub">Drag-and-drop UI builder</div></div>
         </div>
-        <div class="hdr-actions">
-            <button class="btn btn-ghost" onclick="resetToDefaults()"><span class="material-icons-round">restart_alt</span>Reset</button>
-            <button class="btn btn-outline" onclick="copyJson()"><span class="material-icons-round">content_copy</span>Copy JSON</button>
-            <button class="btn btn-primary" onclick="deployConfig()"><span class="material-icons-round">cloud_upload</span>Deploy</button>
+        <div class="ha">
+            <button class="btn btn-g" onclick="resetToDefaults()"><span class="material-icons-round">restart_alt</span>Reset</button>
+            <button class="btn btn-o" onclick="copyJson()"><span class="material-icons-round">content_copy</span>Copy JSON</button>
+            <button class="btn btn-p" onclick="deployConfig()"><span class="material-icons-round">cloud_upload</span>Deploy</button>
         </div>
     </header>
-
     <main>
         <div class="panel">
-            <div class="panel-hdr">
+            <div class="ph">
                 <h2><span class="material-icons-round">tune</span>Layout Builder</h2>
-                <span style="font-size:12px;color:var(--text-sec)" id="elCount">0 elements</span>
+                <span style="font-size:12px;color:var(--ts)" id="elCount">0 elements</span>
             </div>
-
             <div class="add-bar">
                 <span class="lbl">Add:</span>
-                <button class="btn btn-outline btn-sm" onclick="addElement('text')"><span class="material-icons-round">title</span>Text</button>
-                <button class="btn btn-outline btn-sm" onclick="addElement('button')"><span class="material-icons-round">smart_button</span>Button</button>
-                <button class="btn btn-outline btn-sm" onclick="addElement('spacer')"><span class="material-icons-round">space_bar</span>Spacer</button>
+                <button class="btn btn-o btn-s" onclick="addElement('text')"><span class="material-icons-round">title</span>Text</button>
+                <button class="btn btn-o btn-s" onclick="addElement('button')"><span class="material-icons-round">smart_button</span>Button</button>
+                <button class="btn btn-o btn-s" onclick="addElement('spacer')"><span class="material-icons-round">space_bar</span>Spacer</button>
+                <button class="btn btn-o btn-s" onclick="addElement('divider')"><span class="material-icons-round">horizontal_rule</span>Divider</button>
+                <button class="btn btn-o btn-s" onclick="addElement('card')"><span class="material-icons-round">crop_square</span>Card</button>
+                <button class="btn btn-o btn-s" onclick="addElement('row')"><span class="material-icons-round">view_column</span>Row</button>
             </div>
-
-            <div class="panel-body" id="elementList"></div>
-
-            <div class="bg-section">
+            <div class="pb" id="elementList"></div>
+            <div class="bg-sec">
                 <label>Background</label>
-                <div class="color-field">
-                    <input type="color" id="bgColor" value="#F3E5F5" oninput="updatePreview()">
-                    <code id="bgColorCode">#F3E5F5</code>
-                </div>
+                <div class="cf"><input type="color" id="bgColor" value="#F5F0FF" oninput="updatePreview()"><code id="bgColorCode">#F5F0FF</code></div>
             </div>
-
-            <div class="bg-section">
-                <div class="info-card" style="width:100%">
-                    <p><strong>Fetch URL:</strong> <code>https://achatikyan.github.io/remotecompose/config.json</code></p>
-                </div>
+            <div class="bg-sec">
+                <div class="info-card" style="width:100%"><p><strong>Fetch URL:</strong> <code>https://achatikyan.github.io/remotecompose/config.json</code></p></div>
             </div>
-
-            <div class="deploy-section">
+            <div class="deploy-sec">
                 <div style="display:flex;align-items:center;justify-content:space-between">
-                    <div>
-                        <div style="font-size:12px;font-weight:600">GitHub Deploy</div>
-                        <div style="font-size:11px;color:var(--text-sec)">Push config.json to GitHub Pages</div>
-                    </div>
-                    <span class="status-badge" id="deployStatus"><span class="dot"></span><span id="deployStatusText">Ready</span></span>
+                    <div><div style="font-size:12px;font-weight:600">GitHub Deploy</div><div style="font-size:11px;color:var(--ts)">Push config.json to GitHub Pages</div></div>
+                    <span class="sb" id="deployStatus"><span class="dot"></span><span id="deployStatusText">Ready</span></span>
                 </div>
                 <div class="deploy-row">
                     <input type="password" id="ghToken" placeholder="GitHub Personal Access Token">
-                    <button class="btn btn-ghost btn-sm" onclick="toggleToken()"><span class="material-icons-round" id="tokenEye">visibility</span></button>
+                    <button class="btn btn-g btn-s" onclick="toggleToken()"><span class="material-icons-round" id="tokenEye">visibility</span></button>
                 </div>
             </div>
         </div>
-
         <div>
             <div class="panel" style="position:sticky;top:76px">
-                <div class="panel-hdr">
-                    <h2><span class="material-icons-round">phone_android</span>Live Preview</h2>
-                </div>
-                <div class="panel-body" style="display:flex;justify-content:center;padding:20px 12px">
-                    <div class="phone-frame">
-                        <div class="phone-notch"></div>
-                        <div class="phone-screen" id="phoneScreen"></div>
-                    </div>
+                <div class="ph"><h2><span class="material-icons-round">phone_android</span>Live Preview</h2></div>
+                <div class="pb" style="display:flex;justify-content:center;padding:20px 12px">
+                    <div class="phone-frame"><div class="phone-notch"></div><div class="phone-screen" id="phoneScreen"></div></div>
                 </div>
             </div>
         </div>
     </main>
-
-    <div class="toast" id="toast">
-        <span class="material-icons-round" id="toastIcon">check_circle</span>
-        <span id="toastMsg"></span>
-    </div>
+    <div class="toast" id="toast"><span class="material-icons-round" id="toastIcon">check_circle</span><span id="toastMsg"></span></div>
 
 <script>
-const REPO_OWNER = 'achatikyan', REPO_NAME = 'remotecompose', FILE_PATH = 'config.json';
-let elements = [];
-let dragIdx = null;
-let nextId = 1;
-
-const defaults = [
-    { type:'text', text:'Welcome to Remote Compose!', color:'#4A148C', fontSize:28 },
-    { type:'text', text:'This UI is configured remotely from a web editor.', color:'#666666', fontSize:16 },
-    { type:'spacer', height:24 },
-    { type:'button', text:'Get Started', color:'#6200EA', textColor:'#FFFFFF', fontSize:18 },
+const REPO='achatikyan',REPO_N='remotecompose',FP='config.json';
+let elements=[],dragIdx=null,nextId=1;
+function uid(){return String(nextId++)}
+const defaults=[
+    {type:'text',text:'Remote Compose',color:'#4A148C',fontSize:32},
+    {type:'text',text:'Server-driven UI, rendered natively',color:'#7E57C2',fontSize:14},
+    {type:'spacer',height:20},
+    {type:'card',color:'#FFFFFF',cornerRadius:20,borderColor:'#E0D6F2',borderWidth:1,paddingH:20,paddingV:16,children:[
+        {type:'text',text:'Dynamic Layouts',color:'#1A1A2E',fontSize:18},
+        {type:'text',text:'Add, remove, reorder UI elements from the web — no app update needed.',color:'#666666',fontSize:13}
+    ]},
+    {type:'spacer',height:10},
+    {type:'card',color:'#FFFFFF',cornerRadius:20,borderColor:'#E0D6F2',borderWidth:1,paddingH:20,paddingV:16,actionName:'card_tap',children:[
+        {type:'text',text:'Click Handling',color:'#1A1A2E',fontSize:18},
+        {type:'text',text:'Tap this card — the click event is handled by the host app.',color:'#666666',fontSize:13}
+    ]},
+    {type:'spacer',height:10},
+    {type:'row',children:[
+        {type:'button',text:'Action A',color:'#6200EA',textColor:'#FFFFFF',fontSize:14,cornerRadius:24,actionName:'action_a'},
+        {type:'button',text:'Action B',color:'#00897B',textColor:'#FFFFFF',fontSize:14,cornerRadius:24,actionName:'action_b'}
+    ]},
+    {type:'spacer',height:6},
+    {type:'divider',color:'#E0D6F2',height:1},
+    {type:'spacer',height:6},
+    {type:'button',text:'Open Full Demo',color:'#4A148C',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'open_demo',borderColor:'#7E57C2',borderWidth:2}
 ];
+function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;fetchConfig()}
+async function fetchConfig(){try{const r=await fetch('config.json?'+Date.now());if(r.ok){const c=await r.json();document.getElementById('bgColor').value=c.backgroundColor||'#F5F0FF';document.getElementById('bgColorCode').textContent=(c.backgroundColor||'#F5F0FF').toUpperCase();elements=(c.elements||[]).map(e=>assignIds(e));nextId=maxId(elements)+1}else loadDefs()}catch{loadDefs()}render()}
+function assignIds(e){e={...e,id:e.id||uid()};if(e.children)e.children=e.children.map(c=>assignIds({...c}));return e}
+function maxId(els){let m=0;els.forEach(e=>{m=Math.max(m,parseInt(e.id)||0);if(e.children)m=Math.max(m,maxId(e.children))});return m}
+function loadDefs(){nextId=1;elements=defaults.map(e=>assignIds(JSON.parse(JSON.stringify(e))));document.getElementById('bgColor').value='#F5F0FF';document.getElementById('bgColorCode').textContent='#F5F0FF'}
+function resetToDefaults(){loadDefs();render();showToast('Reset to defaults','restart_alt')}
+function addElement(type){const el={type,id:uid()};
+    if(type==='text'){el.text='New text';el.color='#000000';el.fontSize=16}
+    else if(type==='button'){el.text='Button';el.color='#6200EA';el.textColor='#FFFFFF';el.fontSize=16;el.cornerRadius=24;el.actionName='btn_'+el.id}
+    else if(type==='spacer'){el.height=16}
+    else if(type==='divider'){el.color='#CCCCCC';el.height=1}
+    else if(type==='card'){el.color='#FFFFFF';el.cornerRadius=16;el.paddingH=16;el.paddingV=16;el.children=[{type:'text',id:uid(),text:'Card content',color:'#333333',fontSize:14}]}
+    else if(type==='row'){el.children=[{type:'button',id:uid(),text:'Left',color:'#6200EA',textColor:'#FFFFFF',fontSize:14,cornerRadius:20},{type:'button',id:uid(),text:'Right',color:'#00897B',textColor:'#FFFFFF',fontSize:14,cornerRadius:20}]}
+    elements.push(el);render()}
+function removeElement(idx){elements.splice(idx,1);render()}
+function toggleExpand(idx){const cards=document.querySelectorAll('.el-card');cards.forEach((c,i)=>{if(i!==idx)c.classList.remove('expanded')});cards[idx]?.classList.toggle('expanded')}
+function onFieldChange(idx,field,value){if(field==='fontSize'||field==='height'||field==='cornerRadius'||field==='borderWidth'||field==='paddingH'||field==='paddingV')value=parseInt(value)||0;elements[idx][field]=value;updatePreview()}
+function onChildField(parentIdx,childIdx,field,value){if(field==='fontSize')value=parseInt(value)||0;elements[parentIdx].children[childIdx][field]=value;updatePreview()}
+function addChild(parentIdx,type){const ch={type,id:uid()};if(type==='text'){ch.text='New text';ch.color='#333333';ch.fontSize=14}else{ch.text='Button';ch.color='#6200EA';ch.textColor='#FFFFFF';ch.fontSize=14;ch.cornerRadius=20}if(!elements[parentIdx].children)elements[parentIdx].children=[];elements[parentIdx].children.push(ch);render()}
+function removeChild(parentIdx,childIdx){elements[parentIdx].children.splice(childIdx,1);render()}
 
-function uid() { return String(nextId++); }
+function onDragStart(e,idx){dragIdx=idx;e.dataTransfer.effectAllowed='move';e.currentTarget.classList.add('dragging')}
+function onDragEnd(){dragIdx=null;document.querySelectorAll('.el-card').forEach(c=>c.classList.remove('dragging','drag-over'))}
+function onDragOver(e,idx){e.preventDefault();e.dataTransfer.dropEffect='move';document.querySelectorAll('.el-card').forEach(c=>c.classList.remove('drag-over'));e.currentTarget.closest('.el-card')?.classList.add('drag-over')}
+function onDrop(e,idx){e.preventDefault();if(dragIdx===null||dragIdx===idx)return;const m=elements.splice(dragIdx,1)[0];elements.splice(idx,0,m);dragIdx=null;render()}
 
-function init() {
-    const t = localStorage.getItem('gh_token');
-    if (t) document.getElementById('ghToken').value = t;
-    fetchCurrentConfig();
-}
-
-async function fetchCurrentConfig() {
-    try {
-        const r = await fetch('config.json?' + Date.now());
-        if (r.ok) {
-            const cfg = await r.json();
-            document.getElementById('bgColor').value = cfg.backgroundColor || '#F3E5F5';
-            document.getElementById('bgColorCode').textContent = (cfg.backgroundColor || '#F3E5F5').toUpperCase();
-            elements = (cfg.elements || []).map(e => ({ ...e, id: e.id || uid() }));
-            nextId = elements.reduce((m, e) => Math.max(m, parseInt(e.id)||0), 0) + 1;
-        } else {
-            loadDefaults();
-        }
-    } catch { loadDefaults(); }
-    render();
-}
-
-function loadDefaults() {
-    elements = defaults.map(e => ({ ...e, id: uid() }));
-    document.getElementById('bgColor').value = '#F3E5F5';
-    document.getElementById('bgColorCode').textContent = '#F3E5F5';
-}
-
-function resetToDefaults() {
-    nextId = 1;
-    loadDefaults();
-    render();
-    showToast('Reset to defaults', 'restart_alt');
-}
-
-function addElement(type) {
-    const el = { type, id: uid() };
-    if (type === 'text') { el.text = 'New text'; el.color = '#000000'; el.fontSize = 16; }
-    else if (type === 'button') { el.text = 'Button'; el.color = '#6200EA'; el.textColor = '#FFFFFF'; el.fontSize = 16; }
-    else { el.height = 16; }
-    elements.push(el);
-    render();
-}
-
-function removeElement(idx) {
-    elements.splice(idx, 1);
-    render();
-}
-
-function toggleExpand(idx) {
-    const cards = document.querySelectorAll('.el-card');
-    cards.forEach((c, i) => { if (i !== idx) c.classList.remove('expanded'); });
-    cards[idx]?.classList.toggle('expanded');
-}
-
-function onFieldChange(idx, field, value) {
-    if (field === 'fontSize' || field === 'height') value = parseInt(value) || 0;
-    elements[idx][field] = value;
-    updatePreview();
-}
-
-function onDragStart(e, idx) {
-    dragIdx = idx;
-    e.dataTransfer.effectAllowed = 'move';
-    e.currentTarget.classList.add('dragging');
-}
-function onDragEnd(e) {
-    dragIdx = null;
-    document.querySelectorAll('.el-card').forEach(c => c.classList.remove('dragging', 'drag-over'));
-}
-function onDragOver(e, idx) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    document.querySelectorAll('.el-card').forEach(c => c.classList.remove('drag-over'));
-    e.currentTarget.closest('.el-card')?.classList.add('drag-over');
-}
-function onDrop(e, idx) {
-    e.preventDefault();
-    if (dragIdx === null || dragIdx === idx) return;
-    const moved = elements.splice(dragIdx, 1)[0];
-    elements.splice(idx, 0, moved);
-    dragIdx = null;
-    render();
-}
-
-function render() {
-    const list = document.getElementById('elementList');
-    document.getElementById('elCount').textContent = elements.length + ' element' + (elements.length !== 1 ? 's' : '');
-
-    if (elements.length === 0) {
-        list.innerHTML = '<div class="empty-state"><span class="material-icons-round">add_circle_outline</span><p>No elements yet. Add a Text, Button, or Spacer above.</p></div>';
-        updatePreview();
-        return;
-    }
-
-    list.innerHTML = elements.map((el, i) => {
-        const badge = `<span class="el-badge ${el.type}">${el.type}</span>`;
-        let summary = '';
-        if (el.type === 'text') summary = el.text || 'Empty text';
-        else if (el.type === 'button') summary = el.text || 'Button';
-        else summary = (el.height || 16) + 'dp';
-
-        let editor = '';
-        if (el.type === 'text') {
-            editor = `
-                <div class="field"><label>Text</label><input type="text" value="${esc(el.text||'')}" oninput="onFieldChange(${i},'text',this.value)"></div>
-                <div class="field-row">
-                    <div class="field"><label>Font size</label><input type="number" min="8" max="72" value="${el.fontSize||16}" oninput="onFieldChange(${i},'fontSize',this.value)"></div>
-                    <div class="field"><label>Color</label><div class="color-field"><input type="color" value="${el.color||'#000000'}" oninput="onFieldChange(${i},'color',this.value)"><code>${(el.color||'#000000').toUpperCase()}</code></div></div>
-                </div>`;
-        } else if (el.type === 'button') {
-            editor = `
-                <div class="field"><label>Label</label><input type="text" value="${esc(el.text||'')}" oninput="onFieldChange(${i},'text',this.value)"></div>
-                <div class="field-row">
-                    <div class="field"><label>Font size</label><input type="number" min="8" max="72" value="${el.fontSize||16}" oninput="onFieldChange(${i},'fontSize',this.value)"></div>
-                    <div class="field"><label>BG Color</label><div class="color-field"><input type="color" value="${el.color||'#6200EA'}" oninput="onFieldChange(${i},'color',this.value)"><code>${(el.color||'#6200EA').toUpperCase()}</code></div></div>
-                    <div class="field"><label>Text Color</label><div class="color-field"><input type="color" value="${el.textColor||'#FFFFFF'}" oninput="onFieldChange(${i},'textColor',this.value)"><code>${(el.textColor||'#FFFFFF').toUpperCase()}</code></div></div>
-                </div>`;
-        } else {
-            editor = `<div class="field"><label>Height (dp)</label><input type="number" min="1" max="200" value="${el.height||16}" oninput="onFieldChange(${i},'height',this.value)"></div>`;
-        }
-
-        return `<div class="el-card" draggable="true" ondragstart="onDragStart(event,${i})" ondragend="onDragEnd(event)" ondragover="onDragOver(event,${i})" ondrop="onDrop(event,${i})">
+function render(){
+    const list=document.getElementById('elementList');
+    document.getElementById('elCount').textContent=elements.length+' element'+(elements.length!==1?'s':'');
+    if(!elements.length){list.innerHTML='<div class="empty-state"><span class="material-icons-round">add_circle_outline</span><p>No elements yet. Add one above.</p></div>';updatePreview();return}
+    list.innerHTML=elements.map((el,i)=>{
+        const badge=`<span class="badge ${el.type}">${el.type}</span>`;
+        let summary='';
+        if(el.type==='text')summary=el.text||'Empty';
+        else if(el.type==='button')summary=el.text||'Button';
+        else if(el.type==='spacer')summary=(el.height||16)+'dp';
+        else if(el.type==='divider')summary='Line';
+        else if(el.type==='card')summary=(el.children?.length||0)+' children'+(el.actionName?' (clickable)':'');
+        else if(el.type==='row')summary=(el.children?.length||0)+' items';
+        let editor=buildEditor(el,i);
+        return `<div class="el-card" draggable="true" ondragstart="onDragStart(event,${i})" ondragend="onDragEnd()" ondragover="onDragOver(event,${i})" ondrop="onDrop(event,${i})">
             <div class="el-handle"><span class="material-icons-round">drag_indicator</span></div>
             <div class="el-body" onclick="toggleExpand(${i})">
                 <div class="el-top">${badge}<span class="el-summary">${esc(summary)}</span></div>
                 <div class="el-editor">${editor}</div>
             </div>
-            <div class="el-actions">
-                <button class="del" onclick="event.stopPropagation();removeElement(${i})" title="Delete"><span class="material-icons-round">close</span></button>
-            </div>
-        </div>`;
-    }).join('');
+            <div class="el-actions"><button class="del" onclick="event.stopPropagation();removeElement(${i})" title="Delete"><span class="material-icons-round">close</span></button></div>
+        </div>`}).join('');
+    updatePreview()}
 
-    updatePreview();
-}
+function buildEditor(el,i){
+    if(el.type==='text')return `
+        <div class="field"><label>Text</label><input type="text" value="${esc(el.text||'')}" oninput="onFieldChange(${i},'text',this.value)"></div>
+        <div class="fr"><div class="field"><label>Size</label><input type="number" min="8" max="72" value="${el.fontSize||16}" oninput="onFieldChange(${i},'fontSize',this.value)"></div>
+        <div class="field"><label>Color</label><div class="cf"><input type="color" value="${el.color||'#000'}" oninput="onFieldChange(${i},'color',this.value)"><code>${(el.color||'#000').toUpperCase()}</code></div></div></div>`;
+    if(el.type==='button')return `
+        <div class="field"><label>Label</label><input type="text" value="${esc(el.text||'')}" oninput="onFieldChange(${i},'text',this.value)"></div>
+        <div class="field"><label>Action Name</label><input type="text" value="${esc(el.actionName||'')}" oninput="onFieldChange(${i},'actionName',this.value)" placeholder="e.g. open_settings"></div>
+        <div class="fr"><div class="field"><label>Size</label><input type="number" min="8" max="72" value="${el.fontSize||16}" oninput="onFieldChange(${i},'fontSize',this.value)"></div>
+        <div class="field"><label>Radius</label><input type="number" min="0" max="50" value="${el.cornerRadius||24}" oninput="onFieldChange(${i},'cornerRadius',this.value)"></div></div>
+        <div class="fr"><div class="field"><label>BG</label><div class="cf"><input type="color" value="${el.color||'#6200EA'}" oninput="onFieldChange(${i},'color',this.value)"><code>${(el.color||'#6200EA').toUpperCase()}</code></div></div>
+        <div class="field"><label>Text</label><div class="cf"><input type="color" value="${el.textColor||'#FFF'}" oninput="onFieldChange(${i},'textColor',this.value)"><code>${(el.textColor||'#FFF').toUpperCase()}</code></div></div>
+        <div class="field"><label>Border</label><div class="cf"><input type="color" value="${el.borderColor||'#000'}" oninput="onFieldChange(${i},'borderColor',this.value)"><code>${(el.borderColor||'').toUpperCase()||'none'}</code></div></div></div>
+        <div class="fr"><div class="field"><label>Border W</label><input type="number" min="0" max="10" value="${el.borderWidth||0}" oninput="onFieldChange(${i},'borderWidth',this.value)"></div></div>`;
+    if(el.type==='spacer')return `<div class="field"><label>Height (dp)</label><input type="number" min="1" max="200" value="${el.height||16}" oninput="onFieldChange(${i},'height',this.value)"></div>`;
+    if(el.type==='divider')return `<div class="fr"><div class="field"><label>Height</label><input type="number" min="1" max="10" value="${el.height||1}" oninput="onFieldChange(${i},'height',this.value)"></div><div class="field"><label>Color</label><div class="cf"><input type="color" value="${el.color||'#CCC'}" oninput="onFieldChange(${i},'color',this.value)"><code>${(el.color||'#CCC').toUpperCase()}</code></div></div></div>`;
+    if(el.type==='card')return `
+        <div class="fr"><div class="field"><label>BG Color</label><div class="cf"><input type="color" value="${el.color||'#FFF'}" oninput="onFieldChange(${i},'color',this.value)"><code>${(el.color||'#FFF').toUpperCase()}</code></div></div>
+        <div class="field"><label>Radius</label><input type="number" min="0" max="50" value="${el.cornerRadius||16}" oninput="onFieldChange(${i},'cornerRadius',this.value)"></div></div>
+        <div class="fr"><div class="field"><label>Border</label><div class="cf"><input type="color" value="${el.borderColor||'#CCC'}" oninput="onFieldChange(${i},'borderColor',this.value)"><code>${(el.borderColor||'').toUpperCase()||'none'}</code></div></div>
+        <div class="field"><label>Border W</label><input type="number" min="0" max="10" value="${el.borderWidth||0}" oninput="onFieldChange(${i},'borderWidth',this.value)"></div></div>
+        <div class="field"><label>Action (optional)</label><input type="text" value="${esc(el.actionName||'')}" oninput="onFieldChange(${i},'actionName',this.value)" placeholder="Makes card clickable"></div>
+        ${childrenEditor(el,i,'text')}`;
+    if(el.type==='row')return childrenEditor(el,i,'button');
+    return ''}
 
-function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function childrenEditor(el,i,defaultChild){
+    const children=el.children||[];
+    let html='<div class="children-area"><div class="child-label"><span>Children ('+children.length+')</span><button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\''+defaultChild+'\')"><span class="material-icons-round">add</span>Add</button></div>';
+    children.forEach((ch,ci)=>{
+        html+=`<div class="child-item"><span class="badge ${ch.type}">${ch.type}</span>`;
+        if(ch.type==='text')html+=`<input type="text" value="${esc(ch.text||'')}" onclick="event.stopPropagation()" oninput="onChildField(${i},${ci},'text',this.value)">`;
+        else html+=`<input type="text" value="${esc(ch.text||'')}" onclick="event.stopPropagation()" oninput="onChildField(${i},${ci},'text',this.value)">`;
+        html+=`<button onclick="event.stopPropagation();removeChild(${i},${ci})"><span class="material-icons-round" style="font-size:16px">close</span></button></div>`});
+    html+='</div>';return html}
 
-function updatePreview() {
-    const screen = document.getElementById('phoneScreen');
-    const bg = document.getElementById('bgColor').value;
-    document.getElementById('bgColorCode').textContent = bg.toUpperCase();
-    screen.style.backgroundColor = bg;
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
-    if (elements.length === 0) {
-        screen.innerHTML = '<div style="color:#999;font-size:14px">Empty layout</div>';
-        return;
-    }
+function updatePreview(){
+    const screen=document.getElementById('phoneScreen');
+    const bg=document.getElementById('bgColor').value;
+    document.getElementById('bgColorCode').textContent=bg.toUpperCase();
+    screen.style.backgroundColor=bg;
+    if(!elements.length){screen.innerHTML='<div style="color:#999;font-size:14px">Empty layout</div>';return}
+    screen.innerHTML=elements.map(el=>renderPreviewEl(el)).join('')}
 
-    screen.innerHTML = elements.map(el => {
-        if (el.type === 'text') {
-            return `<div class="prev-text" style="color:${el.color||'#000'};font-size:${el.fontSize||16}px;margin-bottom:8px">${esc(el.text||'')}</div>`;
-        } else if (el.type === 'button') {
-            return `<button class="prev-btn" style="background:${el.color||'#6200EA'};color:${el.textColor||'#FFF'};font-size:${el.fontSize||16}px;margin-bottom:8px" onclick="showToast('Button clicked!')">${esc(el.text||'Button')}</button>`;
-        } else {
-            return `<div class="prev-spacer" style="height:${el.height||16}px"></div>`;
-        }
-    }).join('');
-}
+function renderPreviewEl(el){
+    if(el.type==='text')return `<div class="pv-text" style="color:${el.color||'#000'};font-size:${el.fontSize||16}px">${esc(el.text||'')}</div>`;
+    if(el.type==='button'){
+        let s=`background:${el.color||'#6200EA'};color:${el.textColor||'#FFF'};font-size:${el.fontSize||16}px;border-radius:${el.cornerRadius||24}px`;
+        if(el.borderColor&&el.borderWidth)s+=`;border:${el.borderWidth}px solid ${el.borderColor}`;
+        return `<button class="pv-btn" style="${s}" onclick="showToast('Action: ${esc(el.actionName||el.text||'click')}')">${esc(el.text||'Button')}</button>`}
+    if(el.type==='spacer')return `<div class="pv-spacer" style="height:${el.height||16}px"></div>`;
+    if(el.type==='divider')return `<hr class="pv-divider" style="border:none;height:${el.height||1}px;background:${el.color||'#CCC'}">`;
+    if(el.type==='card'){
+        let s=`background:${el.color||'#FFF'};border-radius:${el.cornerRadius||16}px;padding:${el.paddingV||16}px ${el.paddingH||16}px`;
+        if(el.borderColor&&el.borderWidth)s+=`;border:${el.borderWidth}px solid ${el.borderColor}`;
+        const click=el.actionName?` onclick="showToast('Action: ${esc(el.actionName)}')" style="${s};cursor:pointer"`:` style="${s}"`;
+        return `<div class="pv-card"${click}>${(el.children||[]).map(c=>renderPreviewEl(c)).join('')}</div>`}
+    if(el.type==='row')return `<div class="pv-row">${(el.children||[]).map(c=>renderPreviewEl(c)).join('')}</div>`;
+    return ''}
 
-function getConfig() {
-    return {
-        backgroundColor: document.getElementById('bgColor').value.toUpperCase(),
-        elements: elements.map(el => {
-            const o = { type: el.type, id: el.id };
-            if (el.type === 'text') { o.text = el.text; o.color = (el.color||'#000000').toUpperCase(); o.fontSize = el.fontSize||16; }
-            else if (el.type === 'button') { o.text = el.text; o.color = (el.color||'#6200EA').toUpperCase(); o.textColor = (el.textColor||'#FFFFFF').toUpperCase(); o.fontSize = el.fontSize||16; }
-            else { o.height = el.height||16; }
-            return o;
-        }),
-    };
-}
+function getConfig(){return{backgroundColor:document.getElementById('bgColor').value.toUpperCase(),elements:elements.map(el=>cleanEl(el))}}
+function cleanEl(el){
+    const o={type:el.type,id:el.id};
+    if(el.type==='text'){o.text=el.text;o.color=(el.color||'#000').toUpperCase();o.fontSize=el.fontSize||16}
+    else if(el.type==='button'){o.text=el.text;o.color=(el.color||'#6200EA').toUpperCase();o.textColor=(el.textColor||'#FFF').toUpperCase();o.fontSize=el.fontSize||16;o.cornerRadius=el.cornerRadius||24;if(el.actionName)o.actionName=el.actionName;if(el.borderColor&&el.borderWidth){o.borderColor=el.borderColor.toUpperCase();o.borderWidth=el.borderWidth}}
+    else if(el.type==='spacer'){o.height=el.height||16}
+    else if(el.type==='divider'){o.color=(el.color||'#CCC').toUpperCase();o.height=el.height||1}
+    else if(el.type==='card'){o.color=(el.color||'#FFF').toUpperCase();o.cornerRadius=el.cornerRadius||16;o.paddingH=el.paddingH||16;o.paddingV=el.paddingV||16;if(el.borderColor&&el.borderWidth){o.borderColor=el.borderColor.toUpperCase();o.borderWidth=el.borderWidth}if(el.actionName)o.actionName=el.actionName;if(el.children?.length)o.children=el.children.map(c=>cleanEl(c))}
+    else if(el.type==='row'){if(el.children?.length)o.children=el.children.map(c=>cleanEl(c))}
+    return o}
 
-async function copyJson() {
-    const json = JSON.stringify(getConfig(), null, 2);
-    try { await navigator.clipboard.writeText(json); } catch {
-        const t = document.createElement('textarea'); t.value = json; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t);
-    }
-    showToast('JSON copied', 'content_copy');
-}
+async function copyJson(){const j=JSON.stringify(getConfig(),null,2);try{await navigator.clipboard.writeText(j)}catch{const t=document.createElement('textarea');t.value=j;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t)}showToast('JSON copied','content_copy')}
+async function deployConfig(){
+    const token=document.getElementById('ghToken').value.trim();
+    if(!token){showToast('Enter a GitHub token first','warning',true);document.getElementById('ghToken').focus();return}
+    localStorage.setItem('gh_token',token);setDeploy('deploying');
+    try{const existing=await fetch(`https://api.github.com/repos/${REPO}/${REPO_N}/contents/${FP}`,{headers:{Authorization:`Bearer ${token}`}});let sha=null;if(existing.ok)sha=(await existing.json()).sha;
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(getConfig(),null,2)+'\n')));
+    const body={message:'Update layout from web editor',content};if(sha)body.sha=sha;
+    const r=await fetch(`https://api.github.com/repos/${REPO}/${REPO_N}/contents/${FP}`,{method:'PUT',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(r.ok){setDeploy('ok');showToast('Deployed! Live in ~30s','cloud_done')}else{const e=await r.json();setDeploy('err');showToast('Deploy failed: '+(e.message||r.status),'error',true)}}
+    catch(e){setDeploy('err');showToast('Deploy failed: '+e.message,'error',true)}}
 
-async function deployConfig() {
-    const token = document.getElementById('ghToken').value.trim();
-    if (!token) { showToast('Enter a GitHub token first', 'warning', true); document.getElementById('ghToken').focus(); return; }
-    localStorage.setItem('gh_token', token);
-    setDeploy('deploying');
-    try {
-        const existing = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, { headers: { Authorization: `Bearer ${token}` } });
-        let sha = null;
-        if (existing.ok) sha = (await existing.json()).sha;
-        const content = btoa(unescape(encodeURIComponent(JSON.stringify(getConfig(), null, 2) + '\n')));
-        const body = { message: 'Update layout from web editor', content };
-        if (sha) body.sha = sha;
-        const r = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
-            method: 'PUT', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body),
-        });
-        if (r.ok) { setDeploy('ok'); showToast('Deployed! Live in ~30s', 'cloud_done'); }
-        else { const e = await r.json(); setDeploy('err'); showToast('Deploy failed: ' + (e.message||r.status), 'error', true); }
-    } catch (e) { setDeploy('err'); showToast('Deploy failed: ' + e.message, 'error', true); }
-}
-
-function setDeploy(s) {
-    const b = document.getElementById('deployStatus'), t = document.getElementById('deployStatusText');
-    b.className = 'status-badge';
-    if (s === 'deploying') { t.textContent = 'Deploying...'; }
-    else if (s === 'ok') { b.classList.add('ok'); t.textContent = 'Deployed'; setTimeout(() => { b.className = 'status-badge'; t.textContent = 'Ready'; }, 5000); }
-    else if (s === 'err') { b.classList.add('err'); t.textContent = 'Failed'; setTimeout(() => { b.className = 'status-badge'; t.textContent = 'Ready'; }, 5000); }
-}
-
-function toggleToken() {
-    const i = document.getElementById('ghToken'), ic = document.getElementById('tokenEye');
-    if (i.type === 'password') { i.type = 'text'; ic.textContent = 'visibility_off'; }
-    else { i.type = 'password'; ic.textContent = 'visibility'; }
-}
-
-let toastTimer;
-function showToast(msg, icon, isErr) {
-    const t = document.getElementById('toast');
-    document.getElementById('toastMsg').textContent = msg;
-    document.getElementById('toastIcon').textContent = icon || 'check_circle';
-    t.style.background = isErr ? '#b71c1c' : '#323232';
-    clearTimeout(toastTimer);
-    t.classList.add('show');
-    toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
-}
-
+function setDeploy(s){const b=document.getElementById('deployStatus'),t=document.getElementById('deployStatusText');b.className='sb';if(s==='deploying')t.textContent='Deploying...';else if(s==='ok'){b.classList.add('ok');t.textContent='Deployed';setTimeout(()=>{b.className='sb';t.textContent='Ready'},5000)}else if(s==='err'){b.classList.add('err');t.textContent='Failed';setTimeout(()=>{b.className='sb';t.textContent='Ready'},5000)}}
+function toggleToken(){const i=document.getElementById('ghToken'),ic=document.getElementById('tokenEye');if(i.type==='password'){i.type='text';ic.textContent='visibility_off'}else{i.type='password';ic.textContent='visibility'}}
+let toastTimer;function showToast(msg,icon,err){const t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;document.getElementById('toastIcon').textContent=icon||'check_circle';t.style.background=err?'#b71c1c':'#323232';clearTimeout(toastTimer);t.classList.add('show');toastTimer=setTimeout(()=>t.classList.remove('show'),3000)}
 init();
 </script>
 </body>
