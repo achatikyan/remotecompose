@@ -73,12 +73,20 @@
 
         .children-area{margin-top:8px;padding:10px;background:var(--sv);border-radius:8px;border:1px dashed var(--outline)}
         .children-area .child-label{font-size:11px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
-        .child-item{display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--surface);border:1px solid var(--outline);border-radius:8px;margin-bottom:4px;font-size:12px}
+        .child-item{background:var(--surface);border:1px solid var(--outline);border-radius:8px;margin-bottom:4px;font-size:12px;overflow:hidden}
+        .child-item .child-hdr{display:flex;align-items:center;gap:8px;padding:6px 8px;cursor:pointer}
+        .child-item .child-hdr:hover{background:var(--sv)}
         .child-item .badge{font-size:9px;padding:1px 6px}
-        .child-item input{flex:1;padding:4px 8px;border:1px solid var(--outline);border-radius:6px;font-family:inherit;font-size:12px}
-        .child-item input:focus{outline:none;border-color:var(--primary)}
-        .child-item button{background:none;border:none;cursor:pointer;padding:4px;color:var(--ts);display:flex;border-radius:4px;flex-shrink:0}
-        .child-item button:hover{color:var(--danger);background:var(--dl)}
+        .child-item .child-summary{flex:1;font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .child-item .child-del-btn{background:none;border:none;cursor:pointer;padding:4px;color:var(--ts);display:flex;border-radius:4px;flex-shrink:0}
+        .child-item .child-del-btn:hover{color:var(--danger);background:var(--dl)}
+        .child-editor{display:none;padding:8px;border-top:1px solid var(--outline);background:var(--sv)}
+        .child-item.child-expanded .child-editor{display:block}
+        .child-editor .field{margin-bottom:8px}
+        .child-editor .field label{font-size:10px}
+        .child-editor .field input[type="text"],.child-editor .field input[type="number"]{padding:5px 8px;font-size:12px}
+        .child-editor .fr{display:flex;gap:8px}
+        .child-editor .fr .field{flex:1}
 
         .bg-sec{padding:12px 20px;border-top:1px solid var(--outline);display:flex;align-items:center;gap:12px}
         .bg-sec label{font-size:12px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px}
@@ -228,7 +236,7 @@ const defaultsDetail=[
     {type:'button',text:'Tap Me!',color:'#2E7D32',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'detail_action'}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail')}
-const BUILD_VERSION=16;
+const BUILD_VERSION=17;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='v'+getVersion()}
 async function fetchScreen(key){
@@ -252,7 +260,7 @@ function addElement(type){const el={type,id:uid()};
 function removeElement(idx){if(expandedIdx===idx)expandedIdx=-1;else if(expandedIdx>idx)expandedIdx--;elements.splice(idx,1);render()}
 function toggleExpand(idx){expandedIdx=expandedIdx===idx?-1:idx;const cards=document.querySelectorAll('.el-card');cards.forEach((c,i)=>{if(i===expandedIdx)c.classList.add('expanded');else c.classList.remove('expanded')})}
 function onFieldChange(idx,field,value){if(field==='fontSize'||field==='height'||field==='cornerRadius'||field==='borderWidth'||field==='paddingH'||field==='paddingV')value=parseInt(value)||0;elements[idx][field]=value;updatePreview()}
-function onChildField(parentIdx,childIdx,field,value){if(field==='fontSize')value=parseInt(value)||0;elements[parentIdx].children[childIdx][field]=value;updatePreview()}
+function onChildField(parentIdx,childIdx,field,value){if(field==='fontSize'||field==='cornerRadius')value=parseInt(value)||0;elements[parentIdx].children[childIdx][field]=value;updatePreview()}
 function addChild(parentIdx,type){const ch={type,id:uid()};if(type==='text'){ch.text='New text';ch.color='#333333';ch.fontSize=14}else{ch.text='Button';ch.color='#6200EA';ch.textColor='#FFFFFF';ch.fontSize=14;ch.cornerRadius=20}if(!elements[parentIdx].children)elements[parentIdx].children=[];elements[parentIdx].children.push(ch);render()}
 function removeChild(parentIdx,childIdx){elements[parentIdx].children.splice(childIdx,1);render()}
 
@@ -316,10 +324,34 @@ function childrenEditor(el,i,defaultChild){
     const children=el.children||[];
     let html='<div class="children-area" onclick="event.stopPropagation()"><div class="child-label"><span>Children ('+children.length+')</span><button class="btn btn-o btn-s" onclick="event.stopPropagation();addChild('+i+',\''+defaultChild+'\')"><span class="material-icons-round">add</span>Add</button></div>';
     children.forEach((ch,ci)=>{
-        html+=`<div class="child-item"><span class="badge ${ch.type}">${ch.type}</span>`;
-        html+=`<input type="text" value="${esc(ch.text||'')}" onclick="event.stopPropagation()" oninput="onChildField(${i},${ci},'text',this.value)">`;
-        html+=`<button class="child-del-btn" data-parent="${i}" data-child="${ci}" title="Remove"><span class="material-icons-round" style="font-size:16px">close</span></button></div>`});
+        const summary=ch.text||ch.type;
+        html+=`<div class="child-item" id="child-${i}-${ci}">`;
+        html+=`<div class="child-hdr" onclick="toggleChildExpand(${i},${ci})"><span class="badge ${ch.type}">${ch.type}</span><span class="child-summary">${esc(summary)}</span>`;
+        html+=`<button class="child-del-btn" data-parent="${i}" data-child="${ci}" title="Remove"><span class="material-icons-round" style="font-size:16px">close</span></button></div>`;
+        html+=`<div class="child-editor">${buildChildEditor(ch,i,ci)}</div>`;
+        html+=`</div>`});
     html+='</div>';return html}
+
+function buildChildEditor(ch,i,ci){
+    if(ch.type==='text')return `
+        <div class="field"><label>Text</label><input type="text" value="${esc(ch.text||'')}" oninput="onChildField(${i},${ci},'text',this.value)"></div>
+        <div class="fr"><div class="field"><label>Size</label><input type="number" min="8" max="72" value="${ch.fontSize||14}" oninput="onChildField(${i},${ci},'fontSize',this.value)"></div>
+        <div class="field"><label>Color</label><div class="cf"><input type="color" value="${ch.color||'#000'}" oninput="onChildField(${i},${ci},'color',this.value)"><code>${(ch.color||'#000').toUpperCase()}</code></div></div></div>`;
+    if(ch.type==='button')return `
+        <div class="field"><label>Label</label><input type="text" value="${esc(ch.text||'')}" oninput="onChildField(${i},${ci},'text',this.value)"></div>
+        <div class="field"><label>Action Name</label><input type="text" value="${esc(ch.actionName||'')}" oninput="onChildField(${i},${ci},'actionName',this.value)" placeholder="e.g. navigate:detail"></div>
+        <div class="fr"><div class="field"><label>Size</label><input type="number" min="8" max="72" value="${ch.fontSize||14}" oninput="onChildField(${i},${ci},'fontSize',this.value)"></div>
+        <div class="field"><label>Radius</label><input type="number" min="0" max="50" value="${ch.cornerRadius||20}" oninput="onChildField(${i},${ci},'cornerRadius',this.value)"></div></div>
+        <div class="fr"><div class="field"><label>BG</label><div class="cf"><input type="color" value="${ch.color||'#6200EA'}" oninput="onChildField(${i},${ci},'color',this.value)"><code>${(ch.color||'#6200EA').toUpperCase()}</code></div></div>
+        <div class="field"><label>Text</label><div class="cf"><input type="color" value="${ch.textColor||'#FFF'}" oninput="onChildField(${i},${ci},'textColor',this.value)"><code>${(ch.textColor||'#FFF').toUpperCase()}</code></div></div></div>`;
+    return ''}
+
+function toggleChildExpand(parentIdx,childIdx){
+    const el=document.getElementById('child-'+parentIdx+'-'+childIdx);
+    if(!el)return;
+    const wasExpanded=el.classList.contains('child-expanded');
+    document.querySelectorAll('.child-item').forEach(c=>c.classList.remove('child-expanded'));
+    if(!wasExpanded)el.classList.add('child-expanded')}
 
 document.addEventListener('click',function(e){
     const btn=e.target.closest('.child-del-btn');
