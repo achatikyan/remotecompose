@@ -228,7 +228,8 @@ const defaultsDetail=[
     {type:'button',text:'Tap Me!',color:'#2E7D32',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'detail_action'}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail')}
-function getVersion(){return parseInt(localStorage.getItem('rc_version')||'1')}
+const BUILD_VERSION=12;
+function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='v'+getVersion()}
 async function fetchScreen(key){
     const s=screens[key];
