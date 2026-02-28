@@ -218,7 +218,9 @@ const defaultsHome=[
     {type:'spacer',height:6},
     {type:'divider',color:'#E0D6F2',height:1},
     {type:'spacer',height:6},
-    {type:'button',text:'Go to Detail Screen \u2192',color:'#4A148C',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'navigate:detail',borderColor:'#7E57C2',borderWidth:2}
+    {type:'button',text:'Go to Detail Screen \u2192',color:'#4A148C',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'navigate:detail',borderColor:'#7E57C2',borderWidth:2},
+    {type:'spacer',height:8},
+    {type:'button',text:'View Estimates \u2192',color:'#00897B',textColor:'#FFFFFF',fontSize:16,cornerRadius:28,actionName:'navigate:estimates'}
 ];
 const defaultsDetail=[
     {type:'spacer',height:8},
@@ -251,7 +253,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=42;
+const BUILD_VERSION=43;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+getVersion()+'-alpha'}
 async function fetchScreen(key){
