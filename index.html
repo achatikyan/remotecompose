@@ -173,7 +173,7 @@
 
 <script>
 const REPO='achatikyan',REPO_N='remotecompose',FP='config.json';
-let elements=[],dragIdx=null,nextId=1;
+let elements=[],dragIdx=null,nextId=1,expandedIdx=-1;
 function uid(){return String(nextId++)}
 const defaults=[
     {type:'text',text:'Remote Compose',color:'#4A148C',fontSize:32},
@@ -212,8 +212,8 @@ function addElement(type){const el={type,id:uid()};
     else if(type==='card'){el.color='#FFFFFF';el.cornerRadius=16;el.paddingH=16;el.paddingV=16;el.children=[{type:'text',id:uid(),text:'Card content',color:'#333333',fontSize:14}]}
     else if(type==='row'){el.children=[{type:'button',id:uid(),text:'Left',color:'#6200EA',textColor:'#FFFFFF',fontSize:14,cornerRadius:20},{type:'button',id:uid(),text:'Right',color:'#00897B',textColor:'#FFFFFF',fontSize:14,cornerRadius:20}]}
     elements.push(el);render()}
-function removeElement(idx){elements.splice(idx,1);render()}
-function toggleExpand(idx){const cards=document.querySelectorAll('.el-card');cards.forEach((c,i)=>{if(i!==idx)c.classList.remove('expanded')});cards[idx]?.classList.toggle('expanded')}
+function removeElement(idx){if(expandedIdx===idx)expandedIdx=-1;else if(expandedIdx>idx)expandedIdx--;elements.splice(idx,1);render()}
+function toggleExpand(idx){expandedIdx=expandedIdx===idx?-1:idx;const cards=document.querySelectorAll('.el-card');cards.forEach((c,i)=>{if(i===expandedIdx)c.classList.add('expanded');else c.classList.remove('expanded')})}
 function onFieldChange(idx,field,value){if(field==='fontSize'||field==='height'||field==='cornerRadius'||field==='borderWidth'||field==='paddingH'||field==='paddingV')value=parseInt(value)||0;elements[idx][field]=value;updatePreview()}
 function onChildField(parentIdx,childIdx,field,value){if(field==='fontSize')value=parseInt(value)||0;elements[parentIdx].children[childIdx][field]=value;updatePreview()}
 function addChild(parentIdx,type){const ch={type,id:uid()};if(type==='text'){ch.text='New text';ch.color='#333333';ch.fontSize=14}else{ch.text='Button';ch.color='#6200EA';ch.textColor='#FFFFFF';ch.fontSize=14;ch.cornerRadius=20}if(!elements[parentIdx].children)elements[parentIdx].children=[];elements[parentIdx].children.push(ch);render()}
@@ -246,6 +246,7 @@ function render(){
             </div>
             <div class="el-actions"><button class="del" onclick="event.stopPropagation();removeElement(${i})" title="Delete"><span class="material-icons-round">close</span></button></div>
         </div>`}).join('');
+    if(expandedIdx>=0&&expandedIdx<elements.length){document.querySelectorAll('.el-card')[expandedIdx]?.classList.add('expanded')}
     updatePreview()}
 
 function buildEditor(el,i){
