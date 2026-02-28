@@ -90,10 +90,6 @@
 
         .bg-sec{padding:12px 20px;border-top:1px solid var(--outline);display:flex;align-items:center;gap:12px}
         .bg-sec label{font-size:12px;font-weight:600;color:var(--ts);text-transform:uppercase;letter-spacing:.5px}
-        .deploy-sec{padding:14px 20px;border-top:1px solid var(--outline);background:var(--sv)}
-        .deploy-row{display:flex;gap:8px;margin-top:6px}
-        .deploy-row input{flex:1;padding:7px 10px;border:1.5px solid var(--outline);border-radius:8px;font-family:inherit;font-size:12px}
-        .deploy-row input:focus{outline:none;border-color:var(--primary)}
         .sb{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:16px;font-size:11px;font-weight:600}
         .sb .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
         .sb.ok{background:#e8f5e9;color:#2e7d32}.sb.err{background:#fce4ec;color:#c62828}
@@ -139,6 +135,12 @@
             <div><h1>Remote Compose Editor</h1><div class="sub">Drag-and-drop UI builder &middot; <span id="versionLabel">v1</span></div></div>
         </div>
         <div class="ha">
+            <code id="fetchUrl" style="font-size:11px;background:rgba(98,0,234,.08);padding:3px 8px;border-radius:6px;color:var(--ts);font-family:'SF Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px">config.json</code>
+            <span class="sb" id="deployStatus"><span class="dot"></span><span id="deployStatusText">Ready</span></span>
+            <div style="display:flex;align-items:center;gap:4px;border:1.5px solid var(--outline);border-radius:8px;padding:2px 4px 2px 8px">
+                <input type="password" id="ghToken" placeholder="Token" style="border:none;outline:none;font-size:11px;font-family:inherit;width:80px;background:transparent">
+                <button class="btn btn-g btn-s" onclick="toggleToken()" style="padding:2px"><span class="material-icons-round" id="tokenEye" style="font-size:14px">visibility</span></button>
+            </div>
             <button class="btn btn-g" onclick="resetToDefaults()"><span class="material-icons-round">restart_alt</span>Reset</button>
             <button class="btn btn-o" onclick="copyJson()"><span class="material-icons-round">content_copy</span>Copy JSON</button>
             <button class="btn btn-p" onclick="deployConfig()"><span class="material-icons-round">cloud_upload</span>Deploy</button>
@@ -170,19 +172,6 @@
             <div class="bg-sec">
                 <label>Background</label>
                 <div class="cf"><input type="color" id="bgColor" value="#F5F0FF" oninput="updatePreview()"><code id="bgColorCode">#F5F0FF</code></div>
-            </div>
-            <div class="bg-sec">
-                <div class="info-card" style="width:100%"><p><strong>Fetch URL:</strong> <code id="fetchUrl">https://achatikyan.github.io/remotecompose/config.json</code></p></div>
-            </div>
-            <div class="deploy-sec">
-                <div style="display:flex;align-items:center;justify-content:space-between">
-                    <div><div style="font-size:12px;font-weight:600">GitHub Deploy</div><div style="font-size:11px;color:var(--ts)">Push config.json to GitHub Pages</div></div>
-                    <span class="sb" id="deployStatus"><span class="dot"></span><span id="deployStatusText">Ready</span></span>
-                </div>
-                <div class="deploy-row">
-                    <input type="password" id="ghToken" placeholder="GitHub Personal Access Token">
-                    <button class="btn btn-g btn-s" onclick="toggleToken()"><span class="material-icons-round" id="tokenEye">visibility</span></button>
-                </div>
             </div>
         </div>
         <div>
@@ -262,7 +251,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=41;
+const BUILD_VERSION=42;
 function getVersion(){return Math.max(BUILD_VERSION,parseInt(localStorage.getItem('rc_version')||'0'))}
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+getVersion()+'-alpha'}
 async function fetchScreen(key){
