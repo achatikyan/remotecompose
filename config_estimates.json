@@ -1,6 +1,7 @@
 {
   "backgroundColor": "#F5F5F5",
   "scrollable": true,
+  "padding": 12,
   "elements": [
     { "type": "spacer", "id": "5", "height": 4 },
 
