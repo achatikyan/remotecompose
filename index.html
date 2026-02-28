@@ -179,7 +179,7 @@
             <div class="panel" style="position:sticky;top:76px">
                 <div class="ph"><h2><span class="material-icons-round">phone_android</span>Live Preview</h2></div>
                 <div class="pb" style="display:flex;justify-content:center;padding:20px 12px">
-                    <div class="phone-frame"><div class="phone-camera"></div><div class="phone-screen" id="phoneScreen"></div></div>
+                    <div class="phone-frame"><div class="phone-camera"></div><iframe id="composePreview" src="preview/index.html" style="width:100%;height:100%;border:none;background:white"></iframe></div>
                 </div>
             </div>
         </div>
@@ -254,7 +254,7 @@ const defaultsDetail=[
     {type:'text',text:'No app update required.',color:'#9CA3AF',fontSize:11}
 ];
 function init(){const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;updateVersionLabel();fetchScreen('home');fetchScreen('detail');fetchScreen('estimates');fetchScreen('estimate_detail')}
-const BUILD_VERSION=59;
+const BUILD_VERSION=60;
 function updateVersionLabel(){document.getElementById('versionLabel').textContent='0.0.'+BUILD_VERSION+'-alpha'}
 async function fetchScreen(key){
     const s=screens[key];
@@ -505,13 +505,12 @@ function toggleChildExpand(parentIdx,childIdx){
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
 function updatePreview(){
-    const screen=document.getElementById('phoneScreen');
-    const bg=document.getElementById('bgColor').value;
-    document.getElementById('bgColorCode').textContent=bg.toUpperCase();
-    screen.style.backgroundColor=bg;
-    screen.style.justifyContent=screens[activeScreen].scrollable?'flex-start':'center';
-    if(!elements.length){screen.innerHTML='<div style="color:#999;font-size:14px">Empty layout</div>';return}
-    screen.innerHTML=elements.map(el=>renderPreviewEl(el)).join('')}
+    document.getElementById('bgColorCode').textContent=document.getElementById('bgColor').value.toUpperCase();
+    const iframe=document.getElementById('composePreview');
+    if(iframe&&iframe.contentWindow){
+        try{iframe.contentWindow.postMessage(JSON.stringify(getConfig()),'*')}catch(e){}
+    }
+}
 
 function renderPreviewEl(el){
     if(el.type==='text')return `<div class="pv-text" style="color:${el.color||'#000000'};font-size:${el.fontSize||16}px">${esc(el.text||'')}</div>`;
