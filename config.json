@@ -2,6 +2,15 @@
   "backgroundColor": "#F5F0FF",
   "elements": [
     {
+      "type": "button",
+      "id": "14",
+      "text": "View Estimates",
+      "color": "#00897B",
+      "textColor": "#FFFFFF",
+      "fontSize": 16,
+      "cornerRadius": 28
+    },
+    {
       "type": "text",
       "id": "1",
       "text": "Remote Compose",
@@ -141,15 +150,6 @@
       "type": "spacer",
       "id": "13",
       "height": 8
-    },
-    {
-      "type": "button",
-      "id": "14",
-      "text": "View Estimates",
-      "color": "#00897B",
-      "textColor": "#FFFFFF",
-      "fontSize": 16,
-      "cornerRadius": 28
     }
   ]
 }
