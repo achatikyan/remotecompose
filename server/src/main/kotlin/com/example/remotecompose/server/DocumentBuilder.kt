@@ -188,7 +188,7 @@ private fun renderRow(writer: RemoteComposeWriter, el: ElementConfig) {
         .fillMaxWidth()
         .padding(0f, dp(4), 0f, dp(4))
 
-    writer.row(mod, RowLayout.CENTER, RowLayout.SPACE_EVENLY) {
+    writer.row(mod, RowLayout.SPACE_EVENLY, RowLayout.CENTER) {
         el.children?.forEach { child -> renderElement(writer, child, insideRow = true) }
     }
 }
